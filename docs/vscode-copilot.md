@@ -18,7 +18,7 @@ cd novadb-mcp-demo
 npm install
 ```
 
-> Kein Build nötig — die `.vscode/mcp.json` nutzt `npx tsx`, um TypeScript direkt auszuführen.
+No build needed — `.vscode/mcp.json` uses `npx tsx` to run TypeScript directly.
 
 ### 2. Create a `.env` file
 
@@ -36,21 +36,13 @@ NOVA_CMS_PASSWORD=your-cms-password
 
 The MCP server starts automatically — VS Code reads `.vscode/mcp.json` and loads credentials from your `.env` file.
 
-## Configuration Files
+## Alternative: Run from GitHub without cloning
 
-### `.vscode/mcp.json` — MCP Server
-
-Two server configurations are provided:
+Add this to `.vscode/mcp.json` (or your user-level MCP config):
 
 ```json
 {
   "servers": {
-    "novadb": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["tsx", "src/index.ts"],
-      "envFile": "${workspaceFolder}/.env"
-    },
     "novadb-from-github": {
       "type": "stdio",
       "command": "npx",
@@ -61,37 +53,4 @@ Two server configurations are provided:
 }
 ```
 
-- **`novadb`** — Runs from local source via `tsx` (recommended for development)
-- **`novadb-from-github`** — Runs via `npx` from a remote package (no local clone needed, but still requires `.env`)
-
-### `.github/copilot-instructions.md` — AI Instructions
-
-Equivalent to `CLAUDE.md` but for GitHub Copilot. Contains the NovaDB data model reference, API usage rules, and session-start behavior. Copilot loads this automatically when working in the repo.
-
-### `.github/skills/` — Copilot Agent Mode Skills
-
-Skills for GitHub Copilot's Agent Mode, mirroring the Claude Code skills in `skills/`. Each skill is a `SKILL.md` file in its own directory:
-
-```
-.github/skills/
-  nova-explore/SKILL.md
-  nova-search/SKILL.md
-  nova-list-branches/SKILL.md
-  nova-create-type/SKILL.md
-  nova-forms/SKILL.md
-  nova-import-data/SKILL.md
-  nova-branches/SKILL.md
-  nova-comments/SKILL.md
-```
-
-### `.vscode/settings.json` — Skill Locations
-
-Tells VS Code where to find Copilot Agent Mode skills:
-
-```json
-{
-  "chat.agentSkillsLocations": [
-    ".vscode/skills"
-  ]
-}
-```
+A `.env` file with credentials is still required. Copilot Agent Mode skills from `.github/skills/` won't be available since the repo isn't cloned locally. To use them, copy the skills directory to `~/.vscode/skills/` and add `"chat.agentSkillsLocations": ["~/.vscode/skills"]` to your VS Code user settings.

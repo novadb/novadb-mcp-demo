@@ -39,96 +39,11 @@ npm install
 
 ## Credentials
 
-### Directly in the config
-
-```json
-{
-  "mcpServers": {
-    "novadb": {
-      "type": "stdio",
-      "command": "/absolute/path/to/novadb-mcp-demo/node_modules/.bin/tsx",
-      "args": ["/absolute/path/to/novadb-mcp-demo/src/index.ts"],
-      "env": {
-        "NOVA_HOST": "https://your-nova-instance.example.com",
-        "NOVA_INDEX_USER": "your-index-user",
-        "NOVA_INDEX_PASSWORD": "your-index-password",
-        "NOVA_CMS_USER": "your-cms-user",
-        "NOVA_CMS_PASSWORD": "your-cms-password"
-      }
-    }
-  }
-}
-```
-
-### From shell environment
-
-Load the variables into your shell before starting Claude Code, then use `${...}` references in the config:
-
-```bash
-set -a && source .env-<username> && set +a
-claude
-```
-
-```json
-{
-  "mcpServers": {
-    "novadb": {
-      "type": "stdio",
-      "command": "/absolute/path/to/novadb-mcp-demo/node_modules/.bin/tsx",
-      "args": ["/absolute/path/to/novadb-mcp-demo/src/index.ts"],
-      "env": {
-        "NOVA_HOST": "${NOVA_HOST}",
-        "NOVA_INDEX_USER": "${NOVA_INDEX_USER}",
-        "NOVA_INDEX_PASSWORD": "${NOVA_INDEX_PASSWORD}",
-        "NOVA_CMS_USER": "${NOVA_CMS_USER}",
-        "NOVA_CMS_PASSWORD": "${NOVA_CMS_PASSWORD}"
-      }
-    }
-  }
-}
-```
-
-> Replace `/absolute/path/to/novadb-mcp-demo` with the actual clone path.
+Pass credentials directly in the `env` block (as shown above), or load them from your shell environment before starting Claude Code (`set -a && source .env && set +a && claude`) and use `${NOVA_HOST}` references in the config.
 
 ## Plugin Components
 
-### CLAUDE.md — AI Instructions
-
-`CLAUDE.md` in the project root is automatically loaded by Claude Code. It contains:
-
-- Session-start behavior (branch selection prompt)
-- NovaDB data model reference (object hierarchy, ID ranges, value tuples)
-- API overview with usage rules (when to use Index vs. CMS API)
-- Common mistakes to avoid
-
-This file is the authoritative reference for the NovaDB data model — it is not duplicated elsewhere.
-
-### Skills
-
-Skills are guided workflows invoked with `/skill-name` in Claude Code. Each skill lives in `skills/<name>/SKILL.md` and contains a self-contained prompt.
-
-| Skill | Description |
-|-------|-------------|
-| `/nova-explore` | Browse, query, filter, and search Nova data |
-| `/nova-search` | Find objects by text, attributes, or type |
-| `/nova-list-branches` | List available branches with resolved references |
-| `/nova-create-type` | Create object types, attribute definitions, and forms |
-| `/nova-forms` | Create and edit forms (UI layout definitions) |
-| `/nova-import-data` | Import and create data objects |
-| `/nova-branches` | Create, update, delete, and inspect branches |
-| `/nova-comments` | Manage comments on objects |
-
-### Agents
-
-Agents are specialized sub-agents that Claude Code can delegate to for focused tasks. Defined in `agents/`:
-
-| Agent | File | Purpose |
-|-------|------|---------|
-| `explore-novadb` | `agents/explore-novadb.md` | Deep exploration of NovaDB data |
-| `nova-forms` | `agents/nova-forms.md` | Form creation and editing |
-| `nova-search` | `agents/nova-search.md` | Object search via Index API |
-| `nova-list-branches` | `agents/nova-list-branches.md` | Branch listing and resolution |
-
-### .mcp.json
-
-The project-level `.mcp.json` configures the MCP server for local development with environment variable references. Claude Code reads this automatically when working inside the repo.
+- **`CLAUDE.md`** — AI instructions loaded automatically by Claude Code (data model, API rules, session behavior)
+- **`skills/`** — 8 guided workflows, invoked with `/nova-explore`, `/nova-search`, etc.
+- **`agents/`** — 4 specialized sub-agents: `explore-novadb`, `nova-forms`, `nova-search`, `nova-list-branches`
+- **`.mcp.json`** — MCP server config for local development (read automatically inside the repo)
