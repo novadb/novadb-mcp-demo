@@ -20,6 +20,7 @@ Use these skills for focused workflows:
 - `/nova-forms` — Create and edit forms (UI layout definitions). Agent: `nova-forms`
 - `/nova-import-data` — Import and create data objects via CMS API
 - `/nova-branches` — Create, update, delete, and inspect branches (work packages)
+- `/nova-codegen` — Generate code for NovaDB REST APIs in TypeScript, Python, C#, Go, and cURL
 
 ## Nova Data Model
 
