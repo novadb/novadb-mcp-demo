@@ -1,0 +1,8 @@
+{
+  "name": "novadb",
+  "description": "NovaDB MCP server for browsing, querying, and managing Nova data via the CMS and Index APIs",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michael Stegmann, Noxum"
+  }
+}

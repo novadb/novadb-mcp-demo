@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "novadb": {
+      "type": "stdio",
+      "command": "node_modules/.bin/tsx",
+      "args": ["src/index.ts"],
+      "env": {
+        "NOVA_HOST": "${NOVA_HOST}",
+        "NOVA_INDEX_USER": "${NOVA_INDEX_USER}",
+        "NOVA_INDEX_PASSWORD": "${NOVA_INDEX_PASSWORD}",
+        "NOVA_CMS_USER": "${NOVA_CMS_USER}",
+        "NOVA_CMS_PASSWORD": "${NOVA_CMS_PASSWORD}"
+      }
+    }
+  }
+}
