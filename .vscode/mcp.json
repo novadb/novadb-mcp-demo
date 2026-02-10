@@ -5,12 +5,6 @@
       "command": "npx",
       "args": ["tsx", "src/index.ts"],
       "envFile": "${workspaceFolder}/.env"
-    },
-    "novadb-from-github": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "https://github.com/novadb/novadb-mcp-demo"],
-      "envFile": "${workspaceFolder}/.env"
     }
   }
 }
