@@ -4,5 +4,3 @@ dist/
 .env
 .env.*
 .env-*
-openapi-cms.json
-openapi-index.json
