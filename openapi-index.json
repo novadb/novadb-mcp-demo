@@ -1,0 +1,1785 @@
+{
+  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NovaDB Index API",
+    "description": "An API to perform search actions on NovaDB index data",
+    "version": "5.4.0.7"
+  },
+  "servers": [
+    {
+      "url": "https://customer.workspace.novadb.com/apis/index/v1"
+    }
+  ],
+  "paths": {
+    "/branches/{branch}/commentCount": {
+      "post": {
+        "tags": ["Comment Index"],
+        "summary": "Get the number of comments that match a search filter",
+        "operationId": "CommentIndex_CommentCount",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The comment request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCountRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentCountResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/commentOccurrences": {
+      "post": {
+        "tags": ["Comment Index"],
+        "summary": "Get occurrences of fields of comments that match a (possible empty) search filter",
+        "operationId": "CommentIndex_CommentOccurrences",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The occurrences request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentOccurrencesRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentOccurrencesResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/comments": {
+      "post": {
+        "tags": ["Comment Index"],
+        "summary": "Search for comments",
+        "operationId": "CommentIndex_CommentSearch",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The search request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentSearchRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objectCount": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Get the number of objects that match a search filter",
+        "operationId": "ObjectIndex_ObjectCount",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The count request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectCountRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectCountResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request\n            is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objectOccurrences": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Get occurrences of fields of objects that match a search filter",
+        "operationId": "ObjectIndex_ObjectOccurrences",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The occurrence request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectOccurrencesRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectOccurrencesResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request\n            is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workItemOccurrences": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Get work item occurrences per branch",
+        "operationId": "ObjectIndex_WorkItemOccurrences",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The occurrences request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkItemOccurrencesRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkItemOccurrencesResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objects": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Search for objects",
+        "operationId": "ObjectIndex_ObjectSearch",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The search request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectSearchRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request\n            is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objectXmlLinkCount": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Get the number of objects with XML values that contain links to one\nof the objects requested.",
+        "operationId": "ObjectIndex_ObjectXmlLinkCount",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The link count request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectXmlLinkCountRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectCountResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request\n            is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/suggestions": {
+      "post": {
+        "tags": ["Object Index"],
+        "summary": "Get a list of suggestions for a search pattern that may be used for type-ahead",
+        "operationId": "ObjectIndex_Suggestions",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID or ApiIdentifier",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The Suggestions request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestionsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionsResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/utilities/matchStrings": {
+      "post": {
+        "tags": ["Utilities"],
+        "summary": "Get the number of objects that match a search filter",
+        "operationId": "Utility_MatchStrings",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The match request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MatchStringsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatchStringsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommentCountResult": {
+        "type": "object",
+        "description": "The result for a count search",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingTimestamp": {
+            "type": "string",
+            "description": "The change tracking timestamp of the comment index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of documents",
+            "format": "int32"
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CommentCountRequest": {
+        "type": "object",
+        "description": "Request object for count of comment",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The filter settings",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommentFilterCondition"
+              }
+            ]
+          },
+          "minChangeTrackingTimestamp": {
+            "type": "string",
+            "description": "The minimum change tracking timestamp of the index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "CommentFilterCondition": {
+        "type": "object",
+        "description": "Comment filter condition",
+        "additionalProperties": false,
+        "properties": {
+          "searchPhrase": {
+            "type": "string",
+            "description": "A user-defined search phrase, if any",
+            "nullable": true
+          },
+          "user": {
+            "type": "string",
+            "description": "The user, if any",
+            "nullable": true
+          },
+          "mentioned": {
+            "type": "string",
+            "description": "The mentioned user, if any",
+            "nullable": true
+          },
+          "objectTypes": {
+            "type": "array",
+            "description": "A list of object types. If the list is null or empty, the search is not restrict by object type",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          }
+        }
+      },
+      "CommentOccurrencesResult": {
+        "type": "object",
+        "description": "The result for an comment occurrence request",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingTimestamp": {
+            "type": "string",
+            "description": "The change tracking timestamp of the comment index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "userOccurrences": {
+            "description": "Occurrences of users that created a comment",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          },
+          "mentionedUsersOccurrences": {
+            "description": "Occurrences of the mentioned users of comments",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          },
+          "objectTypeOccurrences": {
+            "description": "Occurrences of object types of comments",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          }
+        }
+      },
+      "Occurrences": {
+        "type": "object",
+        "description": "Occurrences of distinct values",
+        "additionalProperties": false,
+        "properties": {
+          "nullOccurrences": {
+            "type": "integer",
+            "description": "The number of items that do not have a value",
+            "format": "int32"
+          },
+          "notNullOccurrences": {
+            "type": "integer",
+            "description": "The number of items that have a value",
+            "format": "int32"
+          },
+          "valueType": {
+            "type": "string",
+            "description": "The type of the values (\"string\" | \"number\" | \"boolean\")"
+          },
+          "more": {
+            "type": "boolean",
+            "description": "True, if there are more value occurrences. Currently limited by the 'page.take' parameter"
+          },
+          "valueOccurrences": {
+            "type": "array",
+            "description": "List of values and their occurrence counters. The list is sorted by value by default.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "Occurrence"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Occurrence"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Occurrence": {
+        "type": "object",
+        "description": "Occurrence of a value",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "description": "The value. This is either a string, number or boolean, depending on the attributes data type."
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of objects with this value",
+            "format": "int32"
+          }
+        }
+      },
+      "CommentOccurrencesRequest": {
+        "type": "object",
+        "description": "Request comments for occurrences of fields",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The comment filter condition",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommentFilterCondition"
+              }
+            ]
+          },
+          "minChangeTrackingTimestamp": {
+            "type": "string",
+            "description": "The minimum change tracking timestamp of the index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for a comment index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          },
+          "page": {
+            "description": "The page to load",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Page"
+              }
+            ]
+          },
+          "getUserOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the user field"
+          },
+          "getMentionedUsersOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the mentionedUsers field"
+          },
+          "getObjectTypeOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the objectType field"
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "description": "Page condition for a search",
+        "additionalProperties": false,
+        "properties": {
+          "skip": {
+            "type": "integer",
+            "description": "Skip the first N documents of the search result (used for paging, default: 0)",
+            "format": "int32"
+          },
+          "take": {
+            "type": "integer",
+            "description": "The number of top documents. A value <=0 returns all documents found (the default)",
+            "format": "int32"
+          }
+        }
+      },
+      "CommentSearchResult": {
+        "type": "object",
+        "description": "Result of a comment search",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingTimestamp": {
+            "type": "string",
+            "description": "The change tracking timestamp of the comment index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "more": {
+            "type": "boolean",
+            "description": "True, if there are more items to search for, false otherwise."
+          },
+          "comments": {
+            "type": "array",
+            "description": "The result comments",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CommentItem"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CommentItem"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CommentItem": {
+        "type": "object",
+        "description": "A row stored in NX_OBJECT_COMMENT.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Get database column COM_ID",
+            "format": "int64"
+          },
+          "user": {
+            "type": "string",
+            "description": "Get database column COM_USER",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "description": "Get database column COM_CREATED",
+            "format": "date-time"
+          },
+          "modified": {
+            "type": "string",
+            "description": "Get or set database column COM_MODIFIED",
+            "format": "date-time"
+          },
+          "objectRef": {
+            "type": "integer",
+            "description": "Get database column COM_OBJ_REF",
+            "format": "int32"
+          },
+          "objectType": {
+            "type": "integer",
+            "description": "The object type of the referred object",
+            "format": "int32"
+          },
+          "summary": {
+            "type": "string",
+            "description": "A single line text summary with a maximum length of 64 characters.\nIf there is more content, a horizontal ellipsis character (U+2026) is appended.",
+            "nullable": true
+          },
+          "mentionedUsers": {
+            "type": "array",
+            "description": "The list of mentioned users",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "string"
+              }
+            }
+          }
+        }
+      },
+      "CommentSearchRequest": {
+        "type": "object",
+        "description": "Request object for comment search",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The filter settings",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommentFilterCondition"
+              }
+            ]
+          },
+          "sort": {
+            "description": "The sort settings",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommentSortBy"
+              }
+            ]
+          },
+          "page": {
+            "description": "The page to load",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Page"
+              }
+            ]
+          },
+          "minChangeTrackingTimestamp": {
+            "type": "string",
+            "description": "The minimum change tracking timestamp of the index",
+            "format": "date-time",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "CommentSortBy": {
+        "type": "object",
+        "description": "Comment sort by",
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "description": "The field to sort by",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommentField"
+              }
+            ]
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "If true, sort reverse"
+          }
+        }
+      },
+      "CommentField": {
+        "type": "integer",
+        "description": "Comment field enumeration, used for sorting",
+        "x-enumNames": [
+          "Id",
+          "User",
+          "Created",
+          "Modified",
+          "ObjectId",
+          "ObjectType"
+        ],
+        "enum": [0, 1, 2, 3, 4, 5]
+      },
+      "ObjectCountResult": {
+        "type": "object",
+        "description": "The result for a count search",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingVersion": {
+            "type": "integer",
+            "description": "The change tracking version of the object or comment index",
+            "format": "int64",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of documents",
+            "format": "int32"
+          }
+        }
+      },
+      "ObjectCountRequest": {
+        "type": "object",
+        "description": "Request object for count of objects",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The object filter condition",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ObjectFilterCondition"
+              }
+            ]
+          },
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectFilterCondition": {
+        "type": "object",
+        "description": "Object filter condition",
+        "additionalProperties": false,
+        "properties": {
+          "uiLanguage": {
+            "type": "integer",
+            "description": "The current UI language, used to select the DisplayName (English, by\ndefault)",
+            "format": "int32"
+          },
+          "hasLocalValues": {
+            "type": "boolean",
+            "description": "Fetch object(s) that have changes on the current branch"
+          },
+          "hasDisplayName": {
+            "type": "boolean",
+            "description": "Fetch object(s) that have a display name set explicitly",
+            "nullable": true
+          },
+          "searchPhrase": {
+            "type": "string",
+            "description": "A user-defined search phrase, if any",
+            "nullable": true
+          },
+          "quickSearchAttributes": {
+            "type": "array",
+            "description": "Attribute Id, Language Id and Variant Id combination of\nQuickSearchAttributeRefs",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "QuickSearchScopedAttributeKey"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/QuickSearchScopedAttributeKey"
+                }
+              ]
+            }
+          },
+          "objectTypeIds": {
+            "type": "array",
+            "description": "The list of object type ids, if any",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "objectIds": {
+            "type": "array",
+            "description": "The list of object ids, if any",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "modifiedBy": {
+            "type": "string",
+            "description": "Last modified user, if any",
+            "nullable": true
+          },
+          "filters": {
+            "type": "array",
+            "description": "The list of Object Filter(s), if any",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "ObjectValueFilter"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ObjectValueFilter"
+                }
+              ]
+            }
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Fetch deleted, not deleted or all objects.",
+            "nullable": true
+          },
+          "modifiedSince": {
+            "type": "string",
+            "description": "Fetch objects that have been modified since this UTC timestamp",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "QuickSearchScopedAttributeKey": {
+        "type": "object",
+        "description": "Key for a quick search scoped attribute",
+        "additionalProperties": false,
+        "properties": {
+          "attrId": {
+            "type": "integer",
+            "description": "Attribute Id",
+            "format": "int32"
+          },
+          "langId": {
+            "type": "integer",
+            "description": "Language Id",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "description": "Variant Id",
+            "format": "int32"
+          }
+        }
+      },
+      "ObjectValueFilter": {
+        "type": "object",
+        "description": "Object Value Filter",
+        "additionalProperties": false,
+        "properties": {
+          "attrId": {
+            "type": "integer",
+            "description": "Attribute Id",
+            "format": "int32"
+          },
+          "langId": {
+            "type": "integer",
+            "description": "Language Id",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "description": "Variant Id",
+            "format": "int32"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value as string.\nFor DataTime values call DateTime.ToString(\"o\") to create a round-trip representation, for other types call Convert.ToString(value, CultureInfo.InvariantCulture).",
+            "nullable": true
+          },
+          "compareOperator": {
+            "description": "The compare operator",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FilterCompareOperator"
+              }
+            ]
+          }
+        }
+      },
+      "FilterCompareOperator": {
+        "type": "integer",
+        "description": "Compare operators for filters",
+        "x-enumNames": [
+          "Equal",
+          "NotEqual",
+          "LessThan",
+          "LessThanOrEqual",
+          "GreaterThan",
+          "GreaterThanOrEqual",
+          "Wildcard",
+          "Ref"
+        ],
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7]
+      },
+      "ObjectOccurrencesResult": {
+        "type": "object",
+        "description": "The result for an object occurrence request",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingVersion": {
+            "type": "integer",
+            "description": "The change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "modifiedByOccurrences": {
+            "description": "Occurrences of users that modified an object",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          },
+          "typeOccurrences": {
+            "description": "Occurrences of object types",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          },
+          "deletedOccurrences": {
+            "description": "Occurrences of object deleted flag",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          }
+        }
+      },
+      "ObjectOccurrencesRequest": {
+        "type": "object",
+        "description": "Request objects for occurrences of fields",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The object filter condition",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ObjectFilterCondition"
+              }
+            ]
+          },
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          },
+          "page": {
+            "description": "The page to load",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Page"
+              }
+            ]
+          },
+          "getModifiedByOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the modifiedBy field"
+          },
+          "getTypeOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the type field"
+          },
+          "getDeletedOccurrences": {
+            "type": "boolean",
+            "description": "Get occurrences for the deleted field"
+          }
+        }
+      },
+      "WorkItemOccurrencesResult": {
+        "type": "object",
+        "description": "The result for a work item occurrences request",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingVersion": {
+            "type": "integer",
+            "description": "The change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "branchOccurrences": {
+            "description": "Occurrences of work items per branch",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Occurrences"
+              }
+            ]
+          }
+        }
+      },
+      "WorkItemOccurrencesRequest": {
+        "type": "object",
+        "description": "Request work item occurrences per branch",
+        "additionalProperties": false,
+        "properties": {
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          },
+          "page": {
+            "description": "The page to load",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Page"
+              }
+            ]
+          }
+        }
+      },
+      "ObjectSearchResult": {
+        "type": "object",
+        "description": "Result of an object search",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingVersion": {
+            "type": "integer",
+            "description": "The change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "more": {
+            "type": "boolean",
+            "description": "True, if there are more items to search for, false otherwise."
+          },
+          "objects": {
+            "type": "array",
+            "description": "The result objects",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "ObjectItem"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ObjectItem"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "ObjectItem": {
+        "type": "object",
+        "description": "An index object item",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Get database column OBJ_ID",
+            "format": "int32"
+          },
+          "typeRef": {
+            "type": "integer",
+            "description": "Get database column OBJ_TYPE_REF",
+            "format": "int32"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display name of the object for the requested language.\nIf HasDisplayName is false, the name is \"Object {id}\"",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "description": "The user who modified this object on the current branch",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "description": "The timestamp when this object has been modified on the current branch",
+            "format": "date-time"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "True, if the object is deleted on the current branch, false otherwise"
+          },
+          "hasDisplayName": {
+            "type": "boolean",
+            "description": "True, if the object has a display name set explicitly, false otherwise"
+          }
+        }
+      },
+      "ObjectSearchRequest": {
+        "type": "object",
+        "description": "Request object for object search",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "The object filter condition",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ObjectFilterCondition"
+              }
+            ]
+          },
+          "sortBy": {
+            "type": "array",
+            "description": "The list of sort criteria, if any",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "ObjectSortBy"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ObjectSortBy"
+                }
+              ]
+            }
+          },
+          "page": {
+            "description": "The page to load",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Page"
+              }
+            ]
+          },
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "ObjectSortBy": {
+        "type": "object",
+        "description": "Sort condition for object search",
+        "additionalProperties": false,
+        "properties": {
+          "sortBy": {
+            "description": "Sort By operator",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ObjectSortByKind"
+              }
+            ]
+          },
+          "attrId": {
+            "type": "integer",
+            "description": "Attribute Id",
+            "format": "int32"
+          },
+          "langId": {
+            "type": "integer",
+            "description": "Language Id",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "description": "Variant Id",
+            "format": "int32"
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "Sort reverse"
+          }
+        }
+      },
+      "ObjectSortByKind": {
+        "type": "integer",
+        "description": "Sort By",
+        "x-enumNames": [
+          "Score",
+          "ObjId",
+          "TypeRef",
+          "DisplayName",
+          "Modified",
+          "ModifiedBy",
+          "Attribute"
+        ],
+        "enum": [0, 1, 2, 3, 4, 5, 6]
+      },
+      "ObjectXmlLinkCountRequest": {
+        "type": "object",
+        "description": "Request for getting the number of objects with XML values that contain links",
+        "additionalProperties": false,
+        "properties": {
+          "objectIds": {
+            "type": "array",
+            "description": "The list of Object Ids that are referred to",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "SuggestionsResult": {
+        "type": "object",
+        "description": "Result of a suggestions request",
+        "additionalProperties": false,
+        "properties": {
+          "changeTrackingVersion": {
+            "type": "integer",
+            "description": "The change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "suggestions": {
+            "type": "array",
+            "description": "The list of suggestions",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "Suggestion"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Suggestion"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Suggestion": {
+        "type": "object",
+        "description": "A suggestion that may be used for type-ahead support",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The suggested search pattern. This is a lowercase string, because text content is indexed lowercase."
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of documents that match the suggested search pattern",
+            "format": "int32"
+          },
+          "length": {
+            "type": "integer",
+            "description": "The length of the suggested suffix of Value",
+            "format": "int32"
+          }
+        }
+      },
+      "SuggestionsRequest": {
+        "type": "object",
+        "description": "Request object index for suggestions",
+        "additionalProperties": false,
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "description": "The search pattern",
+            "nullable": true
+          },
+          "suggestDisplayName": {
+            "type": "boolean",
+            "description": "Create suggestions from the display name"
+          },
+          "suggestAttributes": {
+            "type": "array",
+            "description": "The scoped attributes to create suggestions for",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "SuggestionsScopedAttributeKey"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SuggestionsScopedAttributeKey"
+                }
+              ]
+            }
+          },
+          "filter": {
+            "description": "The object filter condition",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ObjectFilterCondition"
+              }
+            ]
+          },
+          "take": {
+            "type": "integer",
+            "description": "Take this number of items. Must be in the range 1..1000. Default: 10",
+            "format": "int32"
+          },
+          "sortByValue": {
+            "type": "boolean",
+            "description": "If true, suggestions are sorted by value and not by count"
+          },
+          "analyze": {
+            "type": "boolean",
+            "description": "If true, the search pattern is analyzed, otherwise it must occur as a prefix. Default: true."
+          },
+          "fuzzy": {
+            "type": "boolean",
+            "description": "If true, the last search term is used as a fuzzy pattern, not as a prefix."
+          },
+          "fuzzyMinSimilarity": {
+            "type": "number",
+            "description": "Minimum similarity for fuzzy search. The default value is 0.5. If fuzzy=false, this value is ignored",
+            "format": "float"
+          },
+          "fuzzyPrefixLength": {
+            "type": "integer",
+            "description": "The prefix length for fuzzy search. The default value is 0. If fuzzy=false, this value is ignored",
+            "format": "int32"
+          },
+          "minChangeTrackingVersion": {
+            "type": "integer",
+            "description": "The minimum change tracking version of the object index",
+            "format": "int64",
+            "nullable": true
+          },
+          "maxWaitTime": {
+            "type": "string",
+            "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
+            "format": "duration",
+            "nullable": true
+          }
+        }
+      },
+      "SuggestionsScopedAttributeKey": {
+        "type": "object",
+        "description": "Key for a scoped attribute to provide suggestions",
+        "additionalProperties": false,
+        "properties": {
+          "attrId": {
+            "type": "integer",
+            "description": "Attribute Id",
+            "format": "int32"
+          },
+          "langId": {
+            "type": "integer",
+            "description": "Language Id",
+            "format": "int32"
+          },
+          "variantId": {
+            "type": "integer",
+            "description": "Variant Id",
+            "format": "int32"
+          }
+        }
+      },
+      "MatchStringsResponse": {
+        "type": "object",
+        "description": "Match strings response",
+        "additionalProperties": false,
+        "properties": {
+          "indexes": {
+            "type": "array",
+            "description": "The sorted list of indexes of the provided strings that match the query",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          }
+        }
+      },
+      "MatchStringsRequest": {
+        "type": "object",
+        "description": "Match strings request",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The Lucene query expression",
+            "nullable": true
+          },
+          "useOrOperator": {
+            "type": "boolean",
+            "description": "Use the OR operator instead of AND if the query expression contains multiple terms."
+          },
+          "strings": {
+            "type": "array",
+            "description": "The list of strings to match",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Comment Index"
+    },
+    {
+      "name": "Object Index"
+    },
+    {
+      "name": "Utilities"
+    }
+  ]
+}

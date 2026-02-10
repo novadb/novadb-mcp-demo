@@ -1,0 +1,3809 @@
+{
+  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NovaDB CMS API",
+    "description": "An API to perform read/write operations on NovaDB data.",
+    "version": "5.4.0.37"
+  },
+  "servers": [
+    {
+      "url": "https://customer.workspace.novadb.com/apis/cms/v0"
+    }
+  ],
+  "paths": {
+    "/branches/{id}": {
+      "get": {
+        "tags": ["Branches"],
+        "summary": "Get a single branch by ID",
+        "operationId": "Cms_GetBranch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "attributes",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by attributes",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "variants",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by variants",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by languages",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "The content has not been modified"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Branches"],
+        "summary": "Update a branch",
+        "operationId": "Cms_UpdateBranch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The object to update. Either an ID or a Guid must be provided for the object.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBranchRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBranchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Branches"],
+        "summary": "Deletes a branch by ID",
+        "operationId": "Cms_DeleteBranch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The delete request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteBranchRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteBranchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches": {
+      "post": {
+        "tags": ["Branches"],
+        "summary": "Create a branch",
+        "operationId": "Cms_CreateBranch",
+        "parameters": [
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The model describing the branch to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBranchRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/generators/{language}/types": {
+      "get": {
+        "tags": ["Code Generator"],
+        "summary": "Get generated class implementation for all objects with API identifiers",
+        "operationId": "CodeGenerator_GetCSharpClasses",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID or ApiIdentifier",
+            "schema": {
+              "type": "string",
+              "default": "4"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "description": "The programming language of the generated code",
+            "schema": {
+              "type": "string",
+              "default": "csharp"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "A comma separated list of object type IDs, Guids or ApiIdentifiers or \"all\" for all custom object types that have an API Identifier",
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/generators/{language}/types/{type}": {
+      "get": {
+        "tags": ["Code Generator"],
+        "summary": "Get a c# class for a specific object type",
+        "operationId": "CodeGenerator_GetCSharpClass",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "language",
+            "in": "path",
+            "required": true,
+            "description": "The programming language of the generated code",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "The object type ID or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments": {
+      "post": {
+        "tags": ["Comments"],
+        "summary": "Create a comment.",
+        "operationId": "Comment_CreateComment",
+        "parameters": [
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The model describing the comment that shall be created.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsComment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or the object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Comments"],
+        "summary": "Get multiple comments, sorted by id, descending.",
+        "operationId": "Comment_GetComments",
+        "parameters": [
+          {
+            "name": "branchRef",
+            "in": "query",
+            "description": "The id of the branch.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "objectRef",
+            "in": "query",
+            "description": "The id of object the comment refers to.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "description": "The user who wrote the comment. If not null, only comments created by the specified user will be included.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "description": "If true, include only deleted, if false include only not-deleted, if null include all comments.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "continue",
+            "in": "query",
+            "description": "An opaque token that encapsulates information how to continue the list request",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "description": "The number of comments to take.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            },
+            "x-position": 6
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsCommentList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or the comment could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{commentId}": {
+      "get": {
+        "tags": ["Comments"],
+        "summary": "Get a single comment by ID",
+        "operationId": "Comment_GetComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "description": "The comment's ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsComment"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or the comment could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comments"],
+        "summary": "Deletes a comment.",
+        "operationId": "Comment_DeleteComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "description": "The comment's id.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The comment could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Comments"],
+        "summary": "Updates a comment.",
+        "operationId": "Comment_UpdateComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "description": "The comment id.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update request model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The comment was not found or it is deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/{name}": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Retrieve the file with the specified name.",
+        "description": "Retrieve the file with the specified name.",
+        "operationId": "Files_GetFile",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "description": "Name of the file including the extension.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "range",
+            "in": "header",
+            "description": "Range header value. For more information, visit https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "206": {
+            "description": "Partial Content",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fileUpload/start": {
+      "post": {
+        "tags": ["Files"],
+        "summary": "Start uploading an external file.",
+        "description": "Start uploading an external file.",
+        "operationId": "Files_PostFileStart",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Extension": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Commit": {
+                    "type": "boolean"
+                  },
+                  "Token": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The file size is larger than expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fileUpload/continue": {
+      "post": {
+        "tags": ["Files"],
+        "summary": "Continue uploading an external file.",
+        "description": "Continue uploading an external file.",
+        "operationId": "Files_PostFileContinue",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Extension": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "Commit": {
+                    "type": "boolean"
+                  },
+                  "Token": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The file size is larger than expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fileUpload/cancel/{token}": {
+      "delete": {
+        "tags": ["Files"],
+        "summary": "Delete the temporary file using the provided token.",
+        "description": "Delete the temporary file using the provided token.",
+        "operationId": "Files_DeleteTempFile",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "Token for the temporary file to delete (including extension).",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs": {
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Create a job.",
+        "operationId": "Job_CreateJob",
+        "parameters": [
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJobRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsJob"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get Jobs",
+        "operationId": "Job_GetJobs",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "query",
+            "description": "The id of the branch.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "definitionRef",
+            "in": "query",
+            "description": "The id of the job definition.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "Job state. if null, all states will be included. (0=New, 1=Running, 2=Succeeded, 3=Error, 4=KillRequest, 5=RestartRequest)",
+            "schema": {
+              "oneOf": [
+                {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/JobStatus"
+                    }
+                  ]
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
+            "name": "triggerRef",
+            "in": "query",
+            "description": "If not null, only jobs triggered by the specified Id will be included.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "createdBy",
+            "in": "query",
+            "description": "Job Created by. If not null, only jobs created by the specified user will be included.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "description": "If true, include only deleted, if false include only not-deleted, if null include all jobs.",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "x-position": 6
+          },
+          {
+            "name": "continue",
+            "in": "query",
+            "description": "An opaque token that encapsulates information how to continue the list request",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 7
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "description": "The number of jobs to take.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            },
+            "x-position": 8
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsJobList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or job could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get a single job by ID",
+        "operationId": "Job_GetJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsJob"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or job could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Jobs"],
+        "summary": "Updates a job.",
+        "operationId": "Job_UpdateJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job id.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "model",
+          "description": "The update model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateJobRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Jobs"],
+        "summary": "Deletes a job.",
+        "operationId": "Job_DeleteJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job id.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/objectIds": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Gets the ids of the job's context objects.",
+        "operationId": "Job_GetJobObjectIds",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job id.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "xml": {
+                    "name": "ArrayOfint",
+                    "wrapped": true
+                  },
+                  "items": {
+                    "type": "integer",
+                    "format": "int32",
+                    "xml": {
+                      "name": "int"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/logs": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get job logs by Job Id",
+        "operationId": "Job_GetJobLogs",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or job could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/artifacts.zip": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get job artifacts by Job Id as a ZIP file",
+        "operationId": "Job_GetJobArtifactsZip",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job does not have artifacts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/artifacts": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Provides a listing of job artifacts.",
+        "operationId": "Job_GetJobArtifacts",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobArtifactList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job does not have artifacts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/artifacts/{path}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get a single artifact file.",
+        "operationId": "Job_GetJobArtifact",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "description": "The relative path of the file.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job does not have artifacts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobInput": {
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Start uploading a file to be used as job input.",
+        "operationId": "Job_JobInputUpload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobInputUploadResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The file size is larger than expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobInput/{token}": {
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Continue uploading a file to be used as job input.",
+        "operationId": "Job_JobInputContinue",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "The key of the temporary data",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobInputUploadResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The file size is larger than expected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Jobs"],
+        "summary": "Cancel uploading a file to be used as job input.",
+        "operationId": "Job_JobInputCancel",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "The key of the temporary data",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objects/{id}": {
+      "get": {
+        "tags": ["Objects"],
+        "summary": "Get a single object by ID",
+        "operationId": "Cms_GetObject",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The object ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "inherited",
+            "in": "query",
+            "description": "Include inherited values",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "x-position": 3
+          },
+          {
+            "name": "attributes",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by attributes",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "variants",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by variants",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by languages",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 6
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "The content has not been modified"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The object id is not unique",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/objects": {
+      "get": {
+        "tags": ["Objects"],
+        "summary": "Get multiple objects by ID",
+        "operationId": "Cms_GetObjects",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "inherited",
+            "in": "query",
+            "description": "Include inherited values",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "x-position": 3
+          },
+          {
+            "name": "attributes",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by attributes",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "variants",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by variants",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by languages",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 6
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsObjectList"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "The content has not been modified"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Objects"],
+        "summary": "Create objects",
+        "operationId": "Cms_CreateObjects",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The list of objects to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateObjectsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "201": {
+            "description": "Object(s) Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateObjectsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Objects"],
+        "summary": "Update objects",
+        "operationId": "Cms_UpdateObjects",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "list",
+          "description": "The list of objects to update. Either an ID or a Guid must be provided for each object.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObjectsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateObjectsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Objects"],
+        "summary": "Delete objects by ID",
+        "operationId": "Cms_DeleteObjects",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-CmsApi-Username",
+            "x-originalName": "username",
+            "in": "header",
+            "description": "The username this transaction is committed for. This must be set for internal access, otherwise, the transaction will be committed as the user who is currently logged in.",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The delete request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteObjectsRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteObjectsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branches/{branch}/types/{type}/objects": {
+      "get": {
+        "tags": ["Objects"],
+        "summary": "Get objects of a type",
+        "operationId": "Cms_GetTypedObjects",
+        "parameters": [
+          {
+            "name": "branch",
+            "in": "path",
+            "required": true,
+            "description": "The branch ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "description": "The object type ID, Guid or ApiIdentifier",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "description": "Value of the deleted flag (default: return deleted and undeleted objects)",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
+            "name": "inherited",
+            "in": "query",
+            "description": "Include inherited values",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "x-position": 4
+          },
+          {
+            "name": "continue",
+            "in": "query",
+            "description": "The token for the next objects",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 5
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "description": "The number of objects to take",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            },
+            "x-position": 6
+          },
+          {
+            "name": "attributes",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by attributes",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 7
+          },
+          {
+            "name": "variants",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by variants",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 8
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "description": "A comma separated list of object IDs, Guids or ApiIdentifiers to filter down values by languages",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 9
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CmsObjectList"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "The content has not been modified"
+          },
+          "400": {
+            "description": "Bad request parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The branch or object could not be found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "The object id is not unique",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CmsObject": {
+        "type": "object",
+        "description": "A single object with all its values, sorted by attribute, variant and language",
+        "additionalProperties": false,
+        "properties": {
+          "meta": {
+            "description": "The meta data",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsObjectMetadata"
+              }
+            ]
+          },
+          "values": {
+            "type": "array",
+            "description": "The values, sorted by attribute, variant, language and sort key",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsValue"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsValue"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CmsObjectMetadata": {
+        "type": "object",
+        "description": "The meta data of an object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The object ID",
+            "format": "int32"
+          },
+          "guid": {
+            "type": "string",
+            "description": "The object Guid",
+            "format": "guid"
+          },
+          "apiIdentifier": {
+            "type": "string",
+            "description": "The API identifier, if any. May be null.",
+            "nullable": true
+          },
+          "typeRef": {
+            "type": "integer",
+            "description": "The object ID of the object type of this object.",
+            "format": "int32"
+          },
+          "lastTransaction": {
+            "type": "integer",
+            "description": "The ID of the last transaction when local values of this object have been changed on the current branch",
+            "format": "int64"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "True, if the object has been deleted (the value of the attribute \"ObjectIsDeleted\")"
+          }
+        }
+      },
+      "CmsValue": {
+        "type": "object",
+        "description": "A single value of an object",
+        "additionalProperties": false,
+        "properties": {
+          "attribute": {
+            "type": "integer",
+            "description": "The attribute ID",
+            "format": "int32"
+          },
+          "variant": {
+            "type": "integer",
+            "description": "The variant ID or 0 if the value is not variant specific",
+            "format": "int32"
+          },
+          "language": {
+            "type": "integer",
+            "description": "The language ID or 0 if the value is not language specific",
+            "format": "int32"
+          },
+          "value": {
+            "description": "The scalar value, either a boolean, a number or a string",
+            "nullable": true
+          },
+          "sortReverse": {
+            "type": "integer",
+            "description": "The reverse sort key, if any",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitRef": {
+            "type": "integer",
+            "description": "The unit ID or null if the value is not unit specific",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateBranchRequest": {
+        "type": "object",
+        "description": "Model to create a branch.",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "description": "The values",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsValue"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsValue"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "UpdateBranchResponse": {
+        "type": "object",
+        "description": "Response to an update branch request",
+        "additionalProperties": false,
+        "properties": {
+          "createdValues": {
+            "type": "integer",
+            "description": "The number of values that have been created",
+            "format": "int32"
+          },
+          "transaction": {
+            "description": "The transaction, if any",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsTransaction"
+              }
+            ]
+          }
+        }
+      },
+      "CmsTransaction": {
+        "type": "object",
+        "description": "A transaction",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Get the transaction ID",
+            "format": "int64"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Get the transaction timestamp as UTC",
+            "format": "date-time"
+          },
+          "branchRef": {
+            "type": "integer",
+            "description": "Get the branch this transaction has been committed on.\nThis may be null, if the transaction did not cover branch-specific data,\ne.g. if only object permissions have been changed.",
+            "format": "int32",
+            "nullable": true
+          },
+          "user": {
+            "type": "string",
+            "description": "Get the transaction user name",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "description": "Get the transaction comment",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateBranchRequest": {
+        "type": "object",
+        "description": "Model to update a branch.",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "description": "The values",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsValue"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsValue"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "DeleteBranchResponse": {
+        "type": "object",
+        "description": "Response to a delete branch request",
+        "additionalProperties": false,
+        "properties": {
+          "transaction": {
+            "description": "The transaction, if any",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsTransaction"
+              }
+            ]
+          }
+        }
+      },
+      "DeleteBranchRequest": {
+        "type": "object",
+        "description": "Request model for deleting a branch",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          }
+        }
+      },
+      "CmsComment": {
+        "type": "object",
+        "description": "A single comment.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The comments's id.",
+            "format": "int64"
+          },
+          "objectRef": {
+            "type": "integer",
+            "description": "The object the comment is attached to.",
+            "format": "int32"
+          },
+          "branchRef": {
+            "type": "integer",
+            "description": "The comment's branch.",
+            "format": "int32"
+          },
+          "created": {
+            "type": "string",
+            "description": "The date and time when the comment was created.",
+            "format": "date-time"
+          },
+          "modified": {
+            "type": "string",
+            "description": "The data and time when the comments was modified.",
+            "format": "date-time"
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Specifies if the comment is deleted."
+          },
+          "user": {
+            "type": "string",
+            "description": "The user that started the comment.",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "description": "The comment's body.",
+            "nullable": true
+          }
+        }
+      },
+      "CreateCommentRequest": {
+        "type": "object",
+        "description": "Model to create a comment.",
+        "additionalProperties": false,
+        "properties": {
+          "branchId": {
+            "type": "integer",
+            "description": "The id of the branch.",
+            "format": "int32"
+          },
+          "objectRef": {
+            "type": "integer",
+            "description": "The object the comment is attached to.",
+            "format": "int32"
+          },
+          "body": {
+            "type": "string",
+            "description": "The comment's body.",
+            "nullable": true
+          }
+        }
+      },
+      "CmsCommentList": {
+        "type": "object",
+        "description": "A list of  comments.",
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "The number of comments in the result.",
+            "format": "int32"
+          },
+          "continue": {
+            "type": "string",
+            "description": "There are more items to request if this is not null. Provide this value with the next request as the \"continue\" parameter.",
+            "nullable": true
+          },
+          "cmsComments": {
+            "type": "array",
+            "description": "The list of comments.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsComment"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsComment"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "UpdateCommentRequest": {
+        "type": "object",
+        "description": "Model to update a comment.",
+        "additionalProperties": false,
+        "properties": {
+          "body": {
+            "type": "string",
+            "description": "The comment's body.",
+            "nullable": true
+          }
+        }
+      },
+      "FileUploadResult": {
+        "type": "object",
+        "description": "File upload result.",
+        "additionalProperties": false,
+        "properties": {
+          "size": {
+            "type": "integer",
+            "description": "Size of the file in bytes.",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token of the temporary file.",
+            "nullable": true
+          },
+          "extension": {
+            "type": "string",
+            "description": "Extension of the file."
+          },
+          "guid": {
+            "type": "string",
+            "description": "File GUID.",
+            "format": "guid",
+            "nullable": true
+          },
+          "created": {
+            "type": "boolean",
+            "description": "File created or not.",
+            "nullable": true
+          }
+        }
+      },
+      "FileUploadRequest": {
+        "type": "object",
+        "description": "Model for image upload with additional parameters.",
+        "additionalProperties": false,
+        "required": ["commit", "file"],
+        "properties": {
+          "extension": {
+            "type": "string",
+            "description": "The files extension. Must be provided for the first request.",
+            "nullable": true
+          },
+          "commit": {
+            "type": "boolean",
+            "description": "When true the file will be commited. Has to be set for the last chunk."
+          },
+          "token": {
+            "type": "string",
+            "description": "The token of the temporary file. It must be provided for all the requests but not the first.",
+            "nullable": true
+          },
+          "file": {
+            "type": "string",
+            "description": "The input file",
+            "format": "binary",
+            "minLength": 1
+          }
+        }
+      },
+      "CmsJob": {
+        "type": "object",
+        "description": "A single job.",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The job's id.",
+            "format": "int32"
+          },
+          "guid": {
+            "type": "string",
+            "description": "The jobs' guid.",
+            "format": "guid"
+          },
+          "created": {
+            "type": "string",
+            "description": "The date and time when the job was created.",
+            "format": "date-time"
+          },
+          "modified": {
+            "type": "string",
+            "description": "The data and time when the jobs was modified.",
+            "format": "date-time"
+          },
+          "user": {
+            "type": "string",
+            "description": "The user that started the job.",
+            "nullable": true
+          },
+          "uiCulture": {
+            "type": "string",
+            "description": "The job's ui cuilture.",
+            "nullable": true
+          },
+          "deleted": {
+            "type": "boolean",
+            "description": "Specifies if the job is deleted."
+          },
+          "artifacts": {
+            "type": "boolean",
+            "description": "If true, the job has artifacts."
+          },
+          "branchRef": {
+            "type": "integer",
+            "description": "The job's branch.",
+            "format": "int32"
+          },
+          "scopeRefs": {
+            "type": "array",
+            "description": "The references the job's scope objects.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "definitionRef": {
+            "type": "integer",
+            "description": "The job definition.",
+            "format": "int32"
+          },
+          "triggerRef": {
+            "type": "integer",
+            "description": "The trigger.",
+            "format": "int32",
+            "nullable": true
+          },
+          "objectRef": {
+            "type": "integer",
+            "description": "The context objects.",
+            "format": "int32",
+            "nullable": true
+          },
+          "objectCount": {
+            "type": "integer",
+            "description": "The context object count.",
+            "format": "int32"
+          },
+          "started": {
+            "type": "string",
+            "description": "The start time of the job.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finished": {
+            "type": "string",
+            "description": "The time hwne the job was finished.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startAfter": {
+            "type": "string",
+            "description": "The start after timestamp.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startUntil": {
+            "type": "string",
+            "description": "The start until timestamp.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finishUntil": {
+            "type": "string",
+            "description": "The finish until timestamp.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "retainUntil": {
+            "type": "string",
+            "description": "The reatin until timestamp.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "state": {
+            "description": "The job state.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/JobStatus"
+              }
+            ]
+          },
+          "stateMessage": {
+            "type": "string",
+            "description": "The job state message.",
+            "nullable": true
+          },
+          "restarts": {
+            "type": "integer",
+            "description": "The number of restarts.",
+            "format": "int32"
+          },
+          "instanceId": {
+            "type": "string",
+            "description": "The job's instance id.",
+            "nullable": true
+          },
+          "parameters": {
+            "type": "array",
+            "description": "The parameters used to start the job.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "JobParameter"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JobParameter"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "JobStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "New",
+          "Running",
+          "Succeeded",
+          "Error",
+          "KillRequest",
+          "RestartRequest"
+        ],
+        "enum": [0, 1, 2, 3, 4, 5]
+      },
+      "JobParameter": {
+        "type": "object",
+        "description": "Model for job parameters.",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the input parameter.",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "description": "Values for the Attribute",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "string"
+              }
+            }
+          }
+        }
+      },
+      "CreateJobRequest": {
+        "type": "object",
+        "description": "Model to create a job.",
+        "additionalProperties": false,
+        "properties": {
+          "branchId": {
+            "type": "integer",
+            "description": "The id of the branch.",
+            "format": "int32"
+          },
+          "jobDefinitionId": {
+            "type": "integer",
+            "description": "The id of the job definition.",
+            "format": "int32"
+          },
+          "scopeIds": {
+            "type": "array",
+            "description": "The ids of the scope objects.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "objIds": {
+            "type": "array",
+            "description": "The ids of the context objects.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          },
+          "parameters": {
+            "type": "array",
+            "description": "The Job Parameters",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "JobParameter"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JobParameter"
+                }
+              ]
+            }
+          },
+          "inputFile": {
+            "description": "Information about the file used as the job input",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/JobInputFileInfo"
+              }
+            ]
+          },
+          "language": {
+            "type": "integer",
+            "description": "Language of the job",
+            "format": "int32"
+          }
+        }
+      },
+      "JobInputFileInfo": {
+        "type": "object",
+        "description": "Job input file information",
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Token of the uploaded file",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the uploaded file",
+            "nullable": true
+          }
+        }
+      },
+      "CmsJobList": {
+        "type": "object",
+        "description": "A list of jobs.",
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "The number of jobs in the result.",
+            "format": "int32"
+          },
+          "continue": {
+            "type": "string",
+            "description": "There are more items to request if this is not null. Provide this value with the next request as the \"continue\" parameter.",
+            "nullable": true
+          },
+          "cmsJobs": {
+            "type": "array",
+            "description": "The list of jobs.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsJob"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsJob"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "UpdateJobRequest": {
+        "type": "object",
+        "description": "Model to update a job.",
+        "additionalProperties": false,
+        "properties": {
+          "retainUntil": {
+            "type": "string",
+            "description": "The reatin until timestamp.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "state": {
+            "description": "The job state.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/JobState"
+              }
+            ]
+          }
+        }
+      },
+      "JobState": {
+        "type": "integer",
+        "description": "The status of a Nova job",
+        "x-enumNames": ["KillRequest", "RestartRequest"],
+        "enum": [0, 1]
+      },
+      "JobArtifactList": {
+        "type": "object",
+        "description": "A list of artifacts.",
+        "additionalProperties": false,
+        "properties": {
+          "files": {
+            "type": "array",
+            "description": "The list of artifact.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "JobArtifact"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JobArtifact"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "JobArtifact": {
+        "type": "object",
+        "description": "A job artifact.",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The relative path of the file.",
+            "nullable": true
+          },
+          "src": {
+            "type": "string",
+            "description": "The absolute URL path.",
+            "nullable": true
+          }
+        }
+      },
+      "JobInputUploadResult": {
+        "type": "object",
+        "description": "Job input upload result",
+        "additionalProperties": false,
+        "properties": {
+          "size": {
+            "type": "integer",
+            "description": "Size of the file in bytes",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string",
+            "description": "Token of the temporary file",
+            "nullable": true
+          }
+        }
+      },
+      "CmsObjectList": {
+        "type": "object",
+        "description": "A list of objects",
+        "additionalProperties": false,
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "The number of objects in the list",
+            "format": "int32"
+          },
+          "continue": {
+            "type": "string",
+            "description": "There are more items to request if this is not null. Provide this value with the next request as the \"continue\" parameter.",
+            "nullable": true
+          },
+          "objects": {
+            "type": "array",
+            "description": "The list of objects",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsObject"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CreateObjectsResponse": {
+        "type": "object",
+        "description": "Response to a CreateObjectsRequest",
+        "additionalProperties": false,
+        "properties": {
+          "transaction": {
+            "description": "The transaction, if any",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsTransaction"
+              }
+            ]
+          },
+          "createdObjectIds": {
+            "type": "array",
+            "description": "The IDs of objects that have been created",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "xml": {
+                "name": "int"
+              }
+            }
+          }
+        }
+      },
+      "CreateObjectsRequest": {
+        "type": "object",
+        "description": "A list of objects to be created",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          },
+          "objects": {
+            "type": "array",
+            "description": "The list of objects",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsObject"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "UpdateObjectsResponse": {
+        "type": "object",
+        "description": "Response to an update objects request",
+        "additionalProperties": false,
+        "properties": {
+          "updatedObjects": {
+            "type": "integer",
+            "description": "The number of objects that have been updated",
+            "format": "int32"
+          },
+          "createdValues": {
+            "type": "integer",
+            "description": "The number of values that have been created",
+            "format": "int32"
+          },
+          "transaction": {
+            "description": "The transaction, if any",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsTransaction"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateObjectsRequest": {
+        "type": "object",
+        "description": "A list of objects to be updated",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          },
+          "objects": {
+            "type": "array",
+            "description": "The list of objects",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "xml": {
+                "name": "CmsObject"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmsObject"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "DeleteObjectsResponse": {
+        "type": "object",
+        "description": "Response to a delete objects request",
+        "additionalProperties": false,
+        "properties": {
+          "deletedObjects": {
+            "type": "integer",
+            "description": "The number of objects that have been deleted",
+            "format": "int32"
+          },
+          "transaction": {
+            "description": "The transaction, if any",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CmsTransaction"
+              }
+            ]
+          }
+        }
+      },
+      "DeleteObjectsRequest": {
+        "type": "object",
+        "description": "A list of objects to be deleted",
+        "additionalProperties": false,
+        "properties": {
+          "comment": {
+            "type": "string",
+            "description": "The transaction comment. May be null.",
+            "nullable": true
+          },
+          "objectIds": {
+            "type": "array",
+            "description": "The list of object IDs, Guids or API identifiers to be deleted.",
+            "nullable": true,
+            "xml": {
+              "wrapped": true
+            },
+            "items": {
+              "type": "string",
+              "xml": {
+                "name": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Branches",
+      "description": "Create, read, update and delete branches"
+    },
+    {
+      "name": "Code Generator",
+      "description": "Create source code for business classes from the CMS object types"
+    },
+    {
+      "name": "Comments",
+      "description": "Create, read, update and delete comments"
+    },
+    {
+      "name": "Files",
+      "description": "Upload and download external binaries (files)"
+    },
+    {
+      "name": "Jobs",
+      "description": "Create, read, update and delete jobs"
+    },
+    {
+      "name": "Objects",
+      "description": "Create, read, update and delete objects"
+    }
+  ]
+}
