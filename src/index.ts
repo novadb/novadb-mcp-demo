@@ -21,7 +21,7 @@ const indexApi = new ApiClient({
 });
 
 const cmsApi = new ApiClient({
-  baseUrl: `${host}/apis/cms/v0`,
+  baseUrl: `${host}/apis/cms/v1`,
   user: process.env.NOVA_CMS_USER ?? "",
   password: process.env.NOVA_CMS_PASSWORD ?? "",
 });

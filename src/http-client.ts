@@ -125,6 +125,20 @@ export class ApiClient {
     return response.json();
   }
 
+  async putFormData(path: string, formData: FormData, params: QueryParams = {}): Promise<unknown> {
+    const url = this.buildUrl(path, params);
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: { Authorization: this.authHeader, Accept: "application/json" },
+      body: formData,
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`HTTP ${response.status}: ${text}`);
+    }
+    return response.json();
+  }
+
   async getRaw(path: string, params: QueryParams = {}): Promise<Response> {
     const url = this.buildUrl(path, params);
     const response = await fetch(url, {

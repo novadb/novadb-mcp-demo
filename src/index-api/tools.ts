@@ -26,6 +26,8 @@ const objectFilterSchema = z.object({
     langId: z.number().default(0).describe("Language ID (0 for language-independent)"),
     variantId: z.number().default(0).describe("Variant ID (0 for no variant)"),
   })).optional().describe("Scope quick search to specific attributes"),
+  quickSearchFullText: z.boolean().optional().describe("Include field OBJECT_FULL_TEXT in quick search (implicit search)."),
+  fullText: z.string().optional().describe("Query Lucene field OBJECT_FULL_TEXT (explicit search)."),
 }).optional().describe("Structured filter condition");
 
 const objectSortBySchema = z.object({
@@ -112,6 +114,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
       fuzzy: z.boolean().optional().describe("Enable fuzzy matching"),
       fuzzyMinSimilarity: z.number().optional().describe("Min similarity for fuzzy (0.0-1.0, default: 0.5)"),
       fuzzyPrefixLength: z.number().optional().describe("Prefix length for fuzzy (default: 0)"),
+      suggestFullText: z.boolean().optional().describe("Include OBJECT_FULL_TEXT in the suggestions."),
     },
     async ({ branch, ...rest }) => {
       const result = await client.suggestions(branch, rest);
