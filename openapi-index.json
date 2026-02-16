@@ -4,7 +4,7 @@
   "info": {
     "title": "NovaDB Index API",
     "description": "An API to perform search actions on NovaDB index data",
-    "version": "5.4.0.7"
+    "version": "6.0.0.25"
   },
   "servers": [
     {
@@ -1135,6 +1135,15 @@
             "description": "Fetch objects that have been modified since this UTC timestamp",
             "format": "date-time",
             "nullable": true
+          },
+          "quickSearchFullText": {
+            "type": "boolean",
+            "description": "Include field OBJECT_FULL_TEXT in quick search (implicit search)."
+          },
+          "fullText": {
+            "type": "string",
+            "description": "Query Lucene field OBJECT_FULL_TEXT (explicit search).",
+            "nullable": true
           }
         }
       },
@@ -1692,6 +1701,10 @@
             "description": "The maximum time to wait for an object index update (defaults to IndexApiOptions.DefaultWaitTime)",
             "format": "duration",
             "nullable": true
+          },
+          "suggestFullText": {
+            "type": "boolean",
+            "description": "Include OBJECT_FULL_TEXT in the suggestions."
           }
         }
       },

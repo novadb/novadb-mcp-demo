@@ -12,6 +12,8 @@ export interface ObjectFilterCondition {
   deleted?: boolean;
   modifiedSince?: string;
   quickSearchAttributes?: { attrId: number; langId: number; variantId: number }[];
+  quickSearchFullText?: boolean;
+  fullText?: string;
 }
 
 export interface ObjectValueFilter {
@@ -108,6 +110,7 @@ export function createIndexClient(api: ApiClient) {
       fuzzy?: boolean;
       fuzzyMinSimilarity?: number;
       fuzzyPrefixLength?: number;
+      suggestFullText?: boolean;
     } = {}) => {
       const body = stripUndefined({
         pattern: params.pattern,
@@ -120,6 +123,7 @@ export function createIndexClient(api: ApiClient) {
         fuzzy: params.fuzzy ?? false,
         fuzzyMinSimilarity: params.fuzzyMinSimilarity ?? 0.5,
         fuzzyPrefixLength: params.fuzzyPrefixLength ?? 0,
+        suggestFullText: params.suggestFullText,
       });
       return api.post(`/branches/${branch}/suggestions`, body);
     },

@@ -338,6 +338,31 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
   );
 
   server.tool(
+    "novadb_cms_get_job_metrics",
+    "Get job metrics (CPU, memory, uptime) by job ID.",
+    {
+      jobId: z.string().describe("Job ID"),
+      maxItems: z.number().optional().describe("Optional parameter to limit the number of metric points returned"),
+    },
+    async ({ jobId, maxItems }) => {
+      const result = await client.getJobMetrics(jobId, { maxItems });
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    }
+  );
+
+  server.tool(
+    "novadb_cms_get_job_progress",
+    "Get job progress information (percentage and status message) by job ID.",
+    {
+      jobId: z.string().describe("Job ID"),
+    },
+    async ({ jobId }) => {
+      const result = await client.getJobProgress(jobId);
+      return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+    }
+  );
+
+  server.tool(
     "novadb_cms_create_job",
     "WRITE OPERATION: Create and start a new job on a branch.",
     {
@@ -506,11 +531,10 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
       filename: z.string().describe("Original filename"),
       extension: z.string().describe("File extension (e.g. 'jpg', 'pdf')"),
       commit: z.boolean().describe("Whether to commit the upload immediately (true for single-chunk uploads)"),
-      token: z.string().optional().describe("Optional pre-allocated token"),
     },
-    async ({ fileBase64, filename, extension, commit, token }) => {
+    async ({ fileBase64, filename, extension, commit }) => {
       const buffer = Buffer.from(fileBase64, "base64");
-      const result = await client.fileUploadStart(buffer, filename, extension, commit, token);
+      const result = await client.fileUploadStart(buffer, filename, extension, commit);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );

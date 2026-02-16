@@ -210,6 +210,13 @@ export function createCmsClient(api: ApiClient) {
       username?: string;
     } = {}) => api.delete(`/jobs/${jobId}`, undefined, {}, usernameHeader(params.username)),
 
+    getJobMetrics: (jobId: string, params: {
+      maxItems?: number;
+    } = {}) => api.get(`/jobs/${jobId}/metrics`, params),
+
+    getJobProgress: (jobId: string) =>
+      api.get(`/jobs/${jobId}/progress`),
+
     getJobObjectIds: (jobId: string) =>
       api.get(`/jobs/${jobId}/objectIds`),
 
@@ -258,26 +265,24 @@ export function createCmsClient(api: ApiClient) {
       return { type: "binary" as const, data: Buffer.from(buffer).toString("base64") };
     },
 
-    fileUploadStart: (file: Buffer, filename: string, extension: string, commit: boolean, token?: string) => {
+    fileUploadStart: (file: Buffer, filename: string, extension: string, commit: boolean) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      if (token) formData.append("Token", token);
       formData.append("File", new Blob([new Uint8Array(file)]), filename);
-      return api.postFormData("/fileUpload/start", formData);
+      return api.postFormData("/fileUpload", formData);
     },
 
     fileUploadContinue: (file: Buffer, filename: string, extension: string, commit: boolean, token: string) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      formData.append("Token", token);
       formData.append("File", new Blob([new Uint8Array(file)]), filename);
-      return api.postFormData("/fileUpload/continue", formData);
+      return api.putFormData(`/fileUpload/${token}`, formData);
     },
 
     fileUploadCancel: (token: string) =>
-      api.delete(`/fileUpload/cancel/${token}`),
+      api.delete(`/fileUpload/${token}`),
   };
 }
 
