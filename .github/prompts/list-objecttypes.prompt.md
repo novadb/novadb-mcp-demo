@@ -24,6 +24,6 @@ attributes: "1000,1021"
 
 Present results as a table with columns: **ID**, **Name (en)**, **ApiIdentifier**.
 
-Customer-defined types start at ID ~2098xxx+. System types (ID < 2097152) can be omitted unless explicitly requested.
+To show only types **new in this branch**, filter for `type.id > branchId`. System types and types from other branches have smaller IDs.
 
 Paginate using the `continue` token until all types are listed.

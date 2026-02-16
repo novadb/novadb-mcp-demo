@@ -45,6 +45,10 @@ Branch (Work Package)
 | **~2097152 – ~2098xxx** | Installed packages (forms, media types, countries) |
 | **~2098xxx+** | Customer-defined types and business data |
 
+IDs are strictly monotonically increasing — newer objects always have higher IDs. This means:
+- **Creation order:** Sorting by object ID gives chronological order.
+- **Branch-scoped filtering:** A branch has a numeric ID. Objects created in that branch have `id > branchId`. To find objects **new in a specific branch**, filter for `object.id > branch.id`.
+
 ### Object Structure (CMS API)
 
 The CMS API returns normalized value tuples:
@@ -156,3 +160,4 @@ novadb_cms_get_object(branch, id=<objectId>, inherited=true)
 - **Using `create_objects` with `typeRef: 40` for branches** — Branches have dedicated endpoints (`create_branch`, `update_branch`, `delete_branch`). Use these instead of generic object CRUD.
 - **Using `get_typed_objects` to search** — It lists all objects of a type without filtering. Use `novadb_index_search_objects` for text search and attribute filtering. Reserve `get_typed_objects` for browsing small sets or schema discovery.
 - **Partial updates on multi-value attributes** — When updating a multi-valued attribute (e.g., `formContent` / 5053), you must send **all** values in the update, not just the new or changed ones. Any values omitted from the update call will be removed. Always read the current values first, then send the complete set.
+- **Confusing "custom" with "new in branch"** — Not all objects with high IDs are new in the current branch. Only objects with `id > branchId` were created in that branch.
