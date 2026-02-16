@@ -22,13 +22,9 @@ Use these skills for focused workflows:
 - `/nova-branches` — Create, update, delete, and inspect branches (work packages)
 - `/nova-codegen` — Generate code for NovaDB REST APIs in TypeScript, Python, C#, Go, and cURL
 
-## Abbreviations
+## Default Query Scope
 
-| Term | Abbreviation |
-|------|-------------|
-| Object Type | ot |
-| Object | obj |
-| Attribute | attr |
+When the user asks about **objects** or **object types** without further qualification, only show results with **ID > 2097152 (2^21)**. This excludes core system types and focuses on package-installed and customer-defined data. Include system objects (ID ≤ 2097152) only when the user explicitly requests them.
 
 ## Nova Data Model
 
