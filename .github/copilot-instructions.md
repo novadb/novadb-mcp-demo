@@ -32,6 +32,14 @@ The following specialized skills are available for focused workflows:
 - **nova-branches** — Create, update, delete, and inspect branches (work packages)
 - **nova-comments** — Create, read, update, delete, and search comments
 
+## Abbreviations
+
+| Term | Abbreviation |
+|------|-------------|
+| Object Type | ot |
+| Object | obj |
+| Attribute | attr |
+
 ## Nova Data Model
 
 ### Core Hierarchy

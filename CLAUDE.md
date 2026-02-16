@@ -22,6 +22,14 @@ Use these skills for focused workflows:
 - `/nova-branches` — Create, update, delete, and inspect branches (work packages)
 - `/nova-codegen` — Generate code for NovaDB REST APIs in TypeScript, Python, C#, Go, and cURL
 
+## Abbreviations
+
+| Term | Abbreviation |
+|------|-------------|
+| Object Type | ot |
+| Object | obj |
+| Attribute | attr |
+
 ## Nova Data Model
 
 ### Core Hierarchy
