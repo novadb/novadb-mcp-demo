@@ -4,11 +4,11 @@
   "info": {
     "title": "NovaDB CMS API",
     "description": "An API to perform read/write operations on NovaDB data.",
-    "version": "5.4.0.37"
+    "version": "6.0.0.18"
   },
   "servers": [
     {
-      "url": "https://customer.workspace.novadb.com/apis/cms/v0"
+      "url": "https://customer.workspace.novadb.com/apis/cms/v1"
     }
   ],
   "paths": {
@@ -927,12 +927,12 @@
         }
       }
     },
-    "/fileUpload/start": {
+    "/fileUpload": {
       "post": {
         "tags": ["Files"],
         "summary": "Start uploading an external file.",
         "description": "Start uploading an external file.",
-        "operationId": "Files_PostFileStart",
+        "operationId": "Files_StartUpload",
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -945,10 +945,6 @@
                   },
                   "Commit": {
                     "type": "boolean"
-                  },
-                  "Token": {
-                    "type": "string",
-                    "nullable": true
                   },
                   "File": {
                     "type": "string",
@@ -1013,12 +1009,24 @@
         }
       }
     },
-    "/fileUpload/continue": {
-      "post": {
+    "/fileUpload/{token}": {
+      "put": {
         "tags": ["Files"],
         "summary": "Continue uploading an external file.",
         "description": "Continue uploading an external file.",
-        "operationId": "Files_PostFileContinue",
+        "operationId": "Files_ContinueUpload",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "description": "The token of the temporary file.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -1031,10 +1039,6 @@
                   },
                   "Commit": {
                     "type": "boolean"
-                  },
-                  "Token": {
-                    "type": "string",
-                    "nullable": true
                   },
                   "File": {
                     "type": "string",
@@ -1097,9 +1101,7 @@
             }
           }
         }
-      }
-    },
-    "/fileUpload/cancel/{token}": {
+      },
       "delete": {
         "tags": ["Files"],
         "summary": "Delete the temporary file using the provided token.",
@@ -1549,6 +1551,135 @@
           },
           "404": {
             "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/metrics": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get job metrics by Job Id",
+        "operationId": "Job_GetJobMetrics",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "maxItems",
+            "in": "query",
+            "description": "Optional parameter to limit the number of metric points returned.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "xml": {
+                    "name": "ArrayOfJobMetrics",
+                    "wrapped": true
+                  },
+                  "items": {
+                    "xml": {
+                      "name": "JobMetrics"
+                    },
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/JobMetrics"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job could not be found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}/progress": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get job progress information by Job Id",
+        "operationId": "Job_GetJobProgress",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The job ID.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobProgress"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job could not be found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3145,11 +3276,6 @@
             "type": "boolean",
             "description": "When true the file will be commited. Has to be set for the last chunk."
           },
-          "token": {
-            "type": "string",
-            "description": "The token of the temporary file. It must be provided for all the requests but not the first.",
-            "nullable": true
-          },
           "file": {
             "type": "string",
             "description": "The input file",
@@ -3453,6 +3579,46 @@
           "name": {
             "type": "string",
             "description": "Name of the uploaded file",
+            "nullable": true
+          }
+        }
+      },
+      "JobMetrics": {
+        "type": "object",
+        "description": "Represents a single job metric point.",
+        "additionalProperties": false,
+        "properties": {
+          "upTime": {
+            "type": "number",
+            "description": "The uptime of the process, in seconds\n            ",
+            "format": "double"
+          },
+          "memory": {
+            "type": "number",
+            "description": "The memory usage in MiB. 1 MiB = 1,048,576 bytes (2^20 bytes)",
+            "format": "double"
+          },
+          "cpu": {
+            "type": "number",
+            "description": "The CPU usage. e.g., 0.5 = 50%",
+            "format": "double"
+          }
+        }
+      },
+      "JobProgress": {
+        "type": "object",
+        "description": "Represents job progress information.",
+        "additionalProperties": false,
+        "properties": {
+          "progress": {
+            "type": "number",
+            "description": "The progress as a percentage (0-1), or null if not available.",
+            "format": "double",
+            "nullable": true
+          },
+          "progressInfo": {
+            "type": "string",
+            "description": "Additional progress information message.",
             "nullable": true
           }
         }
