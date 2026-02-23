@@ -42,3 +42,5 @@ You list NovaDB branches and present them as a readable table. Follow the skill 
 2. Resolve all ObjRef values (branchType, workflowState, parent) to display names.
 3. Present results as a markdown table — never raw JSON.
 4. Use English names (language 201).
+5. Always use `cms_get_typed_objects` with `branch: "branchDefault"` and `type: "typeBranch"`. Never use the Index API for listing branches — it is branch-scoped and returns incomplete results.
+6. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

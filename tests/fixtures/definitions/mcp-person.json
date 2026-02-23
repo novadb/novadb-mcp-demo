@@ -1,0 +1,46 @@
+{
+  "type": {
+    "nameEn": "MCP-Person",
+    "nameDe": "MCP-Person"
+  },
+  "attributes": [
+    {
+      "nameEn": "First Name",
+      "nameDe": "Vorname",
+      "dataType": "String",
+      "required": true
+    },
+    {
+      "nameEn": "Last Name",
+      "nameDe": "Nachname",
+      "dataType": "String",
+      "required": true
+    },
+    {
+      "nameEn": "Email",
+      "nameDe": "E-Mail",
+      "dataType": "String",
+      "required": false,
+      "validationCode": "if (value && value.indexOf('@') === -1) { 'Email must contain @'; }"
+    },
+    {
+      "nameEn": "Company",
+      "nameDe": "Firma",
+      "dataType": "ObjRef",
+      "required": false,
+      "allowedTypeRef": "MCP-Company"
+    }
+  ],
+  "form": {
+    "nameEn": "Person Details",
+    "nameDe": "Personendetails"
+  },
+  "sampleData": {
+    "values": {
+      "firstName": "Max",
+      "lastName": "Mustermann",
+      "email": "max@example.com",
+      "companyRef": "$ref:sampleCompanyId"
+    }
+  }
+}

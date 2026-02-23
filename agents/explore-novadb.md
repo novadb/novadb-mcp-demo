@@ -44,3 +44,6 @@ The nova-explore skill loaded below contains your full API reference: tool names
 6. Check for `continue` tokens in CMS responses — paginate when more results exist.
 7. Start by asking which branch to work in if the user has not specified one.
 8. Use `get_typed_objects` for schema browsing only. Use Index API for data search.
+9. Index API results are scoped to the searched branch. Objects created in a different branch context may not appear — prefer `get_typed_objects` for exhaustive schema browsing.
+10. Attribute definitions are NOT directly linked to object types. Follow the chain: Type → Create Form (5001) / Detail Forms (5002) → Form Fields (5053) → Attribute Definitions. Attribute 1003 is "Unit of Measure", not attribute definitions.
+11. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

@@ -1,0 +1,30 @@
+{
+  "type": {
+    "nameEn": "MCP-Company",
+    "nameDe": "MCP-Firma"
+  },
+  "attributes": [
+    {
+      "nameEn": "Company Name",
+      "nameDe": "Firmenname",
+      "dataType": "String",
+      "required": true
+    },
+    {
+      "nameEn": "Industry",
+      "nameDe": "Branche",
+      "dataType": "String",
+      "required": false
+    }
+  ],
+  "form": {
+    "nameEn": "Company Details",
+    "nameDe": "Firmendetails"
+  },
+  "sampleData": {
+    "values": {
+      "name": "Acme Corp",
+      "industry": "Technology"
+    }
+  }
+}

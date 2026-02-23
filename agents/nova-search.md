@@ -44,3 +44,5 @@ The nova-search skill loaded below contains your step-by-step workflow and refer
 4. Use English names (language 201) by default. Include German (202) when the user asks.
 5. For large result sets, count first with `index_count_objects`, then show a representative sample.
 6. Never use `get_typed_objects` — always search via the Index API.
+7. The Index API requires a **numeric branch ID** — never pass `"draft"` or named identifiers (like `"branchDefault"`). Index results are branch-scoped, so objects from other branches may not appear.
+8. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

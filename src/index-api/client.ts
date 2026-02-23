@@ -69,7 +69,7 @@ export function createIndexClient(api: ApiClient) {
       const body = stripUndefined({
         filter: params.filter ?? {},
         sortBy: params.sortBy,
-        page: { skip: params.skip ?? 0, take: params.take ?? 20 },
+        page: { skip: params.skip ?? 0, take: params.take ?? 5 },
       });
       return api.post(`/branches/${branch}/objects`, body);
     },
@@ -94,7 +94,7 @@ export function createIndexClient(api: ApiClient) {
         getModifiedByOccurrences: params.getModifiedByOccurrences ?? false,
         getTypeOccurrences: params.getTypeOccurrences ?? false,
         getDeletedOccurrences: params.getDeletedOccurrences ?? false,
-        page: { skip: params.skip ?? 0, take: params.take ?? 20 },
+        page: { skip: params.skip ?? 0, take: params.take ?? 5 },
       });
       return api.post(`/branches/${branch}/objectOccurrences`, body);
     },
@@ -137,7 +137,7 @@ export function createIndexClient(api: ApiClient) {
       const body = stripUndefined({
         filter: params.filter ?? {},
         sort: params.sort,
-        page: { skip: params.skip ?? 0, take: params.take ?? 20 },
+        page: { skip: params.skip ?? 0, take: params.take ?? 5 },
       });
       return api.post(`/branches/${branch}/comments`, body);
     },
@@ -154,7 +154,7 @@ export function createIndexClient(api: ApiClient) {
       take?: number;
     } = {}) => {
       const body = stripUndefined({
-        page: { skip: params.skip ?? 0, take: params.take ?? 20 },
+        page: { skip: params.skip ?? 0, take: params.take ?? 5 },
       });
       return api.post("/workItemOccurrences", body);
     },
@@ -172,7 +172,7 @@ export function createIndexClient(api: ApiClient) {
         getUserOccurrences: params.getUserOccurrences ?? false,
         getMentionedUsersOccurrences: params.getMentionedUsersOccurrences ?? false,
         getObjectTypeOccurrences: params.getObjectTypeOccurrences ?? false,
-        page: { skip: params.skip ?? 0, take: params.take ?? 20 },
+        page: { skip: params.skip ?? 0, take: params.take ?? 5 },
       });
       return api.post(`/branches/${branch}/commentOccurrences`, body);
     },

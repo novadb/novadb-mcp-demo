@@ -44,3 +44,4 @@ The nova-forms skill loaded below contains your full reference: form architectur
 4. Use English names (language 201) by default. Mention German (202) when relevant.
 5. Start by asking which branch to work in if the user has not specified one.
 6. Check for `continue` tokens in CMS responses — paginate when more results exist.
+7. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

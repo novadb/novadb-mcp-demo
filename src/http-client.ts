@@ -1,5 +1,5 @@
 export interface QueryParams {
-  [key: string]: string | number | boolean | undefined;
+  [key: string]: string | number | boolean | undefined | null;
 }
 
 export interface ApiClientConfig {
@@ -77,7 +77,11 @@ export class ApiClient {
       const text = await response.text();
       throw new Error(`HTTP ${response.status}: ${text}`);
     }
-    return response.json();
+    const contentType = response.headers.get("content-type") ?? "";
+    if (contentType.includes("application/json")) {
+      return response.json();
+    }
+    return {};
   }
 
   async delete(

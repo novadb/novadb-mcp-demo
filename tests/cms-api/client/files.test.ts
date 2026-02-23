@@ -1,0 +1,90 @@
+import { describe, it, expect, beforeAll } from "vitest";
+import { createCmsClient } from "../../../src/cms-api/client.js";
+import { createCmsApiClient, validateEnvVars } from "../../setup.js";
+
+// Check if integration tests should be skipped
+let envVarsMissing = false;
+try {
+  validateEnvVars();
+} catch {
+  envVarsMissing = true;
+}
+
+const integrationDescribe = envVarsMissing ? describe.skip : describe;
+
+integrationDescribe("CmsClient (CMS API) - Files", () => {
+  let cmsClient: ReturnType<typeof createCmsClient>;
+  let uploadToken: string | undefined;
+
+  beforeAll(() => {
+    const apiClient = createCmsApiClient();
+    cmsClient = createCmsClient(apiClient);
+  });
+
+  describe("fileUploadStart", () => {
+    it("starts a file upload (no commit)", async () => {
+      const buffer = Buffer.from("test file content");
+      const response = await cmsClient.fileUploadStart(
+        buffer,
+        "test.jpg",
+        ".jpg",
+        false,
+      ) as Record<string, unknown>;
+
+      expect(response).toBeDefined();
+      expect(typeof response).toBe("object");
+
+      uploadToken = response.token as string | undefined;
+      expect(uploadToken).toBeDefined();
+    });
+
+    it("uploads and commits a file in a single chunk", async () => {
+      const buffer = Buffer.from("complete file");
+      const response = await cmsClient.fileUploadStart(
+        buffer,
+        "complete.jpg",
+        ".jpg",
+        true,
+      ) as Record<string, unknown>;
+
+      expect(response).toBeDefined();
+      expect(response.guid).toBeDefined();
+    });
+  });
+
+  describe("fileUploadContinue", () => {
+    it("continues a chunked upload and commits", async () => {
+      expect(uploadToken).toBeDefined();
+
+      const buffer = Buffer.from("final chunk");
+      const response = await cmsClient.fileUploadContinue(
+        buffer,
+        "test.jpg",
+        ".jpg",
+        true,
+        uploadToken!,
+      );
+
+      expect(response).toBeDefined();
+      expect(typeof response).toBe("object");
+    });
+  });
+
+  describe("fileUploadCancel", () => {
+    it("starts and cancels a file upload", async () => {
+      const buffer = Buffer.from("to be cancelled");
+      const startResponse = await cmsClient.fileUploadStart(
+        buffer,
+        "cancel-me.jpg",
+        ".jpg",
+        false,
+      ) as Record<string, unknown>;
+
+      const cancelToken = startResponse.token as string;
+      expect(cancelToken).toBeDefined();
+
+      const response = await cmsClient.fileUploadCancel(cancelToken);
+      expect(response).toBeDefined();
+    });
+  });
+});

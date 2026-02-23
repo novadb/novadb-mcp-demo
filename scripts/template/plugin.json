@@ -1,0 +1,8 @@
+{
+  "name": "novadb",
+  "description": "Skills and agents for NovaDB Consultant working together with the NovaDB MCP Server",
+  "version": "1.0.0",
+  "author": {
+    "name": "Noxum"
+  }
+}

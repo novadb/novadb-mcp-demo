@@ -1,0 +1,67 @@
+{
+  "manifest_version": "0.2",
+  "name": "novadb",
+  "display_name": "NovaDB",
+  "version": "1.0.0",
+  "description": "Connect AI assistants to NovaDB for content management, search, and data modeling",
+  "long_description": "The NovaDB MCP Server connects AI assistants to NovaDB's CMS and Index APIs, providing 67 tools for comprehensive content management.\n\n## Core Capabilities\n\n**Object Management** — Create, read, update, and delete CMS objects with full support for typed attributes, language-dependent values, and multi-value references.\n\n**Schema & Type System** — Define and manage object types with inline attribute creation, automatic form generation, and support for all NovaDB data types (String, Integer, Decimal, Boolean, DateTime, ObjRef, BinRef, and more).\n\n**Attribute Definitions** — Create and configure attributes with validation rules, virtualization code (server-side computed values via JavaScript), multi-value support, and ObjRef type constraints.\n\n**Forms** — Build and manage forms that define which attributes appear on object types. Add, remove, and reorder form fields, and link forms to types as create forms or detail tabs.\n\n**Full-Text Search & Indexing** — Search objects and comments with full-text queries, attribute filters, sorting, and pagination. Get faceted counts, type-ahead suggestions, and reference usage analysis.\n\n**Branching & Work Packages** — Create and manage branches for isolated content editing workflows. List, search, and inspect branches with resolved metadata.\n\n**Comments** — Add, edit, and search XHTML comments on objects with support for user mentions and branch-scoped filtering.\n\n**Jobs & Code Generation** — Start and monitor background jobs, retrieve logs, metrics, and artifacts. Generate C# code from object type definitions.\n\n**File Management** — Upload and download files with chunked transfer support for large assets.\n\n## Configuration\n\nRequires a NovaDB instance URL and credentials for both the CMS and Index APIs.",
+  "author": {
+    "name": "Noxum"
+  },
+  "homepage": "https://www.novadb.com",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "NOVA_HOST": "${user_config.NOVA_HOST}",
+        "NOVA_CMS_USER": "${user_config.NOVA_CMS_USER}",
+        "NOVA_CMS_PASSWORD": "${user_config.NOVA_CMS_PASSWORD}",
+        "NOVA_INDEX_USER": "${user_config.NOVA_INDEX_USER}",
+        "NOVA_INDEX_PASSWORD": "${user_config.NOVA_INDEX_PASSWORD}"
+      }
+    }
+  },
+  "user_config": {
+    "NOVA_HOST": {
+      "type": "string",
+      "title": "NovaDB Hostname",
+      "description": "NovaDB hostname for the MCP-Server to connect to",
+      "required": true,
+      "sensitive": false
+    },
+    "NOVA_CMS_USER": {
+      "type": "string",
+      "title": "CMS User",
+      "description": "User for the CMS connection",
+      "required": true,
+      "sensitive": false
+    },
+    "NOVA_CMS_PASSWORD": {
+      "type": "string",
+      "title": "CMS Password",
+      "description": "Password for the CMS connection",
+      "required": true,
+      "sensitive": true
+    },
+    "NOVA_INDEX_USER": {
+      "type": "string",
+      "title": "Index User",
+      "description": "User for the Index connection",
+      "required": true,
+      "sensitive": false
+    },
+    "NOVA_INDEX_PASSWORD": {
+      "type": "string",
+      "title": "Index Password",
+      "description": "Password for the Index connection",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "keywords": ["NovaDB", "Nova", "CMS", "PIM", "DAM"],
+  "license": "MIT"
+}
