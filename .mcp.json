@@ -2,8 +2,8 @@
   "mcpServers": {
     "novadb": {
       "type": "stdio",
-      "command": "node_modules/.bin/tsx",
-      "args": ["src/index.ts"],
+      "command": "npx",
+      "args": ["tsx", "src/index.ts"],
       "env": {
         "NOVA_HOST": "${NOVA_HOST}",
         "NOVA_INDEX_USER": "${NOVA_INDEX_USER}",

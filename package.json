@@ -1,6 +1,6 @@
 {
   "name": "novadb-mcp",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "MCP server for NovaDB CMS and Index APIs",
   "type": "module",
   "main": "dist/index.js",
@@ -13,14 +13,20 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "build": "tsc",
-    "prepare": "tsc"
+    "prepare": "tsc",
+    "test": "vitest run tests/",
+    "test:watch": "vitest tests/",
+    "build:ext": "node scripts/build-claude-extension.mjs",
+    "build:plugin": "node scripts/build-claude-plugin.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
     "typescript": "^5.7.0"
   },
   "devDependencies": {
+    "@anthropic-ai/mcpb": "^2.1.2",
     "tsx": "^4.19.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "vitest": "^2.0.0"
   }
 }
