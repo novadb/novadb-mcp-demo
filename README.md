@@ -1,19 +1,17 @@
-1# NovaDB MCP Server
+# NovaDB MCP Server
 
 An MCP (Model Context Protocol) server for NovaDB CMS and Index APIs, enabling AI assistants to interact with NovaDB content management and data indexing systems.
 
 ## Overview
 
-This server provides a comprehensive interface to NovaDB's core features through the Model Context Protocol. It exposes tools for managing content, object types, attributes, forms, and indexed data.
+This server provides a comprehensive interface to NovaDB's core features through the Model Context Protocol. It exposes tools for managing content, object types, attributes, forms, branches, comments, files, jobs, and indexed data.
 
 ## Features
 
-- **CMS API Integration**: Direct access to NovaDB CMS operations
-- **Index API Integration**: Full-featured data indexing and retrieval
-- **Object Type Management**: Create, update, and manage custom object types
-- **Form Builder**: Design and configure forms for content management
-- **Attribute System**: Manage attributes with validation and type checking
-- **Branch Management**: Handle branching strategies for content versioning
+- **CMS API Integration**: Direct access to NovaDB CMS operations (objects, branches, comments, files, jobs)
+- **Index API Integration**: Full-featured data indexing, search, and retrieval
+- **Skills**: Granular prompt-instruction files for AI-guided workflows (attributes, branches, forms, object types, comments, jobs, files, code generation)
+- **Agents**: Pre-built agent prompts for common exploration and management tasks
 
 ## Installation
 
@@ -27,20 +25,20 @@ Set the following environment variables:
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `NOVA_HOST` | Base URL for NovaDB instance | Yes |
-| `NOVA_INDEX_USER` | Username for Index API authentication | Yes |
-| `NOVA_INDEX_PASSWORD` | Password for Index API authentication | Yes |
+| `NOVA_HOST` | Base URL for NovaDB instance (auto-prefixed with `https://` if missing) | Yes |
 | `NOVA_CMS_USER` | Username for CMS API authentication | Yes |
 | `NOVA_CMS_PASSWORD` | Password for CMS API authentication | Yes |
+| `NOVA_INDEX_USER` | Username for Index API authentication | Yes |
+| `NOVA_INDEX_PASSWORD` | Password for Index API authentication | Yes |
 
 ### Example
 
 ```bash
-export NOVA_HOST="https://novadb.example.com"
-export NOVA_INDEX_USER="index_user"
-export NOVA_INDEX_PASSWORD="index_password"
+export NOVA_HOST="novadb.example.com"
 export NOVA_CMS_USER="cms_user"
 export NOVA_CMS_PASSWORD="cms_password"
+export NOVA_INDEX_USER="index_user"
+export NOVA_INDEX_PASSWORD="index_password"
 ```
 
 ## Development
@@ -51,7 +49,7 @@ export NOVA_CMS_PASSWORD="cms_password"
 npm run build
 ```
 
-Compiles TypeScript source files from `src/` to `dist/` directory.
+Compiles TypeScript source files from `src/` to `dist/`.
 
 ### Start
 
@@ -59,142 +57,83 @@ Compiles TypeScript source files from `src/` to `dist/` directory.
 npm start
 ```
 
-Runs the server with hot-reload using tsx.
+Runs the MCP server using tsx (stdio transport).
 
-### Watch Mode
+### Testing
 
 ```bash
-npm run build -- --watch
+npm test              # Run all tests (vitest)
+npm run test:watch    # Watch mode
 ```
 
-or use VSCode: <kbd>Ctrl+Shift+P</kbd> → "Run Task" → "watch"
+Tests are integration tests that require the `NOVA_*` environment variables. They skip gracefully when variables are missing.
 
-## Architecture
+### Build Packaging
 
-### API Clients
-
-- **HttpClient** (`src/http-client.ts`): Base HTTP client with authentication
-- **IndexApiClient** (`src/index-api/client.ts`): NovaDB Index API wrapper
-- **CmsClient** (`src/cms/client.ts`): NovaDB CMS API wrapper
-
-### Tool Modules
-
-- **Index API Tools** (`src/index-api/tools.ts`): Core indexing and retrieval operations
-- **CMS Tools** (`src/cms/tools.ts`): Content management operations
-- **Object Types** (`src/extensions/object-types/`): Type system management
-- **Forms** (`src/extensions/forms/`): Form configuration and management
-- **Attributes** (`src/extensions/attributes/`): Attribute definition and validation
-- **Branches** (`src/extensions/branches/`): Content branching support
-
-## Debugging
-
-### VSCode Integration
-
-#### Debug Directly from TypeScript
-
-1. Press <kbd>F5</kbd> or <kbd>Ctrl+Shift+D</kbd>
-2. Select "Debug (ts-node)" configuration
-3. Set breakpoints and debug directly in TypeScript source
-
-#### Debug Compiled JavaScript
-
-1. Press <kbd>F5</kbd>
-2. Select "Debug (compiled)" configuration
-3. Automatically builds before debugging
+```bash
+npm run build:ext      # Build Claude extension
+npm run build:plugin   # Build Claude plugin
+```
 
 ## Project Structure
 
 ```
 novadb-mcp/
 ├── src/
-│   ├── index.ts                 # Entry point
-│   ├── http-client.ts           # Base HTTP client
-│   ├── index-api/               # Index API integration
-│   ├── cms/                     # CMS API integration
-│   └── extensions/              # Extended features
-│       ├── object-types/        # Object type management
-│       ├── forms/               # Form management
-│       ├── attributes/          # Attribute management
-│       └── branches/            # Branch management
-├── dist/                        # Compiled output
-├── .vscode/                     # VSCode configuration
-│   ├── tasks.json              # Build and watch tasks
-│   └── launch.json             # Debug configurations
-├── tsconfig.json               # TypeScript configuration
-└── package.json                # Dependencies and scripts
+│   ├── index.ts              # Entry point — registers tools, connects StdioTransport
+│   ├── http-client.ts        # ApiClient class (Basic Auth, GET/POST/PATCH/DELETE)
+│   ├── cms-api/
+│   │   ├── client.ts         # CMS API client — typed methods + interfaces
+│   │   └── tools.ts          # All CMS tool registrations
+│   └── index-api/
+│       ├── client.ts         # Index API client — search, count, suggestions
+│       └── tools.ts          # All Index tool registrations
+├── tests/
+│   ├── setup.ts              # Shared test setup and environment validation
+│   ├── http-client.test.ts
+│   ├── cms-api/client/       # CMS API integration tests
+│   ├── index-api/client/     # Index API integration tests
+│   └── fixtures/             # Shared test context, constants, helpers
+├── skills/                   # SKILL.md prompt-instruction files
+│   ├── attributes/           # Attribute CRUD, validation, virtualization
+│   ├── branches/             # Branch management
+│   ├── code-generator/       # C# code generation
+│   ├── comments/             # Comment CRUD
+│   ├── files/                # File upload/download
+│   ├── forms/                # Form creation and field management
+│   ├── jobs/                 # Server-side job management
+│   └── object-types/         # Object type CRUD
+├── agents/                   # Agent prompt files for exploration tasks
+├── scripts/                  # Build scripts for extension/plugin packaging
+│   └── template/             # Extension/plugin template assets
+├── docs/
+│   ├── openapi-cms.json      # CMS API OpenAPI spec
+│   └── openapi-index.json    # Index API OpenAPI spec
+├── .claude/                  # Claude Code configuration and rules
+├── tsconfig.json
+├── vitest.config.ts
+└── package.json
 ```
 
-## Available Tools
+## Architecture
 
-### Index API
-- Core indexing and retrieval operations for NovaDB data
+### API Clients
 
-### CMS API
-- Content creation, retrieval, and management operations
+- **ApiClient** (`src/http-client.ts`): Base HTTP client with Basic Auth, supporting GET/POST/PATCH/DELETE and FormData uploads
+- **CMS Client** (`src/cms-api/client.ts`): Typed methods for objects, branches, comments, files, jobs, and code generation
+- **Index Client** (`src/index-api/client.ts`): Search, count, occurrences, suggestions, and comment search
 
-### Object Types
-- `create-object-type`: Define new object types
-- `update-object-type`: Modify existing types
-- `get-object-type`: Retrieve type definitions
-- `add-attribute-to-type`: Add attributes to types
+### Tool Modules
 
-### Attributes
-- `create-attribute`: Define new attributes
-- `update-attribute`: Modify attributes
-- `get-attribute`: Retrieve attribute definitions
-- `search-attributes`: Find attributes by criteria
-- `delete-attribute`: Remove attributes
-- `set-validation-code`: Configure validation rules
+All MCP tools are registered in two modules:
 
-### Forms
-- `create-form`: Create form templates
-- `get-form`: Retrieve form definitions
-- `set-form-fields`: Configure form fields
-- `add-form-field`: Add fields to forms
-- `link-form-to-type`: Associate forms with object types
-
-### Branches
-- `list-branches`: List all branches
-- `find-branches`: Search for branches
-- `create-branch`: Create new branches
-- `update-branch`: Modify branch configuration
-
-## Build and Deploy
-
-### Production Build
-
-```bash
-npm run build
-```
-
-Output will be in the `dist/` directory.
-
-### Installation as Global Command
-
-```bash
-npm install -g ./
-```
-
-Then run:
-
-```bash
-novadb-mcp
-```
+- **CMS Tools** (`src/cms-api/tools.ts`): Object CRUD, branches, comments, files, jobs, code generation
+- **Index Tools** (`src/index-api/tools.ts`): Object search/count/occurrences, suggestions, comment search/count, work items
 
 ## Dependencies
 
-- `@modelcontextprotocol/sdk`: ^1.12.1
-- `typescript`: ^5.7.0
-
-## Development Dependencies
-
-- `tsx`: ^4.19.0 (TypeScript executor for development)
-- `@types/node`: ^22.0.0
-
-## License
-
-See LICENSE file for details.
-
-## Support
-
-For issues, questions, or contributions, please refer to the project repository.
+- `@modelcontextprotocol/sdk` — MCP protocol implementation
+- `typescript` — TypeScript compiler
+- `tsx` — TypeScript executor for development
+- `vitest` — Testing framework
+- `@types/node` — Node.js type definitions
