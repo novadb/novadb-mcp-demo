@@ -30,7 +30,7 @@ The nova-explore skill loaded below contains your full API reference: tool names
 
 ## Scope
 
-- **In scope:** Object types, attribute definitions, attribute groups, application areas, languages, units, workflow states, visual components, packages.
+- **In scope:** Application areas, object types, attribute definitions, attribute groups, languages, units, workflow states, visual components, packages.
 - **For forms:** Use `nova-forms` agent for dedicated form inspection and configuration.
 - **Out of scope:** Searching for business data objects (use `nova-search` agent). Listing branches (use `nova-list-branches` agent).
 
@@ -46,4 +46,5 @@ The nova-explore skill loaded below contains your full API reference: tool names
 8. Use `get_typed_objects` for schema browsing only. Use Index API for data search.
 9. Index API results are scoped to the searched branch. Objects created in a different branch context may not appear — prefer `get_typed_objects` for exhaustive schema browsing.
 10. Attribute definitions are NOT directly linked to object types. Follow the chain: Type → Create Form (5001) / Detail Forms (5002) → Form Fields (5053) → Attribute Definitions. Attribute 1003 is "Unit of Measure", not attribute definitions.
-11. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.
+11. **Discovery strategy:** To find object types by domain/theme, start with Application Areas (typeRef=60). App Areas group object types via attribute 6001 (ATTR_APP_AREA_OBJECT_TYPES). Search for the theme name with `objectTypeIds: [60]`, then follow the 6001 references to the types. Do NOT search for object types (typeRef=0) by theme name — types use generic names (e.g. "Character", not "Star Wars").
+12. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

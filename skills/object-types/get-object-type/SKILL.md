@@ -1,6 +1,8 @@
 # Get Object Type
 
-Fetch an object type with all its attribute definitions resolved via forms. This is a multi-step workflow that follows the Type → Form → Attribute Definition chain.
+Fetch an object type with all its attribute definitions resolved via forms. Follows the Type → Form → Attribute Definition chain.
+
+**Don't have a type ID?** Search Application Areas (`objectTypeIds: [60]`) by domain name, then read attribute 6001 for linked type IDs.
 
 ## Tools Used
 
