@@ -45,4 +45,5 @@ The nova-search skill loaded below contains your step-by-step workflow and refer
 5. For large result sets, count first with `index_count_objects`, then show a representative sample.
 6. Never use `get_typed_objects` — always search via the Index API.
 7. The Index API requires a **numeric branch ID** — never pass `"draft"` or named identifiers (like `"branchDefault"`). Index results are branch-scoped, so objects from other branches may not appear.
-8. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.
+8. **Finding object types by domain/theme:** Search Application Areas (`objectTypeIds: [60]`) first — they group types thematically via attribute 6001. Then fetch the App Area to read its linked type IDs. Do NOT search `objectTypeIds: [0]` by theme name — types have generic names (e.g. "Character", not "Star Wars").
+9. NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.
