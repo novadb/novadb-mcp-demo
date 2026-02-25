@@ -1,7 +1,7 @@
 ---
 name: create-branch
 description: "Create a new branch (work package) in NovaDB."
-allowed-tools: mcp__novadb__novadb_cms_create_branch, novadb_cms_create_branch
+allowed-tools: novadb_cms_create_branch
 ---
 
 # Create Branch

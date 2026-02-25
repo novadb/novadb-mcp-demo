@@ -1,7 +1,7 @@
 ---
 name: update-branch
 description: "Update properties of an existing branch."
-allowed-tools: mcp__novadb__novadb_cms_update_branch, novadb_cms_update_branch
+allowed-tools: novadb_cms_update_branch
 ---
 
 # Update Branch

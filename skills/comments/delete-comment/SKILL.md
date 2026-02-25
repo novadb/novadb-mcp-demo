@@ -1,7 +1,7 @@
 ---
 name: delete-comment
 description: "Delete a comment by its ID."
-allowed-tools: mcp__novadb__novadb_cms_delete_comment, novadb_cms_delete_comment
+allowed-tools: novadb_cms_delete_comment
 ---
 
 # Delete Comment

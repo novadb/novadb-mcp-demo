@@ -1,7 +1,7 @@
 ---
 name: job-input-upload
 description: "Upload an input file for a job. Supports chunked uploads for large files."
-allowed-tools: mcp__novadb__novadb_cms_job_input_upload, mcp__novadb__novadb_cms_job_input_continue, mcp__novadb__novadb_cms_job_input_cancel, novadb_cms_job_input_upload, novadb_cms_job_input_continue, novadb_cms_job_input_cancel
+allowed-tools: novadb_cms_job_input_upload, novadb_cms_job_input_continue, novadb_cms_job_input_cancel
 ---
 
 # Job Input Upload

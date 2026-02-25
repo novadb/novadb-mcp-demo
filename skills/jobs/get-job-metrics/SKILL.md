@@ -1,7 +1,7 @@
 ---
 name: get-job-metrics
 description: "Get metrics (performance data points) for a job."
-allowed-tools: mcp__novadb__novadb_cms_get_job_metrics, novadb_cms_get_job_metrics
+allowed-tools: novadb_cms_get_job_metrics
 ---
 
 # Get Job Metrics

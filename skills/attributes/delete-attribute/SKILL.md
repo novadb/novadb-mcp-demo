@@ -1,7 +1,7 @@
 ---
 name: delete-attribute
 description: "Soft-delete an attribute definition."
-allowed-tools: mcp__novadb__novadb_cms_delete_objects, novadb_cms_delete_objects
+allowed-tools: novadb_cms_delete_objects
 ---
 
 # Delete Attribute

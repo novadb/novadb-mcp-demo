@@ -1,7 +1,7 @@
 ---
 name: update-attribute
 description: "Update properties of an existing attribute definition (typeRef=10). Only send changed fields."
-allowed-tools: mcp__novadb__novadb_cms_update_objects, novadb_cms_update_objects
+allowed-tools: novadb_cms_update_objects
 ---
 
 # Update Attribute

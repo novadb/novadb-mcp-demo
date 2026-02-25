@@ -1,7 +1,7 @@
 ---
 name: get-jobs
 description: "List jobs for a branch with optional filters and pagination."
-allowed-tools: mcp__novadb__novadb_cms_get_jobs, novadb_cms_get_jobs
+allowed-tools: novadb_cms_get_jobs
 ---
 
 # Get Jobs

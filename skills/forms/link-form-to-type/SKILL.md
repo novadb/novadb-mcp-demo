@@ -1,7 +1,7 @@
 ---
 name: link-form-to-type
 description: "Attach a form to an object type as either a create form or a detail tab."
-allowed-tools: mcp__novadb__novadb_cms_update_objects, mcp__novadb__novadb_cms_get_object, novadb_cms_update_objects, novadb_cms_get_object
+allowed-tools: novadb_cms_update_objects, novadb_cms_get_object
 ---
 
 # Link Form to Type

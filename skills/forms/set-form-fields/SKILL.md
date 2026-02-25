@@ -1,7 +1,7 @@
 ---
 name: set-form-fields
 description: "Replace ALL fields on a form. Provide the complete ordered list of attribute definition IDs."
-allowed-tools: mcp__novadb__novadb_cms_update_objects, novadb_cms_update_objects
+allowed-tools: novadb_cms_update_objects
 ---
 
 # Set Form Fields

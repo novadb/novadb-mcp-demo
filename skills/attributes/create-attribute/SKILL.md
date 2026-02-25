@@ -1,7 +1,7 @@
 ---
 name: create-attribute
 description: "Create an attribute definition (typeRef=10) in NovaDB. Supports all data types, multi-value, ObjRef constraints, language-dependence, and optional JS validation."
-allowed-tools: mcp__novadb__novadb_cms_create_objects, mcp__novadb__novadb_cms_get_object, novadb_cms_create_objects, novadb_cms_get_object
+allowed-tools: novadb_cms_create_objects, novadb_cms_get_object
 ---
 
 # Create Attribute

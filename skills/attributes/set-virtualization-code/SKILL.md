@@ -1,7 +1,7 @@
 ---
 name: set-virtualization-code
 description: "Set JavaScript code that computes a virtual attribute's value server-side."
-allowed-tools: mcp__novadb__novadb_cms_update_objects, novadb_cms_update_objects
+allowed-tools: novadb_cms_update_objects
 ---
 
 # Set Virtualization Code

@@ -1,7 +1,7 @@
 ---
 name: delete-branch
 description: "Permanently delete a branch. This cannot be undone."
-allowed-tools: mcp__novadb__novadb_cms_delete_branch, novadb_cms_delete_branch
+allowed-tools: novadb_cms_delete_branch
 ---
 
 # Delete Branch

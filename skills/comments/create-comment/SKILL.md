@@ -1,7 +1,7 @@
 ---
 name: create-comment
 description: "Create a new comment on an object in NovaDB."
-allowed-tools: mcp__novadb__novadb_cms_create_comment, mcp__novadb__novadb_cms_get_comment, novadb_cms_create_comment, novadb_cms_get_comment
+allowed-tools: novadb_cms_create_comment, novadb_cms_get_comment
 ---
 
 # Create Comment

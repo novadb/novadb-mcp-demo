@@ -1,7 +1,7 @@
 ---
 name: delete-job
 description: "Delete a job by its ID."
-allowed-tools: mcp__novadb__novadb_cms_delete_job, novadb_cms_delete_job
+allowed-tools: novadb_cms_delete_job
 ---
 
 # Delete Job

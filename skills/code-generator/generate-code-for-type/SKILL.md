@@ -1,7 +1,7 @@
 ---
 name: generate-code-for-type
 description: "Generate C# code for a single object type."
-allowed-tools: mcp__novadb__novadb_cms_get_code_generator_type, novadb_cms_get_code_generator_type
+allowed-tools: novadb_cms_get_code_generator_type
 ---
 
 # Generate Code for Type

@@ -1,7 +1,7 @@
 ---
 name: get-form
 description: "Fetch a form with its field attribute definitions resolved."
-allowed-tools: mcp__novadb__novadb_cms_get_object, mcp__novadb__novadb_cms_get_objects, novadb_cms_get_object, novadb_cms_get_objects
+allowed-tools: novadb_cms_get_object, novadb_cms_get_objects
 ---
 
 # Get Form
