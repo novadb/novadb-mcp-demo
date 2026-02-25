@@ -1,7 +1,7 @@
 ---
 name: get-attribute
 description: "Fetch a single attribute definition with all inherited properties."
-allowed-tools: mcp__novadb__novadb_cms_get_object, novadb_cms_get_object
+allowed-tools: novadb_cms_get_object
 ---
 
 # Get Attribute

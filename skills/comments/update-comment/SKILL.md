@@ -1,7 +1,7 @@
 ---
 name: update-comment
 description: "Update an existing comment's body text."
-allowed-tools: mcp__novadb__novadb_cms_update_comment, mcp__novadb__novadb_cms_get_comment, novadb_cms_update_comment, novadb_cms_get_comment
+allowed-tools: novadb_cms_update_comment, novadb_cms_get_comment
 ---
 
 # Update Comment

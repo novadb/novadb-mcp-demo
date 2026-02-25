@@ -1,7 +1,7 @@
 ---
 name: get-job-artifacts
 description: "List, fetch, or download artifacts produced by a job."
-allowed-tools: mcp__novadb__novadb_cms_get_job_artifacts, mcp__novadb__novadb_cms_get_job_artifact, mcp__novadb__novadb_cms_get_job_artifacts_zip, novadb_cms_get_job_artifacts, novadb_cms_get_job_artifact, novadb_cms_get_job_artifacts_zip
+allowed-tools: novadb_cms_get_job_artifacts, novadb_cms_get_job_artifact, novadb_cms_get_job_artifacts_zip
 ---
 
 # Get Job Artifacts

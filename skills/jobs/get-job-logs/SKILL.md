@@ -1,7 +1,7 @@
 ---
 name: get-job-logs
 description: "Get the logs produced by a job."
-allowed-tools: mcp__novadb__novadb_cms_get_job_logs, novadb_cms_get_job_logs
+allowed-tools: novadb_cms_get_job_logs
 ---
 
 # Get Job Logs

@@ -1,7 +1,7 @@
 ---
 name: get-job-progress
 description: "Get the current progress of a job."
-allowed-tools: mcp__novadb__novadb_cms_get_job_progress, novadb_cms_get_job_progress
+allowed-tools: novadb_cms_get_job_progress
 ---
 
 # Get Job Progress

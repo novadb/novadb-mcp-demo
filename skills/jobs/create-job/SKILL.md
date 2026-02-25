@@ -1,7 +1,7 @@
 ---
 name: create-job
 description: "Create and start a new job on a branch."
-allowed-tools: mcp__novadb__novadb_cms_create_job, mcp__novadb__novadb_cms_get_job, novadb_cms_create_job, novadb_cms_get_job
+allowed-tools: novadb_cms_create_job, novadb_cms_get_job
 ---
 
 # Create Job

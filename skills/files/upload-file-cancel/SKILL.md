@@ -1,7 +1,7 @@
 ---
 name: upload-file-cancel
 description: "Cancel an in-progress chunked file upload and discard all uploaded data."
-allowed-tools: mcp__novadb__novadb_cms_upload_file_cancel, novadb_cms_upload_file_cancel
+allowed-tools: novadb_cms_upload_file_cancel
 ---
 
 # Upload File Cancel

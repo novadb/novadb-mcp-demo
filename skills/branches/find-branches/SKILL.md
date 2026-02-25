@@ -1,7 +1,7 @@
 ---
 name: find-branches
 description: "Search for branches by name, assigned user, or parent using the Index API."
-allowed-tools: mcp__novadb__novadb_index_search_objects, mcp__novadb__novadb_index_count_objects, mcp__novadb__novadb_index_object_occurrences, novadb_index_search_objects, novadb_index_count_objects, novadb_index_object_occurrences
+allowed-tools: novadb_index_search_objects, novadb_index_count_objects, novadb_index_object_occurrences
 ---
 
 # Find Branches

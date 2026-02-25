@@ -1,7 +1,7 @@
 ---
 name: create-form
 description: "Create a new form (typeRef=50) in NovaDB. Forms define which attribute fields are shown when editing objects."
-allowed-tools: mcp__novadb__novadb_cms_create_objects, mcp__novadb__novadb_cms_get_object, novadb_cms_create_objects, novadb_cms_get_object
+allowed-tools: novadb_cms_create_objects, novadb_cms_get_object
 ---
 
 # Create Form

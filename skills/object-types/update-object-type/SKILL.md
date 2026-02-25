@@ -1,7 +1,7 @@
 ---
 name: update-object-type
 description: "Update an object type's name or description in NovaDB."
-allowed-tools: mcp__novadb__novadb_cms_update_objects, novadb_cms_update_objects
+allowed-tools: novadb_cms_update_objects
 ---
 
 # Update Object Type

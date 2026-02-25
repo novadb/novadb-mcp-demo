@@ -1,7 +1,7 @@
 ---
 name: get-object-type
 description: "Fetch an object type with all its attribute definitions resolved via forms."
-allowed-tools: mcp__novadb__novadb_cms_get_object, mcp__novadb__novadb_cms_get_objects, novadb_cms_get_object, novadb_cms_get_objects
+allowed-tools: novadb_cms_get_object, novadb_cms_get_objects
 ---
 
 # Get Object Type

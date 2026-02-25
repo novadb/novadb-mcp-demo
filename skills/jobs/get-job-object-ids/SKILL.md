@@ -1,7 +1,7 @@
 ---
 name: get-job-object-ids
 description: "Get the IDs of objects processed by a job."
-allowed-tools: mcp__novadb__novadb_cms_get_job_object_ids, novadb_cms_get_job_object_ids
+allowed-tools: novadb_cms_get_job_object_ids
 ---
 
 # Get Job Object IDs

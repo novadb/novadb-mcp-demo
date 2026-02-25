@@ -1,7 +1,7 @@
 ---
 name: list-branches
 description: "List all branches. Choose quick mode (Index API) for an overview, or detailed mode (CMS API) for full attributes."
-allowed-tools: mcp__novadb__novadb_index_search_objects, mcp__novadb__novadb_cms_get_typed_objects, mcp__novadb__novadb_cms_get_objects, novadb_index_search_objects, novadb_cms_get_typed_objects, novadb_cms_get_objects
+allowed-tools: novadb_index_search_objects, novadb_cms_get_typed_objects, novadb_cms_get_objects
 ---
 
 # List Branches
