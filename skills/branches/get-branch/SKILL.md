@@ -1,3 +1,9 @@
+---
+name: get-branch
+description: "Fetch a single branch by ID with human-readable ObjRef resolution."
+allowed-tools: mcp__novadb__novadb_cms_get_branch, mcp__novadb__novadb_cms_get_objects, novadb_cms_get_branch, novadb_cms_get_objects
+---
+
 # Get Branch
 
 Fetch a single branch by ID with human-readable ObjRef resolution.

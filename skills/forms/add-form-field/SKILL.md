@@ -1,3 +1,9 @@
+---
+name: add-form-field
+description: "Append an attribute definition to the end of a form's field list without replacing existing fields."
+allowed-tools: mcp__novadb__novadb_cms_get_object, mcp__novadb__novadb_cms_update_objects, novadb_cms_get_object, novadb_cms_update_objects
+---
+
 # Add Form Field
 
 Append an attribute definition to the end of a form's field list without replacing existing fields.

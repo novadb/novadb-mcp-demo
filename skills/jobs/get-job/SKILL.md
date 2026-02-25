@@ -1,3 +1,9 @@
+---
+name: get-job
+description: "Get a single job by its ID."
+allowed-tools: mcp__novadb__novadb_cms_get_job, novadb_cms_get_job
+---
+
 # Get Job
 
 Get a single job by its ID.

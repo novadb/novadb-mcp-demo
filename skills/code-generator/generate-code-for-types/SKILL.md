@@ -1,3 +1,9 @@
+---
+name: generate-code-for-types
+description: "Generate C# code for all (or filtered) object types in a branch."
+allowed-tools: mcp__novadb__novadb_cms_get_code_generator_types, novadb_cms_get_code_generator_types
+---
+
 # Generate Code for Types
 
 Generate C# code for all (or filtered) object types in a branch.

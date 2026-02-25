@@ -1,3 +1,9 @@
+---
+name: search-attributes
+description: "Search attribute definitions by name, data type, or flags using the Index API."
+allowed-tools: mcp__novadb__novadb_index_search_objects, novadb_index_search_objects
+---
+
 # Search Attributes
 
 Search attribute definitions by name, data type, or flags using the Index API.

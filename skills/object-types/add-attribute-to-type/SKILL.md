@@ -1,3 +1,9 @@
+---
+name: add-attribute-to-type
+description: "Create a new attribute definition and add it to all forms of an existing object type."
+allowed-tools: mcp__novadb__novadb_cms_get_object, mcp__novadb__novadb_cms_create_objects, mcp__novadb__novadb_cms_update_objects, novadb_cms_get_object, novadb_cms_create_objects, novadb_cms_update_objects
+---
+
 # Add Attribute to Type
 
 Create a new attribute definition and add it to all forms of an existing object type. The type must already have a create form.

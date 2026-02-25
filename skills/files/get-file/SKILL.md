@@ -1,3 +1,9 @@
+---
+name: get-file
+description: "Download a file from NovaDB by its name."
+allowed-tools: mcp__novadb__novadb_cms_get_file, novadb_cms_get_file
+---
+
 # Get File
 
 Download a file from NovaDB by its name.
