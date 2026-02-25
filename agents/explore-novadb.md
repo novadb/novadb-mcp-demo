@@ -12,12 +12,12 @@ disallowedTools:
   - Write
   - Edit
   - NotebookEdit
-  - mcp__novadb__novadb_cms_create_objects
-  - mcp__novadb__novadb_cms_update_objects
-  - mcp__novadb__novadb_cms_delete_objects
-  - mcp__novadb__novadb_cms_create_branch
-  - mcp__novadb__novadb_cms_update_branch
-  - mcp__novadb__novadb_cms_delete_branch
+  - novadb_cms_create_objects
+  - novadb_cms_update_objects
+  - novadb_cms_delete_objects
+  - novadb_cms_create_branch
+  - novadb_cms_update_branch
+  - novadb_cms_delete_branch
 mcpServers:
   - novadb
 skills:

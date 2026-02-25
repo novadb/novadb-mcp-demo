@@ -10,22 +10,22 @@ disallowedTools:
   - Write
   - Edit
   - NotebookEdit
-  - mcp__novadb__novadb_cms_create_objects
-  - mcp__novadb__novadb_cms_update_objects
-  - mcp__novadb__novadb_cms_delete_objects
-  - mcp__novadb__novadb_cms_create_branch
-  - mcp__novadb__novadb_cms_update_branch
-  - mcp__novadb__novadb_cms_delete_branch
-  - mcp__novadb__novadb_cms_get_typed_objects
-  - mcp__novadb__novadb_cms_get_branch
-  - mcp__novadb__novadb_cms_get_comments
-  - mcp__novadb__novadb_cms_get_comment
-  - mcp__novadb__novadb_cms_get_jobs
-  - mcp__novadb__novadb_cms_get_job
-  - mcp__novadb__novadb_cms_get_job_logs
-  - mcp__novadb__novadb_index_search_comments
-  - mcp__novadb__novadb_index_count_comments
-  - mcp__novadb__novadb_index_work_item_occurrences
+  - novadb_cms_create_objects
+  - novadb_cms_update_objects
+  - novadb_cms_delete_objects
+  - novadb_cms_create_branch
+  - novadb_cms_update_branch
+  - novadb_cms_delete_branch
+  - novadb_cms_get_typed_objects
+  - novadb_cms_get_branch
+  - novadb_cms_get_comments
+  - novadb_cms_get_comment
+  - novadb_cms_get_jobs
+  - novadb_cms_get_job
+  - novadb_cms_get_job_logs
+  - novadb_index_search_comments
+  - novadb_index_count_comments
+  - novadb_index_work_item_occurrences
 mcpServers:
   - novadb
 skills:
