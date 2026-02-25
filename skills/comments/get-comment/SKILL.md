@@ -1,3 +1,9 @@
+---
+name: get-comment
+description: "Fetch a single comment by its ID."
+allowed-tools: mcp__novadb__novadb_cms_get_comment, novadb_cms_get_comment
+---
+
 # Get Comment
 
 Fetch a single comment by its ID.

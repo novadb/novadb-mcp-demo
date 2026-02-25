@@ -1,3 +1,9 @@
+---
+name: create-object-type
+description: "Create an object type with optional inline attribute definitions in NovaDB. Multi-step workflow."
+allowed-tools: mcp__novadb__novadb_cms_create_objects, mcp__novadb__novadb_cms_update_objects, mcp__novadb__novadb_cms_get_object, novadb_cms_create_objects, novadb_cms_update_objects, novadb_cms_get_object
+---
+
 # Create Object Type
 
 Create an object type with optional inline attribute definitions in NovaDB. This is a multi-step workflow that creates the type, attribute definitions, a form, and links everything together.

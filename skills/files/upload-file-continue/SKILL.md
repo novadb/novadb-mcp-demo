@@ -1,3 +1,9 @@
+---
+name: upload-file-continue
+description: "Continue a chunked file upload that was started with novadb_cms_upload_file."
+allowed-tools: mcp__novadb__novadb_cms_upload_file_continue, novadb_cms_upload_file_continue
+---
+
 # Upload File Continue
 
 Continue a chunked file upload that was started with `novadb_cms_upload_file`.

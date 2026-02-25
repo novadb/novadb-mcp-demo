@@ -1,3 +1,9 @@
+---
+name: set-validation-code
+description: "Set JavaScript validation code on an attribute definition. The script validates user input server-side."
+allowed-tools: mcp__novadb__novadb_cms_update_objects, novadb_cms_update_objects
+---
+
 # Set Validation Code
 
 Set JavaScript validation code on an attribute definition. The script validates user input server-side.

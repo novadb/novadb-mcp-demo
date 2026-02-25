@@ -1,3 +1,9 @@
+---
+name: create-branch
+description: "Create a new branch (work package) in NovaDB."
+allowed-tools: mcp__novadb__novadb_cms_create_branch, novadb_cms_create_branch
+---
+
 # Create Branch
 
 Create a new branch (work package) in NovaDB.
@@ -16,15 +22,15 @@ Create a new branch (work package) in NovaDB.
 
 ## Branch Attribute IDs
 
-| Attribute | ID | Type | Notes |
-|-----------|------|------|-------|
-| Name (EN) | 1000 | String | `language: 201`, `variant: 0` |
-| Name (DE) | 1000 | String | `language: 202`, `variant: 0` |
-| Parent branch | 4000 | ObjRef | `language: 0`, `variant: 0` |
-| Branch type | 4001 | ObjRef | `language: 0`, `variant: 0` |
-| Workflow state | 4002 | ObjRef | `language: 0`, `variant: 0` |
-| Due date | 4003 | DateTime.Date | `language: 0`, `variant: 0`, ISO format e.g. `"2026-03-01"` |
-| Assigned to | 4004 | String.UserName | `language: 0`, `variant: 0` |
+| Attribute      | ID   | Type            | Notes                                                       |
+| -------------- | ---- | --------------- | ----------------------------------------------------------- |
+| Name (EN)      | 1000 | String          | `language: 201`, `variant: 0`                               |
+| Name (DE)      | 1000 | String          | `language: 202`, `variant: 0`                               |
+| Parent branch  | 4000 | ObjRef          | `language: 0`, `variant: 0`                                 |
+| Branch type    | 4001 | ObjRef          | `language: 0`, `variant: 0`                                 |
+| Workflow state | 4002 | ObjRef          | `language: 0`, `variant: 0`                                 |
+| Due date       | 4003 | DateTime.Date   | `language: 0`, `variant: 0`, ISO format e.g. `"2026-03-01"` |
+| Assigned to    | 4004 | String.UserName | `language: 0`, `variant: 0`                                 |
 
 ## Value Construction
 

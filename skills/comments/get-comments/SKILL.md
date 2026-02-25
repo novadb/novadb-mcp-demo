@@ -1,3 +1,9 @@
+---
+name: get-comments
+description: "List comments with optional filters. Results are paginated."
+allowed-tools: mcp__novadb__novadb_cms_get_comments, novadb_cms_get_comments
+---
+
 # Get Comments
 
 List comments with optional filters. Results are paginated.

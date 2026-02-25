@@ -1,3 +1,9 @@
+---
+name: upload-file
+description: "Start uploading a file to NovaDB. For single-chunk uploads, set commit=true to complete immediately."
+allowed-tools: mcp__novadb__novadb_cms_upload_file, novadb_cms_upload_file
+---
+
 # Upload File
 
 Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to complete immediately.

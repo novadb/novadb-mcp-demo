@@ -1,3 +1,9 @@
+---
+name: update-job
+description: "Update a job's state or retention settings."
+allowed-tools: mcp__novadb__novadb_cms_update_job, novadb_cms_update_job
+---
+
 # Update Job
 
 Update a job's state or retention settings.
