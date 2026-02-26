@@ -1,4 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { createWriteStream } from "node:fs";
+import { stat, mkdir } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, dirname } from "node:path";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import { z } from "zod";
 import type { CmsClient } from "./client.js";
 
@@ -24,6 +30,17 @@ const cmsObjectSchema = z.object({
   meta: cmsObjectMetaSchema,
   values: z.array(cmsValueSchema).optional().describe("Property values as attribute/variant/language/value tuples"),
 });
+
+async function streamToDisk(
+  body: ReadableStream,
+  filePath: string,
+): Promise<number> {
+  await mkdir(dirname(filePath), { recursive: true });
+  const nodeStream = Readable.fromWeb(body as import("node:stream/web").ReadableStream);
+  await pipeline(nodeStream, createWriteStream(filePath));
+  const { size } = await stat(filePath);
+  return size;
+}
 
 export function registerCmsTools(server: McpServer, client: CmsClient) {
   // --- Read tools ---
@@ -266,15 +283,23 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_code_generator_types",
-    "Generate C# typed model classes for object types in a branch. Returns source code with strongly-typed properties. Only 'csharp' is supported.",
+    "Generate C# typed model classes for object types in a branch and save to disk. Returns metadata (file path, size, content type) instead of source code. Only 'csharp' is supported.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       language: z.string().describe("Programming language. Only 'csharp' is supported."),
       ids: z.string().optional().describe("Comma-separated type IDs to filter"),
+      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/codegen-<branch>-<language>.cs."),
     },
-    async ({ branch, language, ids }) => {
+    async ({ branch, language, ids, targetPath }) => {
       const result = await client.getCodeGeneratorTypes(branch, language, { ids });
-      return { content: [{ type: "text", text: result }] };
+      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `codegen-${branch}-${language}.cs`);
+      const sizeBytes = await streamToDisk(result.body, filePath);
+      const metadata = {
+        filePath,
+        sizeBytes,
+        contentType: result.contentType,
+      };
+      return { content: [{ type: "text", text: JSON.stringify(metadata, null, 2) }] };
     }
   );
 
@@ -327,13 +352,21 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_job_logs",
-    "Fetch execution logs for a job. Returns plain text.",
+    "Fetch execution logs for a job and save to disk. Returns metadata (file path, size, content type) instead of log content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
+      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-logs.txt."),
     },
-    async ({ jobId }) => {
+    async ({ jobId, targetPath }) => {
       const result = await client.getJobLogs(jobId);
-      return { content: [{ type: "text", text: result }] };
+      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-logs.txt`);
+      const sizeBytes = await streamToDisk(result.body, filePath);
+      const metadata = {
+        filePath,
+        sizeBytes,
+        contentType: result.contentType,
+      };
+      return { content: [{ type: "text", text: JSON.stringify(metadata, null, 2) }] };
     }
   );
 
@@ -443,26 +476,42 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_job_artifact",
-    "Download a specific job artifact by path. Returns file content as text.",
+    "Download a specific job artifact by path and save to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
       path: z.string().describe("Artifact path"),
+      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-artifacts/<path>."),
     },
-    async ({ jobId, path }) => {
+    async ({ jobId, path, targetPath }) => {
       const result = await client.getJobArtifact(jobId, path);
-      return { content: [{ type: "text", text: result }] };
+      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-artifacts`, path);
+      const sizeBytes = await streamToDisk(result.body, filePath);
+      const metadata = {
+        filePath,
+        sizeBytes,
+        contentType: result.contentType,
+      };
+      return { content: [{ type: "text", text: JSON.stringify(metadata, null, 2) }] };
     }
   );
 
   server.tool(
     "novadb_cms_get_job_artifacts_zip",
-    "Download all job artifacts as a ZIP (base64).",
+    "Download all job artifacts as a ZIP and save to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
+      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-artifacts.zip."),
     },
-    async ({ jobId }) => {
+    async ({ jobId, targetPath }) => {
       const result = await client.getJobArtifactsZip(jobId);
-      return { content: [{ type: "text", text: result }] };
+      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-artifacts.zip`);
+      const sizeBytes = await streamToDisk(result.body, filePath);
+      const metadata = {
+        filePath,
+        sizeBytes,
+        contentType: result.contentType,
+      };
+      return { content: [{ type: "text", text: JSON.stringify(metadata, null, 2) }] };
     }
   );
 
@@ -513,19 +562,22 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_file",
-    "Download a file by name. Text files returned as-is, binary as base64-prefixed.",
+    "Download a file by name and save it to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location, otherwise saves to a temp directory.",
     {
       name: z.string().describe("File name/identifier (GUID with extension, e.g. 'abc123.png')"),
+      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/<name>."),
     },
-    async ({ name }) => {
+    async ({ name, targetPath }) => {
       const result = await client.getFile(name);
+      const filePath = targetPath ?? join(tmpdir(), "novadb-files", name);
+      const sizeBytes = await streamToDisk(result.body, filePath);
+      const metadata = {
+        filePath,
+        sizeBytes,
+        contentType: result.contentType,
+      };
       return {
-        content: [
-          {
-            type: "text",
-            text: result.type === "text" ? result.data : `[base64] ${result.data}`,
-          },
-        ],
+        content: [{ type: "text", text: JSON.stringify(metadata, null, 2) }],
       };
     }
   );

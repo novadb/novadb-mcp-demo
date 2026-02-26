@@ -1,47 +1,56 @@
 ---
 name: get-file
-description: "Download a file from NovaDB by name."
+description: "Download a file from NovaDB by name and save it to disk."
 user-invocable: false
 allowed-tools: novadb_cms_get_file
 ---
 
 # Get File
 
-Download a file from NovaDB by its name.
+Download a file from NovaDB by its name and save it to disk. Returns metadata (file path, size, content type) instead of file content.
 
 ## Scope
 
-**This skill ONLY handles:** Downloading a file from NovaDB by its GUID-based name.
+**This skill ONLY handles:** Downloading a file from NovaDB by its GUID-based name and saving it to disk.
 
 **For uploading files** → use `upload-file`
 
 ## Tools
 
-1. `novadb_cms_get_file` — Download the file
+1. `novadb_cms_get_file` — Download the file and save to disk
 
 ## Parameters
 
 ```json
 {
-  "name": "a1b2c3d4.png"
+  "name": "a1b2c3d4.png",
+  "targetPath": "/home/user/downloads/report.png"
 }
 ```
 
 - `name` — File name/identifier, typically a GUID with extension (e.g. `a1b2c3d4.png`)
+- `targetPath` — (Optional) Absolute path where to save the file. If omitted, saves to `<tmpdir>/novadb-files/<name>`.
 
 ## Workflow
 
-1. Call `novadb_cms_get_file` with the file name
-2. Text files are returned as-is
-3. Binary files are returned prefixed with `[base64] ` followed by the base64-encoded content
+1. Call `novadb_cms_get_file` with the file name and optionally a `targetPath`
+2. The file is saved to disk at the specified (or default) location
+3. Metadata is returned: file path, size in bytes, and content type
 
 ## Response
 
-- Text content: the raw file text
-- Binary content: `[base64] <base64-encoded-data>`
+JSON metadata object:
+
+```json
+{
+  "filePath": "/tmp/novadb-files/a1b2c3d4.png",
+  "sizeBytes": 12345,
+  "contentType": "image/png"
+}
+```
 
 ## Common Patterns
 
-### API Response (GET File)
-- Text files: Returned as plain text content.
-- Binary files: Returned prefixed with `[base64] ` followed by base64-encoded content.
+- Use `targetPath` to save files with meaningful names instead of GUIDs
+- Without `targetPath`, files are saved to `<os.tmpdir()>/novadb-files/`
+- Parent directories are created automatically if they don't exist

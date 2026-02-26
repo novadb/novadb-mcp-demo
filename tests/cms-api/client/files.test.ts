@@ -70,6 +70,42 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
     });
   });
 
+  describe("getFile", () => {
+    it("downloads a file and returns contentType and a readable body stream", async () => {
+      // First upload a file to ensure one exists
+      const content = "hello from getFile test";
+      const buffer = Buffer.from(content);
+      const ext = ".txt";
+      const uploadResponse = await cmsClient.fileUploadStart(
+        buffer,
+        "get-file-test.txt",
+        ext,
+        true,
+      ) as Record<string, unknown>;
+
+      // Committed uploads return guid or fileIdentifier
+      const fileId = (uploadResponse.fileIdentifier ?? uploadResponse.guid) as string;
+      expect(fileId).toBeDefined();
+
+      // The file name is the GUID with extension
+      const fileName = fileId.includes(".") ? fileId : `${fileId}${ext}`;
+      const result = await cmsClient.getFile(fileName);
+      expect(typeof result.contentType).toBe("string");
+      expect(result.body).toBeDefined();
+
+      // Consume the stream to verify it delivers data
+      const chunks: Uint8Array[] = [];
+      const reader = result.body.getReader();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+      const totalBytes = chunks.reduce((sum, c) => sum + c.length, 0);
+      expect(totalBytes).toBeGreaterThan(0);
+    });
+  });
+
   describe("fileUploadCancel", () => {
     it("starts and cancels a file upload", async () => {
       const buffer = Buffer.from("to be cancelled");

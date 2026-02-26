@@ -168,7 +168,8 @@ export function createCmsClient(api: ApiClient) {
       ids?: string;
     } = {}) => {
       const response = await api.getRaw(`/branches/${branch}/generators/${language}/types`, params);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     getCodeGeneratorType: async (branch: string, language: string, type: string) => {
@@ -191,7 +192,8 @@ export function createCmsClient(api: ApiClient) {
 
     getJobLogs: async (jobId: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/logs`);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     createJob: (params: {
@@ -243,13 +245,14 @@ export function createCmsClient(api: ApiClient) {
 
     getJobArtifact: async (jobId: string, path: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/artifacts/${path}`);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     getJobArtifactsZip: async (jobId: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/artifacts.zip`);
-      const buffer = await response.arrayBuffer();
-      return Buffer.from(buffer).toString("base64");
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     // --- Job Input tools ---
@@ -274,11 +277,12 @@ export function createCmsClient(api: ApiClient) {
     getFile: async (name: string) => {
       const response = await api.getRaw(`/files/${name}`);
       const contentType = response.headers.get("content-type") ?? "";
-      if (contentType.includes("text") || contentType.includes("json") || contentType.includes("xml")) {
-        return { type: "text" as const, data: await response.text() };
-      }
-      const buffer = await response.arrayBuffer();
-      return { type: "binary" as const, data: Buffer.from(buffer).toString("base64") };
+      const contentLength = response.headers.get("content-length");
+      return {
+        contentType,
+        contentLength: contentLength ? Number(contentLength) : undefined,
+        body: response.body!,
+      };
     },
 
     fileUploadStart: (file: Buffer, filename: string, extension: string, commit: boolean) => {
