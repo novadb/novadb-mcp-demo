@@ -1,12 +1,8 @@
----
-globs: tests/**/*.ts
----
-
-# Testing Conventions
+# Testing Guide
 
 ## Framework
 
-Vitest with `fileParallelism: false` (required because tests share a single branch).
+[Vitest](https://vitest.dev/) with `fileParallelism: false` (required because tests share a single branch).
 
 ```bash
 npm test              # Run all tests
@@ -15,7 +11,9 @@ npm run test:watch    # Watch mode
 
 ## Environment Variables
 
-Tests require `NOVA_HOST`, `NOVA_CMS_USER`, `NOVA_CMS_PASSWORD`, `NOVA_INDEX_USER`, `NOVA_INDEX_PASSWORD`. Tests skip gracefully when variables are missing:
+Tests require the same environment variables as the server: `NOVA_HOST`, `NOVA_CMS_USER`, `NOVA_CMS_PASSWORD`, `NOVA_INDEX_USER`, `NOVA_INDEX_PASSWORD`.
+
+Tests skip gracefully when variables are missing:
 
 ```typescript
 let envVarsMissing = false;
@@ -39,7 +37,7 @@ if (!ctx) return; // API unreachable, skip test
 `getTestContext()` runs once per test session:
 1. **Cleanup** — finds and deletes all `MCP-*` prefixed types via Index search
 2. **Setup** — creates MCP-Company and MCP-Person types with attributes, forms, app area, and sample data
-3. **Returns** `TestFixtureContext` with all created IDs
+3. **Returns** a `TestFixtureContext` with all created IDs
 
 ### TestFixtureContext Shape
 
@@ -58,7 +56,7 @@ if (!ctx) return; // API unreachable, skip test
 - `BRANCH_ID = 2100347` — shared test branch "MCP" (from `tests/setup.ts`)
 - Never hardcode object IDs — always use `getTestContext()` for dynamic IDs
 
-## Test File Structure
+## Writing a New Test
 
 ```typescript
 import { describe, it, expect, beforeAll } from "vitest";
@@ -89,4 +87,4 @@ integrationDescribe("Feature Name", () => {
 
 - Test files: `tests/<domain>/<feature>.test.ts`
 - Fixture types use `MCP-` prefix for easy cleanup
-- Describe blocks group related operations
+- `describe` blocks group related operations

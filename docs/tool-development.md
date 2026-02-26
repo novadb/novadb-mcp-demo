@@ -1,12 +1,10 @@
----
-globs: src/**/tools.ts
----
-
 # Tool Development Guide
+
+How to add new MCP tools to the NovaDB MCP server.
 
 ## File Structure
 
-Each extension domain follows this structure:
+Each domain follows this layout:
 
 ```
 src/extensions/<domain>/
@@ -41,7 +39,6 @@ export function registerMyTool(
       typeId: z.number().optional().describe("Optional type reference ID"),
     },
     async (input) => {
-      // Implementation
       const result = await cms.someMethod(input.branch, ...);
 
       return {
@@ -52,14 +49,22 @@ export function registerMyTool(
 }
 ```
 
-## Zod Schema Conventions
+## Conventions
 
-- **Every field** must have `.describe()` — this is the AI's only documentation
+### Naming
+
+- Tool names: `novadb_` prefix + `snake_case` (e.g. `novadb_cms_get_object`)
+- Registration functions: `register<Name>Tool`
+- Domain aggregators: `register<Domain>Tools`
+
+### Zod Schemas
+
+- **Every field** must have `.describe()` — this is the only documentation AI assistants see
 - **`branch` parameter**: Always `z.string().describe("Branch ID or 'draft' for the main branch")`
-- **Optional transaction metadata**: `comment` and `username` as `z.string().optional()`
+- **Optional audit fields**: `comment` and `username` as `z.string().optional()`
 - **Shared schemas**: Use `.extend()` to add fields to base schemas (see `attributeInputSchema`)
 
-## Value Builder Pattern
+### Value Builders
 
 Build `CmsValue[]` arrays with conditional push to only include provided values:
 
@@ -86,14 +91,7 @@ function buildValues(input: Input): CmsValue[] {
 }
 ```
 
-## Wiring New Tools
-
-1. Create the tool file in the appropriate `src/extensions/<domain>/` directory
-2. Export `register<Name>Tool` function
-3. Call it from the domain's `index.ts` inside `register<Domain>Tools()`
-4. If it's a new domain, call `register<Domain>Tools()` from `src/index.ts`
-
-## Return Format
+### Return Format
 
 Always return JSON as text content:
 
@@ -104,3 +102,10 @@ return {
 ```
 
 For errors, throw or return error text — the MCP SDK handles error propagation.
+
+## Wiring a New Tool
+
+1. Create the tool file in the appropriate `src/extensions/<domain>/` directory
+2. Export the `register<Name>Tool` function
+3. Call it from the domain's `index.ts` inside `register<Domain>Tools()`
+4. If it's a new domain, call `register<Domain>Tools()` from `src/index.ts`
