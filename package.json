@@ -1,6 +1,6 @@
 {
   "name": "novadb-mcp",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "MCP server for NovaDB CMS and Index APIs",
   "type": "module",
   "main": "dist/index.js",
