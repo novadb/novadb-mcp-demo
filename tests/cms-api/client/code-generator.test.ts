@@ -33,8 +33,18 @@ integrationDescribe("CmsClient (CMS API) - Code Generator", () => {
         "csharp",
       );
 
-      expect(response).toBeDefined();
-      expect(typeof response).toBe("string");
+      expect(typeof response.contentType).toBe("string");
+      expect(response.body).toBeDefined();
+
+      // Consume the stream to verify it delivers data
+      const reader = response.body.getReader();
+      let totalBytes = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.length;
+      }
+      expect(totalBytes).toBeGreaterThan(0);
     });
 
     it("filters types by IDs", async () => {
@@ -44,8 +54,18 @@ integrationDescribe("CmsClient (CMS API) - Code Generator", () => {
         { ids: `${ctx.companyTypeId},${ctx.personTypeId}` },
       );
 
-      expect(response).toBeDefined();
-      expect(typeof response).toBe("string");
+      expect(typeof response.contentType).toBe("string");
+      expect(response.body).toBeDefined();
+
+      // Consume the stream
+      const reader = response.body.getReader();
+      let totalBytes = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        totalBytes += value.length;
+      }
+      expect(totalBytes).toBeGreaterThan(0);
     });
   });
 

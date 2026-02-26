@@ -19,8 +19,8 @@ List, fetch, or download artifacts produced by a job.
 ## Tools
 
 1. `novadb_cms_get_job_artifacts` — List all artifacts for a job
-2. `novadb_cms_get_job_artifact` — Get a specific artifact by path
-3. `novadb_cms_get_job_artifacts_zip` — Download all artifacts as a ZIP (base64)
+2. `novadb_cms_get_job_artifact` — Download a specific artifact by path and save to disk
+3. `novadb_cms_get_job_artifacts_zip` — Download all artifacts as a ZIP and save to disk
 
 ## Parameters
 
@@ -35,32 +35,45 @@ List, fetch, or download artifacts produced by a job.
 ```json
 {
   "jobId": "abc-123",
-  "path": "output/report.csv"
+  "path": "output/report.csv",
+  "targetPath": "/home/user/artifacts/report.csv"
 }
 ```
+
+- `targetPath` — (Optional) Absolute path where to save. If omitted, saves to `<tmpdir>/novadb-files/job-<jobId>-artifacts/<path>`.
 
 ### Download all as ZIP
 ```json
 {
-  "jobId": "abc-123"
+  "jobId": "abc-123",
+  "targetPath": "/home/user/artifacts/all.zip"
 }
 ```
+
+- `targetPath` — (Optional) Absolute path where to save. If omitted, saves to `<tmpdir>/novadb-files/job-<jobId>-artifacts.zip`.
 
 ## Workflow
 
 1. Call `novadb_cms_get_job_artifacts` to list available artifacts
-2. To view a specific artifact, call `novadb_cms_get_job_artifact` with the artifact path
-3. To download all artifacts at once, call `novadb_cms_get_job_artifacts_zip` (returns base64-encoded ZIP)
+2. To download a specific artifact, call `novadb_cms_get_job_artifact` with the artifact path
+3. To download all artifacts at once, call `novadb_cms_get_job_artifacts_zip`
 
 ## Response
 
 - **List** — Returns an array of artifact metadata (paths, sizes, etc.)
-- **Single** — Returns the artifact content as text
-- **ZIP** — Returns base64-encoded ZIP file containing all artifacts
+- **Single / ZIP** — Returns JSON metadata:
+
+```json
+{
+  "filePath": "/tmp/novadb-files/job-abc-123-artifacts/output/report.csv",
+  "sizeBytes": 12345,
+  "contentType": "application/octet-stream"
+}
+```
 
 ## Common Patterns
 
-### API Response (GET Job Artifacts)
-- List: Returns array of artifact metadata.
-- Single artifact: Returns artifact content.
-- ZIP download: Returns base64-encoded ZIP of all artifacts.
+- Use `targetPath` to save files with meaningful names
+- Without `targetPath`, files are saved to `<os.tmpdir()>/novadb-files/`
+- Parent directories are created automatically if they don't exist
+- Read the saved file to inspect artifact contents

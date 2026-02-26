@@ -168,7 +168,8 @@ export function createCmsClient(api: ApiClient) {
       ids?: string;
     } = {}) => {
       const response = await api.getRaw(`/branches/${branch}/generators/${language}/types`, params);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     getCodeGeneratorType: async (branch: string, language: string, type: string) => {
@@ -191,7 +192,8 @@ export function createCmsClient(api: ApiClient) {
 
     getJobLogs: async (jobId: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/logs`);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     createJob: (params: {
@@ -243,26 +245,27 @@ export function createCmsClient(api: ApiClient) {
 
     getJobArtifact: async (jobId: string, path: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/artifacts/${path}`);
-      return response.text();
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     getJobArtifactsZip: async (jobId: string) => {
       const response = await api.getRaw(`/jobs/${jobId}/artifacts.zip`);
-      const buffer = await response.arrayBuffer();
-      return Buffer.from(buffer).toString("base64");
+      const contentType = response.headers.get("content-type") ?? "";
+      return { contentType, body: response.body! };
     },
 
     // --- Job Input tools ---
 
-    jobInputUpload: (file: Buffer, filename: string) => {
+    jobInputUpload: (file: Blob, filename: string) => {
       const formData = new FormData();
-      formData.append("file", new Blob([new Uint8Array(file)]), filename);
+      formData.append("file", file, filename);
       return api.postFormData("/jobInput", formData);
     },
 
-    jobInputContinue: (token: string, file: Buffer, filename: string) => {
+    jobInputContinue: (token: string, file: Blob, filename: string) => {
       const formData = new FormData();
-      formData.append("file", new Blob([new Uint8Array(file)]), filename);
+      formData.append("file", file, filename);
       return api.postFormData(`/jobInput/${token}`, formData);
     },
 
@@ -274,26 +277,27 @@ export function createCmsClient(api: ApiClient) {
     getFile: async (name: string) => {
       const response = await api.getRaw(`/files/${name}`);
       const contentType = response.headers.get("content-type") ?? "";
-      if (contentType.includes("text") || contentType.includes("json") || contentType.includes("xml")) {
-        return { type: "text" as const, data: await response.text() };
-      }
-      const buffer = await response.arrayBuffer();
-      return { type: "binary" as const, data: Buffer.from(buffer).toString("base64") };
+      const contentLength = response.headers.get("content-length");
+      return {
+        contentType,
+        contentLength: contentLength ? Number(contentLength) : undefined,
+        body: response.body!,
+      };
     },
 
-    fileUploadStart: (file: Buffer, filename: string, extension: string, commit: boolean) => {
+    fileUploadStart: (file: Blob, filename: string, extension: string, commit: boolean) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      formData.append("File", new Blob([new Uint8Array(file)]), filename);
+      formData.append("File", file, filename);
       return api.postFormData("/fileUpload", formData);
     },
 
-    fileUploadContinue: (file: Buffer, filename: string, extension: string, commit: boolean, token: string) => {
+    fileUploadContinue: (file: Blob, filename: string, extension: string, commit: boolean, token: string) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      formData.append("File", new Blob([new Uint8Array(file)]), filename);
+      formData.append("File", file, filename);
       return api.putFormData(`/fileUpload/${token}`, formData);
     },
 

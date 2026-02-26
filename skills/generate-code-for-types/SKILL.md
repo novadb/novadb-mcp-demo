@@ -7,7 +7,7 @@ allowed-tools: novadb_cms_get_code_generator_types
 
 # Generate Code for Types
 
-Generate C# code for multiple or all object types in a branch. ONLY for multi-type code generation — NOT for single-type generation or any other operations.
+Generate C# code for multiple or all object types in a branch and save to disk. ONLY for multi-type code generation — NOT for single-type generation or any other operations.
 
 ## Scope
 
@@ -19,7 +19,7 @@ Generate C# code for multiple or all object types in a branch. ONLY for multi-ty
 
 ## Tools
 
-1. `novadb_cms_get_code_generator_types` — Generate code for types
+1. `novadb_cms_get_code_generator_types` — Generate code for types and save to disk
 
 ## Parameters
 
@@ -27,13 +27,15 @@ Generate C# code for multiple or all object types in a branch. ONLY for multi-ty
 {
   "branch": "2100347",
   "language": "csharp",
-  "ids": "100,200"
+  "ids": "100,200",
+  "targetPath": "/home/user/codegen/types.cs"
 }
 ```
 
 - `branch` — Branch ID or `"draft"` (string, required)
 - `language` — **Always use `"csharp"`**. This is the only supported language. (string, required)
 - `ids` — Comma-separated type IDs to filter (optional, omit for all types)
+- `targetPath` — (Optional) Absolute path where to save the file. If omitted, saves to `<tmpdir>/novadb-files/codegen-<branch>-<language>.cs`.
 
 ## Important
 
@@ -43,7 +45,15 @@ Generate C# code for multiple or all object types in a branch. ONLY for multi-ty
 
 ## Response
 
-Returns the generated C# source code as text.
+JSON metadata object:
+
+```json
+{
+  "filePath": "/tmp/novadb-files/codegen-2100347-csharp.cs",
+  "sizeBytes": 98765,
+  "contentType": "text/plain"
+}
+```
 
 ## Common Patterns
 
@@ -53,5 +63,5 @@ Only `"csharp"` is supported. No other languages are available.
 ### Generating for All Types
 Omit the `ids` parameter to generate code for all types in the branch.
 
-### API Response
-Returns the generated C# source code as text.
+### Reading the Generated Code
+Read the saved file to inspect or process the generated C# source code.

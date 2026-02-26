@@ -24,16 +24,15 @@ Continue a chunked file upload that was started with `novadb_cms_upload_file`.
 
 ```json
 {
-  "fileBase64": "<base64-encoded-chunk>",
-  "filename": "photo.jpg",
+  "sourcePath": "/absolute/path/to/chunk-file",
   "extension": "jpg",
   "commit": false,
   "token": "<upload-token>"
 }
 ```
 
-- `fileBase64` — Base64-encoded file content chunk (required)
-- `filename` — Original filename (required)
+- `sourcePath` — Absolute path to the chunk file on disk (required)
+- `filename` — Override filename (optional, defaults to basename of sourcePath)
 - `extension` — File extension without dot (required)
 - `commit` — `true` on the **final** chunk to complete the upload, `false` otherwise (required)
 - `token` — Upload token returned by `novadb_cms_upload_file` (required)
@@ -47,10 +46,4 @@ Continue a chunked file upload that was started with `novadb_cms_upload_file`.
 ## Response
 
 - `commit: false` → acknowledgment, continue sending chunks
-- `commit: true` → `{ guid }` (file GUID for referencing)
-
-## Common Patterns
-
-### API Response (Continue Upload)
-- Intermediate chunk (commit=false): Returns acknowledgment.
-- Final chunk (commit=true): Returns `{ guid }` — the completed file identifier.
+- `commit: true` → `{ token, fileIdentifier }` (`fileIdentifier` is the hash for downloading via `get-file`)
