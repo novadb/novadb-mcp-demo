@@ -1,12 +1,19 @@
 ---
 name: create-branch
 description: "Create a new branch (work package) in NovaDB."
+user-invocable: false
 allowed-tools: novadb_cms_create_branch
 ---
 
 # Create Branch
 
 Create a new branch (work package) in NovaDB.
+
+## Scope
+
+**This skill ONLY handles:** Creating a new branch (work package) in NovaDB.
+
+**For updating existing branches** → use `update-branch`
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All IDs in examples below are samples — always use real IDs from your system.
 
@@ -58,3 +65,13 @@ Returns the created branch as a `CmsObject` with `meta` (id, guid, typeRef) and 
 ## Minimum Required
 
 Only `nameEn` (attribute 1000, language 201) is semantically required. All other fields are optional.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value, sortReverse? }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+
+### API Response (Create Branch)
+Returns the created branch as a `CmsObject` with `meta` and `values`.

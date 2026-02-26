@@ -1,12 +1,20 @@
 ---
 name: get-branch
-description: "Fetch a single branch by ID with human-readable ObjRef resolution."
+description: "Fetch a single branch by ID with resolved references."
+user-invocable: false
 allowed-tools: novadb_cms_get_branch, novadb_cms_get_objects
 ---
 
 # Get Branch
 
 Fetch a single branch by ID with human-readable ObjRef resolution.
+
+## Scope
+
+**This skill ONLY handles:** Fetching a single branch by its ID with human-readable ObjRef resolution.
+
+**For listing all branches** → use `list-branches`
+**For searching/filtering branches** → use `find-branches`
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All IDs in examples below are samples — always use real IDs from your system.
 
@@ -67,3 +75,11 @@ State: In Progress (ID: 456)
 Due: 2026-06-01
 Assigned to: jdoe
 ```
+
+## Common Patterns
+
+### ObjRef Resolution
+ObjRef values (parent, type, state, assignee) are numeric IDs. Resolve them to display names using `novadb_cms_get_objects` with `inherited: true`.
+
+### API Response (GET)
+Returns a `CmsObject` with `meta` and `values` array containing branch properties.

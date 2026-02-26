@@ -1,12 +1,20 @@
 ---
 name: upload-file
-description: "Start uploading a file to NovaDB. For single-chunk uploads, set commit=true to complete immediately."
+description: "Start a file upload to NovaDB (single-chunk or first chunk of multi-chunk)."
+user-invocable: false
 allowed-tools: novadb_cms_upload_file
 ---
 
 # Upload File
 
 Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to complete immediately.
+
+## Scope
+
+**This skill ONLY handles:** Starting a new file upload to NovaDB (single-chunk or first chunk of multi-chunk upload).
+
+**For continuing a chunked upload** → use `upload-file-continue`
+**For canceling an in-progress upload** → use `upload-file-cancel`
 
 ## Tools
 
@@ -47,3 +55,12 @@ Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to
 
 - `commit: true` → `{ guid }` (file GUID for referencing)
 - `commit: false` → `{ token }` (upload token for continuing)
+
+## Common Patterns
+
+### Base64 Encoding
+File content must be base64-encoded before upload.
+
+### API Response (Upload)
+- Single-chunk (commit=true): Returns `{ guid }` — the file identifier.
+- Multi-chunk (commit=false): Returns `{ token }` — use with `upload-file-continue`.

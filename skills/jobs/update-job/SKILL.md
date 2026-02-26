@@ -1,12 +1,19 @@
 ---
 name: update-job
-description: "Update a job's state or retention settings."
+description: "Update job state or retention settings."
+user-invocable: false
 allowed-tools: novadb_cms_update_job
 ---
 
 # Update Job
 
-Update a job's state or retention settings.
+Update job state or retention settings.
+
+## Scope
+
+**This skill ONLY handles:** Updating job state (kill/restart) or retention settings.
+
+**For full job details** → use `get-job`
 
 ## Tools
 
@@ -42,3 +49,11 @@ Other states (0=New, 1=Running, 2=Succeeded, 3=Error) are managed by the system 
 ## Response
 
 Returns the updated job object.
+
+## Common Patterns
+
+### Valid State Transitions
+Only `4` (KillRequest) and `5` (RestartRequest) can be set manually. Other states are managed by the system.
+
+### API Response (Update Job)
+Returns confirmation of the update.

@@ -24,18 +24,15 @@ writeFileSync(
   JSON.stringify(plugin, null, 2) + "\n"
 );
 
-// 4. Copy .mcp.json into plugin root
-cpSync(resolve(root, ".mcp.json"), resolve(out, ".mcp.json"));
-
-// 5. Copy skills and agents into plugin root
+// 4. Copy skills and agents into plugin root
 cpSync(resolve(root, "skills"), resolve(out, "skills"), { recursive: true });
 cpSync(resolve(root, "agents"), resolve(out, "agents"), { recursive: true });
 
-// 6. Create zip
+// 5. Create zip
 const zipFile = resolve(root, `dist/novadb-plugin-${pkg.version}.zip`);
 execSync(`zip -r "${zipFile}" .`, { cwd: out, stdio: "inherit" });
 
-// 7. Clean up intermediate directory
+// 6. Clean up intermediate directory
 rmSync(out, { recursive: true, force: true });
 
 console.log(`Plugin packed: dist/novadb-plugin-${pkg.version}.zip`);

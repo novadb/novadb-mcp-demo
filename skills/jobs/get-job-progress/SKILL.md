@@ -1,12 +1,20 @@
 ---
 name: get-job-progress
-description: "Get the current progress of a job."
+description: "Get current progress of a running job."
+user-invocable: false
 allowed-tools: novadb_cms_get_job_progress
 ---
 
 # Get Job Progress
 
-Get the current progress of a job.
+Get the current progress of a running job.
+
+## Scope
+
+**This skill ONLY handles:** Fetching the current progress of a job.
+
+**For full job details** → use `get-job`
+**For job logs** → use `get-job-logs`
 
 ## Tools
 
@@ -25,3 +33,8 @@ Get the current progress of a job.
 ## Response
 
 Returns progress information for the job (e.g. percentage complete, items processed).
+
+## Common Patterns
+
+### API Response (GET Job Progress)
+Returns progress information including percentage and items processed.

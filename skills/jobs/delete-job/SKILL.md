@@ -1,12 +1,19 @@
 ---
 name: delete-job
 description: "Delete a job by its ID."
+user-invocable: false
 allowed-tools: novadb_cms_delete_job
 ---
 
 # Delete Job
 
 Delete a job by its ID.
+
+## Scope
+
+**This skill ONLY handles:** Deleting an existing job by its ID.
+
+**For finding the job to delete** → use `get-job` or `get-jobs`
 
 ## Tools
 
@@ -26,4 +33,9 @@ Delete a job by its ID.
 
 ## Response
 
+Returns confirmation of deletion.
+
+## Common Patterns
+
+### API Response (DELETE)
 Returns confirmation of deletion.

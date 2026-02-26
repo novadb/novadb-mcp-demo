@@ -1,12 +1,20 @@
 ---
 name: job-input-upload
-description: "Upload an input file for a job. Supports chunked uploads for large files."
+description: "Upload input file for a job with chunked upload support."
+user-invocable: false
 allowed-tools: novadb_cms_job_input_upload, novadb_cms_job_input_continue, novadb_cms_job_input_cancel
 ---
 
 # Job Input Upload
 
-Upload an input file for a job. Supports chunked uploads for large files.
+Upload input file for a job with chunked upload support.
+
+## Scope
+
+**This skill ONLY handles:** Uploading input files for jobs, with support for chunked uploads.
+
+**For creating the job after upload** → use `create-job`
+**For general file uploads (not job input)** → use `upload-file`
 
 ## Tools
 
@@ -63,3 +71,15 @@ Call `novadb_cms_job_input_cancel` with the token to abort an in-progress upload
 
 - **Upload/Continue** — Returns `{ token, name }` for use with `novadb_cms_create_job`'s `inputFile` parameter
 - **Cancel** — Returns confirmation of cancellation
+
+## Common Patterns
+
+### Chunked Upload Workflow
+1. Base64-encode the file content
+2. Upload first chunk (returns `{ token, name }`)
+3. Continue with additional chunks using the token
+4. Final chunk: set `commit=true` to complete
+5. Use the returned `{ token, name }` with `create-job`'s `inputFile` parameter
+
+### API Response (Upload)
+Returns `{ token, name }` for use with create-job.

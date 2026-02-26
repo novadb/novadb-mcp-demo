@@ -1,12 +1,20 @@
 ---
 name: get-job-metrics
-description: "Get metrics (performance data points) for a job."
+description: "Get performance metric data points for a job."
+user-invocable: false
 allowed-tools: novadb_cms_get_job_metrics
 ---
 
 # Get Job Metrics
 
-Get metrics (performance data points) for a job.
+Get performance metric data points for a job.
+
+## Scope
+
+**This skill ONLY handles:** Fetching performance metric data points for a job.
+
+**For job progress** → use `get-job-progress`
+**For full job details** → use `get-job`
 
 ## Tools
 
@@ -27,3 +35,8 @@ Get metrics (performance data points) for a job.
 ## Response
 
 Returns an array of metric data points for the job.
+
+## Common Patterns
+
+### API Response (GET Job Metrics)
+Returns an array of metric data points. Use `maxItems` parameter to limit results.

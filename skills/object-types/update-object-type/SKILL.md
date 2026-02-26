@@ -1,12 +1,20 @@
 ---
 name: update-object-type
-description: "Update an object type's name or description in NovaDB."
+description: "Update name or description of an existing object type."
+user-invocable: false
 allowed-tools: novadb_cms_update_objects
 ---
 
 # Update Object Type
 
-Update an object type's name or description in NovaDB.
+Update name or description of an existing object type. ONLY for modifying type properties — NOT for creating types, adding attributes, or editing forms.
+
+## Scope
+
+**This skill ONLY handles:** Updating the name or description of an existing object type (typeRef=0).
+
+**For adding attributes to a type** → use `add-attribute-to-type`
+**For reading a type's full definition** → use `get-object-type`
 
 ## Tool
 
@@ -49,3 +57,14 @@ Build a `values` array with only the fields you want to change.
 ## Response
 
 Returns `{ updatedObjects, createdValues, transaction }`.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- Only include fields being changed; omitted fields remain unchanged.
+
+### API Response (PATCH/Update)
+Returns `{ transaction }`. Fetch the object type afterward to confirm changes.

@@ -1,10 +1,17 @@
 ---
 name: search-attributes
-description: "Search attribute definitions by name, data type, or flags using the Index API."
+description: "Search attribute definitions by name, data type, or flags via the Index API."
+user-invocable: false
 allowed-tools: novadb_index_search_objects
 ---
 
 # Search Attributes
+
+## Scope
+
+**This skill ONLY handles:** Searching and filtering attribute definitions (typeRef=10) via the Index API.
+
+**For fetching a single attribute by ID** → use `get-attribute`
 
 Search attribute definitions by name, data type, or flags using the Index API.
 
@@ -111,3 +118,11 @@ String.DataType, String.InheritanceBehavior, String.UserName, String.RGBColor
 ## Pitfall: Branch-Scoped Results
 
 Index API results are scoped to the specified branch. Attribute definitions created in a different branch may not appear. If results seem incomplete, use `novadb_cms_get_typed_objects` with `type: "typeAttributeDefinition"` to browse all attributes via the CMS API instead.
+
+## Common Patterns
+
+### Index API Branch Parameter
+The Index API requires a **numeric branch ID** (e.g., `"4"` for default). Never pass `"draft"` or named identifiers.
+
+### API Response (Index Search)
+Returns `{ totalCount, items: [{ id, values: { name, ... } }] }`. Use `skip` and `take` for pagination.

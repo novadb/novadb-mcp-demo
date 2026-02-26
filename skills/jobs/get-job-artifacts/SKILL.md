@@ -1,12 +1,20 @@
 ---
 name: get-job-artifacts
-description: "List, fetch, or download artifacts produced by a job."
+description: "List, fetch, or download job artifacts."
+user-invocable: false
 allowed-tools: novadb_cms_get_job_artifacts, novadb_cms_get_job_artifact, novadb_cms_get_job_artifacts_zip
 ---
 
 # Get Job Artifacts
 
 List, fetch, or download artifacts produced by a job.
+
+## Scope
+
+**This skill ONLY handles:** Listing job artifacts, fetching a specific artifact, or downloading all artifacts as ZIP.
+
+**For job logs** → use `get-job-logs`
+**For processed object IDs** → use `get-job-object-ids`
 
 ## Tools
 
@@ -49,3 +57,10 @@ List, fetch, or download artifacts produced by a job.
 - **List** — Returns an array of artifact metadata (paths, sizes, etc.)
 - **Single** — Returns the artifact content as text
 - **ZIP** — Returns base64-encoded ZIP file containing all artifacts
+
+## Common Patterns
+
+### API Response (GET Job Artifacts)
+- List: Returns array of artifact metadata.
+- Single artifact: Returns artifact content.
+- ZIP download: Returns base64-encoded ZIP of all artifacts.

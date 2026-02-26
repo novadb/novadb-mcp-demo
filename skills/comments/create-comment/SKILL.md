@@ -1,10 +1,17 @@
 ---
 name: create-comment
-description: "Create a new comment on an object in NovaDB."
+description: "Create a new comment on an object."
+user-invocable: false
 allowed-tools: novadb_cms_create_comment, novadb_cms_get_comment
 ---
 
 # Create Comment
+
+## Scope
+
+**This skill ONLY handles:** Creating a new comment on an object in NovaDB.
+
+**For updating existing comments** → use `update-comment`
 
 Create a new comment on an object in NovaDB.
 
@@ -50,3 +57,11 @@ The comment body **must** be valid XHTML with a `<div>` root element.
 ## Response
 
 The create call returns `{ id }`. After fetching, the full comment includes id, body, branch, object reference, author, timestamps, etc.
+
+## Common Patterns
+
+### XHTML Body Format
+Comment body must be valid XHTML with a `<div>` root element. Wrap plain text as `<div>user text</div>`.
+
+### API Response (Create Comment)
+Returns `{ id }`. Use the ID with `get-comment` to fetch the full comment data.

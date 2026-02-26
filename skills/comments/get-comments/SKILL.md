@@ -1,10 +1,17 @@
 ---
 name: get-comments
-description: "List comments with optional filters. Results are paginated."
+description: "List comments with optional filters and pagination."
+user-invocable: false
 allowed-tools: novadb_cms_get_comments
 ---
 
 # Get Comments
+
+## Scope
+
+**This skill ONLY handles:** Listing and filtering comments with pagination support.
+
+**For fetching a single comment by ID** → use `get-comment`
 
 List comments with optional filters. Results are paginated.
 
@@ -42,3 +49,11 @@ The response includes a `continue` token when more pages exist. Pass this token 
 ## Response
 
 Returns an array of comment objects, each with id, body, branch reference, object reference, author, timestamps, and deleted status.
+
+## Common Patterns
+
+### Pagination
+Uses opaque `continue` token for next page. Pass the token from the previous response to get the next page.
+
+### API Response (GET Comments)
+Returns array of comment objects with pagination. Check for `continue` token in response for more results.

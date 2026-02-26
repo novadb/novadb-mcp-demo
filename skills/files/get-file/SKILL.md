@@ -1,12 +1,19 @@
 ---
 name: get-file
-description: "Download a file from NovaDB by its name."
+description: "Download a file from NovaDB by name."
+user-invocable: false
 allowed-tools: novadb_cms_get_file
 ---
 
 # Get File
 
 Download a file from NovaDB by its name.
+
+## Scope
+
+**This skill ONLY handles:** Downloading a file from NovaDB by its GUID-based name.
+
+**For uploading files** → use `upload-file`
 
 ## Tools
 
@@ -32,3 +39,9 @@ Download a file from NovaDB by its name.
 
 - Text content: the raw file text
 - Binary content: `[base64] <base64-encoded-data>`
+
+## Common Patterns
+
+### API Response (GET File)
+- Text files: Returned as plain text content.
+- Binary files: Returned prefixed with `[base64] ` followed by base64-encoded content.

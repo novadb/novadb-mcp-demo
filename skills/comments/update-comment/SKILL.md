@@ -1,10 +1,17 @@
 ---
 name: update-comment
 description: "Update an existing comment's body text."
+user-invocable: false
 allowed-tools: novadb_cms_update_comment, novadb_cms_get_comment
 ---
 
 # Update Comment
+
+## Scope
+
+**This skill ONLY handles:** Updating the body text of an existing comment.
+
+**For creating new comments** → use `create-comment`
 
 Update an existing comment's body text.
 
@@ -46,3 +53,11 @@ The comment body **must** be valid XHTML with a `<div>` root element.
 ## Response
 
 The update call returns 204 No Content. After fetching, the full comment includes the updated body and all other comment fields.
+
+## Common Patterns
+
+### XHTML Body Format
+Comment body must be valid XHTML with a `<div>` root element. Wrap plain text as `<div>user text</div>`.
+
+### API Response (Update Comment)
+Returns 204 No Content. Fetch the comment afterward with `get-comment` to confirm changes.

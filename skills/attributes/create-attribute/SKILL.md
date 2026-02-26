@@ -1,10 +1,22 @@
 ---
 name: create-attribute
-description: "Create an attribute definition (typeRef=10) in NovaDB. Supports all data types, multi-value, ObjRef constraints, language-dependence, and optional JS validation."
+description: "Create a new attribute definition (typeRef=10) in NovaDB."
+user-invocable: false
 allowed-tools: novadb_cms_create_objects, novadb_cms_get_object
 ---
 
 # Create Attribute
+
+## Scope
+
+**This skill ONLY handles:** Creating new attribute definitions (typeRef=10).
+
+**Do NOT use this skill for:**
+- Reading/fetching existing attributes → use `get-attribute`
+- Updating existing attributes → use `update-attribute`
+- Deleting attributes → use `delete-attribute`
+- Searching for attributes → use `search-attributes`
+- Creating object types, forms, or branches → use the respective create skill
 
 Create an attribute definition (typeRef=10) in NovaDB. Supports all data types, multi-value, ObjRef constraints, language-dependence, and optional JS validation.
 
@@ -124,3 +136,19 @@ Return the fetched `CmsObject` to the user.
 - Name in English (attribute 1000, language 201)
 - Data type (attribute 1001)
 - Language dependent flag (attribute 1017)
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value, sortReverse? }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- `sortReverse`: for multi-value ordering (0, 1, 2, ...)
+
+### Multi-Value ObjRef
+Never arrays. Separate entries with sortReverse:
+- ✓ `{ attr: 1015, value: id1, sortReverse: 0 }, { attr: 1015, value: id2, sortReverse: 1 }`
+- ✗ `{ attr: 1015, value: [id1, id2] }`
+
+### API Response (POST/Create)
+Returns `{ transaction, createdObjectIds: [id] }`. Use the ID to fetch the full object.

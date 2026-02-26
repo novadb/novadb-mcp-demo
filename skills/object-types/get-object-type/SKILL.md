@@ -1,12 +1,20 @@
 ---
 name: get-object-type
-description: "Fetch an object type with all its attribute definitions resolved via forms."
+description: "Fetch an object type with all resolved attribute definitions."
+user-invocable: false
 allowed-tools: novadb_cms_get_object, novadb_cms_get_objects
 ---
 
 # Get Object Type
 
-Fetch an object type with all its attribute definitions resolved via forms. Follows the Type → Form → Attribute Definition chain.
+Fetch an object type with all resolved attribute definitions. ONLY for reading object types — NOT for creating, updating, or adding attributes.
+
+## Scope
+
+**This skill ONLY handles:** Fetching an object type and resolving its attribute definitions through the form chain.
+
+**For updating type name/description** → use `update-object-type`
+**For adding new attributes to a type** → use `add-attribute-to-type`
 
 **Don't have a type ID?** Search Application Areas (`objectTypeIds: [60]`) by domain name, then read attribute 6001 for linked type IDs.
 
@@ -73,3 +81,14 @@ Return both the object type and its resolved attribute definitions to the user.
 ## Edge Case
 
 If the type has no forms (5001/5002 values missing), return the type with an empty attribute definitions list.
+
+## Common Patterns
+
+### Type → Form → Attribute Chain
+Attribute definitions are NOT directly linked to object types. Follow: Type → Create Form (5001) / Detail Forms (5002) → Form Fields (5053) → Attribute Definitions.
+
+### ObjRef Resolution
+ObjRef values are numeric IDs. Resolve them to display names using `novadb_cms_get_objects` with `inherited: true`.
+
+### API Response (GET)
+Returns a `CmsObject` with `meta` and `values` array.

@@ -1,10 +1,18 @@
 ---
 name: create-form
-description: "Create a new form (typeRef=50) in NovaDB. Forms define which attribute fields are shown when editing objects."
+description: "Create a new form definition (typeRef=50) in NovaDB."
+user-invocable: false
 allowed-tools: novadb_cms_create_objects, novadb_cms_get_object
 ---
 
 # Create Form
+
+## Scope
+
+**This skill ONLY handles:** Creating a new form definition (typeRef=50) with initial field list.
+
+**For editing fields on an existing form** → use `set-form-fields` or `add-form-field`
+**For linking a form to an object type** → use `link-form-to-type`
 
 Create a new form (typeRef=50) in NovaDB. Forms define which attribute fields are shown when editing objects. Use `link-form-to-type` to attach the form to an object type after creation.
 
@@ -70,3 +78,19 @@ Fetch the created form with `novadb_cms_get_object` (branch, formId, inherited=t
 ## Minimum Required
 
 Only `nameEn` (attribute 1000, language 201) and `isSingleEditor` (5056, typically `false`) are required. Fields, German name, condition attribute, and API identifier are all optional.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value, sortReverse? }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- `sortReverse`: for multi-value ordering (0, 1, 2, ...)
+
+### Multi-Value ObjRef (Form Fields)
+Form content (attribute 5053) uses individual value entries, NOT arrays. Each field is a separate entry with incrementing `sortReverse`:
+- ✓ `{ attr: 5053, value: fieldId1, sortReverse: 0 }, { attr: 5053, value: fieldId2, sortReverse: 1 }`
+- ✗ `{ attr: 5053, value: [fieldId1, fieldId2] }`
+
+### API Response (POST/Create)
+Returns `{ transaction, createdObjectIds: [id] }`. Use the ID to fetch the full object.
