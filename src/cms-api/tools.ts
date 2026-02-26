@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createWriteStream } from "node:fs";
+import { createWriteStream, openAsBlob } from "node:fs";
 import { stat, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, dirname } from "node:path";
+import { join, basename, dirname } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { z } from "zod";
@@ -519,29 +519,31 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_job_input_upload",
-    "Upload a job input file (base64-encoded). Returns { token } for use in create_job's inputFile parameter.",
+    "Upload a job input file from disk. Returns { token } for use in create_job's inputFile parameter.",
     {
-      fileBase64: z.string().describe("Base64-encoded file content"),
-      filename: z.string().describe("Original filename"),
+      sourcePath: z.string().describe("Absolute path to the file on disk"),
+      filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
-    async ({ fileBase64, filename }) => {
-      const buffer = Buffer.from(fileBase64, "base64");
-      const result = await client.jobInputUpload(buffer, filename);
+    async ({ sourcePath, filename }) => {
+      const blob = await openAsBlob(sourcePath);
+      const name = filename ?? basename(sourcePath);
+      const result = await client.jobInputUpload(blob, name);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
 
   server.tool(
     "novadb_cms_job_input_continue",
-    "Continue a chunked job input upload (base64-encoded). Use token from previous upload call.",
+    "Continue a chunked job input upload from disk. Use token from previous upload call.",
     {
       token: z.string().describe("Upload token from previous upload call"),
-      fileBase64: z.string().describe("Base64-encoded file content"),
-      filename: z.string().describe("Original filename"),
+      sourcePath: z.string().describe("Absolute path to the chunk file on disk"),
+      filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
-    async ({ token, fileBase64, filename }) => {
-      const buffer = Buffer.from(fileBase64, "base64");
-      const result = await client.jobInputContinue(token, buffer, filename);
+    async ({ token, sourcePath, filename }) => {
+      const blob = await openAsBlob(sourcePath);
+      const name = filename ?? basename(sourcePath);
+      const result = await client.jobInputContinue(token, blob, name);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
   );
@@ -564,7 +566,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "novadb_cms_get_file",
     "Download a file by name and save it to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location, otherwise saves to a temp directory.",
     {
-      name: z.string().describe("File name/identifier (GUID with extension, e.g. 'abc123.png')"),
+      name: z.string().describe("File identifier returned by upload (fileIdentifier + extension, e.g. '5fe618811cca585a2826a2da06e3ce1b.png'). On existing binary objects, read attribute 11000 for the identifier and 11005 for the extension."),
       targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/<name>."),
     },
     async ({ name, targetPath }) => {
@@ -584,16 +586,17 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_upload_file",
-    "Start uploading a file (base64-encoded). Returns { token, fileIdentifier }. Set commit=true for single-chunk uploads.",
+    "Start uploading a file from disk. Returns { token, fileIdentifier }. Set commit=true for single-chunk uploads.",
     {
-      fileBase64: z.string().describe("Base64-encoded file content"),
-      filename: z.string().describe("Original filename"),
+      sourcePath: z.string().describe("Absolute path to the file on disk"),
+      filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension without dot, e.g. 'jpg', 'pdf'"),
       commit: z.boolean().describe("Whether to commit the upload immediately (true for single-chunk uploads)"),
     },
-    async ({ fileBase64, filename, extension, commit }) => {
-      const buffer = Buffer.from(fileBase64, "base64");
-      const result = await client.fileUploadStart(buffer, filename, extension, commit);
+    async ({ sourcePath, filename, extension, commit }) => {
+      const blob = await openAsBlob(sourcePath);
+      const name = filename ?? basename(sourcePath);
+      const result = await client.fileUploadStart(blob, name, extension, commit);
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };
@@ -602,17 +605,18 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_upload_file_continue",
-    "Continue a chunked file upload (base64-encoded). Set commit=true on the final chunk.",
+    "Continue a chunked file upload from disk. Set commit=true on the final chunk.",
     {
-      fileBase64: z.string().describe("Base64-encoded file content chunk"),
-      filename: z.string().describe("Original filename"),
+      sourcePath: z.string().describe("Absolute path to the chunk file on disk"),
+      filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension (e.g. 'jpg', 'pdf')"),
       commit: z.boolean().describe("Whether to commit the upload (true for the final chunk)"),
       token: z.string().describe("Upload token from the start call"),
     },
-    async ({ fileBase64, filename, extension, commit, token }) => {
-      const buffer = Buffer.from(fileBase64, "base64");
-      const result = await client.fileUploadContinue(buffer, filename, extension, commit, token);
+    async ({ sourcePath, filename, extension, commit, token }) => {
+      const blob = await openAsBlob(sourcePath);
+      const name = filename ?? basename(sourcePath);
+      const result = await client.fileUploadContinue(blob, name, extension, commit, token);
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
       };

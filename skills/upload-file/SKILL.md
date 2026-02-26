@@ -24,15 +24,14 @@ Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to
 
 ```json
 {
-  "fileBase64": "<base64-encoded-content>",
-  "filename": "photo.jpg",
+  "sourcePath": "/absolute/path/to/photo.jpg",
   "extension": "jpg",
   "commit": true
 }
 ```
 
-- `fileBase64` — File content, base64-encoded (required)
-- `filename` — Original filename (required)
+- `sourcePath` — Absolute path to the file on disk (required)
+- `filename` — Override filename (optional, defaults to basename of sourcePath)
 - `extension` — File extension **without dot** (e.g. `jpg`, `pdf`, `png`) (required)
 - `commit` — `true` for single-chunk uploads (completes immediately), `false` for chunked uploads (required)
 
@@ -40,27 +39,16 @@ Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to
 
 ### Single-chunk upload (`commit: true`)
 
-1. Base64-encode the file content
-2. Call `novadb_cms_upload_file` with `commit: true`
-3. Response returns `{ guid }` — the file identifier for use in object values
+1. Call `novadb_cms_upload_file` with the file path and `commit: true`
+2. Response returns `{ token, fileIdentifier }` — the `fileIdentifier` is the hash used to download the file via `get-file` (concatenate with extension, e.g. `5fe618811cca585a2826a2da06e3ce1b.jpg`)
 
 ### Chunked upload (`commit: false`)
 
-1. Base64-encode the first chunk
-2. Call `novadb_cms_upload_file` with `commit: false`
-3. Response returns `{ token }` — use this token with `novadb_cms_upload_file_continue` for subsequent chunks
-4. On the final chunk, call `novadb_cms_upload_file_continue` with `commit: true`
+1. Call `novadb_cms_upload_file` with the first chunk file path and `commit: false`
+2. Response returns `{ token }` — use this token with `novadb_cms_upload_file_continue` for subsequent chunks
+3. On the final chunk, call `novadb_cms_upload_file_continue` with `commit: true`
 
 ## Response
 
-- `commit: true` → `{ guid }` (file GUID for referencing)
+- `commit: true` → `{ token, fileIdentifier }` (`fileIdentifier` is the hash for downloading via `get-file`)
 - `commit: false` → `{ token }` (upload token for continuing)
-
-## Common Patterns
-
-### Base64 Encoding
-File content must be base64-encoded before upload.
-
-### API Response (Upload)
-- Single-chunk (commit=true): Returns `{ guid }` — the file identifier.
-- Multi-chunk (commit=false): Returns `{ token }` — use with `upload-file-continue`.

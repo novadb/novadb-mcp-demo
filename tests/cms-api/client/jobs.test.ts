@@ -43,8 +43,8 @@ integrationDescribe("CmsClient (CMS API) - Jobs", () => {
     let inputToken: string | undefined;
 
     it("uploads a job input file", async () => {
-      const buffer = Buffer.from("test job input content");
-      const response = await cmsClient.jobInputUpload(buffer, "test-input.txt") as Record<string, unknown>;
+      const blob = new Blob(["test job input content"]);
+      const response = await cmsClient.jobInputUpload(blob, "test-input.txt") as Record<string, unknown>;
 
       expect(response).toBeDefined();
       expect(typeof response).toBe("object");

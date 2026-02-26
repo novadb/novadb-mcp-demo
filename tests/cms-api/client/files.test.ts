@@ -23,9 +23,9 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
 
   describe("fileUploadStart", () => {
     it("starts a file upload (no commit)", async () => {
-      const buffer = Buffer.from("test file content");
+      const blob = new Blob(["test file content"]);
       const response = await cmsClient.fileUploadStart(
-        buffer,
+        blob,
         "test.jpg",
         ".jpg",
         false,
@@ -39,9 +39,9 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
     });
 
     it("uploads and commits a file in a single chunk", async () => {
-      const buffer = Buffer.from("complete file");
+      const blob = new Blob(["complete file"]);
       const response = await cmsClient.fileUploadStart(
-        buffer,
+        blob,
         "complete.jpg",
         ".jpg",
         true,
@@ -56,9 +56,9 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
     it("continues a chunked upload and commits", async () => {
       expect(uploadToken).toBeDefined();
 
-      const buffer = Buffer.from("final chunk");
+      const blob = new Blob(["final chunk"]);
       const response = await cmsClient.fileUploadContinue(
-        buffer,
+        blob,
         "test.jpg",
         ".jpg",
         true,
@@ -74,10 +74,10 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
     it("downloads a file and returns contentType and a readable body stream", async () => {
       // First upload a file to ensure one exists
       const content = "hello from getFile test";
-      const buffer = Buffer.from(content);
+      const blob = new Blob([content]);
       const ext = ".txt";
       const uploadResponse = await cmsClient.fileUploadStart(
-        buffer,
+        blob,
         "get-file-test.txt",
         ext,
         true,
@@ -87,7 +87,7 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
       const fileId = (uploadResponse.fileIdentifier ?? uploadResponse.guid) as string;
       expect(fileId).toBeDefined();
 
-      // The file name is the GUID with extension
+      // The file name is the fileIdentifier (hash) with extension
       const fileName = fileId.includes(".") ? fileId : `${fileId}${ext}`;
       const result = await cmsClient.getFile(fileName);
       expect(typeof result.contentType).toBe("string");
@@ -108,9 +108,9 @@ integrationDescribe("CmsClient (CMS API) - Files", () => {
 
   describe("fileUploadCancel", () => {
     it("starts and cancels a file upload", async () => {
-      const buffer = Buffer.from("to be cancelled");
+      const blob = new Blob(["to be cancelled"]);
       const startResponse = await cmsClient.fileUploadStart(
-        buffer,
+        blob,
         "cancel-me.jpg",
         ".jpg",
         false,

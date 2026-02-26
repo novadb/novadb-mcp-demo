@@ -27,17 +27,18 @@ Upload input file for a job with chunked upload support.
 ### Start upload
 ```json
 {
-  "fileBase64": "<base64-encoded-content>",
-  "filename": "input.csv"
+  "sourcePath": "/absolute/path/to/input.csv"
 }
 ```
+
+- `sourcePath` — Absolute path to the file on disk (required)
+- `filename` — Override filename (optional, defaults to basename of sourcePath)
 
 ### Continue upload
 ```json
 {
   "token": "upload-token-from-previous-call",
-  "fileBase64": "<base64-encoded-content>",
-  "filename": "input.csv"
+  "sourcePath": "/absolute/path/to/next-chunk"
 }
 ```
 
@@ -52,16 +53,14 @@ Upload input file for a job with chunked upload support.
 
 ### Single-chunk upload
 
-1. Base64-encode the file content
-2. Call `novadb_cms_job_input_upload` with the encoded content and filename
-3. Response returns `{ token, name }` — use these as the `inputFile` parameter when creating a job
+1. Call `novadb_cms_job_input_upload` with the file path
+2. Response returns `{ token, name }` — use these as the `inputFile` parameter when creating a job
 
 ### Chunked upload (large files)
 
-1. Base64-encode the first chunk
-2. Call `novadb_cms_job_input_upload` — response returns `{ token }`
-3. For each subsequent chunk, call `novadb_cms_job_input_continue` with the token and next chunk
-4. Use the final `{ token, name }` as the `inputFile` parameter when creating a job
+1. Call `novadb_cms_job_input_upload` with the first chunk — response returns `{ token }`
+2. For each subsequent chunk, call `novadb_cms_job_input_continue` with the token and next chunk path
+3. Use the final `{ token, name }` as the `inputFile` parameter when creating a job
 
 ### Cancel
 
@@ -71,15 +70,3 @@ Call `novadb_cms_job_input_cancel` with the token to abort an in-progress upload
 
 - **Upload/Continue** — Returns `{ token, name }` for use with `novadb_cms_create_job`'s `inputFile` parameter
 - **Cancel** — Returns confirmation of cancellation
-
-## Common Patterns
-
-### Chunked Upload Workflow
-1. Base64-encode the file content
-2. Upload first chunk (returns `{ token, name }`)
-3. Continue with additional chunks using the token
-4. Final chunk: set `commit=true` to complete
-5. Use the returned `{ token, name }` with `create-job`'s `inputFile` parameter
-
-### API Response (Upload)
-Returns `{ token, name }` for use with create-job.

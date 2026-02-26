@@ -257,15 +257,15 @@ export function createCmsClient(api: ApiClient) {
 
     // --- Job Input tools ---
 
-    jobInputUpload: (file: Buffer, filename: string) => {
+    jobInputUpload: (file: Blob, filename: string) => {
       const formData = new FormData();
-      formData.append("file", new Blob([new Uint8Array(file)]), filename);
+      formData.append("file", file, filename);
       return api.postFormData("/jobInput", formData);
     },
 
-    jobInputContinue: (token: string, file: Buffer, filename: string) => {
+    jobInputContinue: (token: string, file: Blob, filename: string) => {
       const formData = new FormData();
-      formData.append("file", new Blob([new Uint8Array(file)]), filename);
+      formData.append("file", file, filename);
       return api.postFormData(`/jobInput/${token}`, formData);
     },
 
@@ -285,19 +285,19 @@ export function createCmsClient(api: ApiClient) {
       };
     },
 
-    fileUploadStart: (file: Buffer, filename: string, extension: string, commit: boolean) => {
+    fileUploadStart: (file: Blob, filename: string, extension: string, commit: boolean) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      formData.append("File", new Blob([new Uint8Array(file)]), filename);
+      formData.append("File", file, filename);
       return api.postFormData("/fileUpload", formData);
     },
 
-    fileUploadContinue: (file: Buffer, filename: string, extension: string, commit: boolean, token: string) => {
+    fileUploadContinue: (file: Blob, filename: string, extension: string, commit: boolean, token: string) => {
       const formData = new FormData();
       formData.append("Extension", extension);
       formData.append("Commit", String(commit));
-      formData.append("File", new Blob([new Uint8Array(file)]), filename);
+      formData.append("File", file, filename);
       return api.putFormData(`/fileUpload/${token}`, formData);
     },
 
