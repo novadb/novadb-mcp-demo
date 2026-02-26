@@ -7,6 +7,13 @@ allowed-tools: novadb_index_search_objects, novadb_cms_get_typed_objects, novadb
 
 # List Branches Reference
 
+## Scope
+
+**This skill is EXCLUSIVELY a reference for:** Listing and identifying available NovaDB branches — both quick overview (Index API) and detailed listing (CMS API) approaches.
+
+**For searching/filtering branches by criteria** → see `find-branches` skill
+**For fetching a single branch by ID** → see `get-branch` skill
+
 Two approaches for listing branches: quick overview (Index API) or detailed listing (CMS API) with fully resolved references.
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

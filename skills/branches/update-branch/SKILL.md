@@ -1,12 +1,19 @@
 ---
 name: update-branch
 description: "Update properties of an existing branch."
+user-invocable: false
 allowed-tools: novadb_cms_update_branch
 ---
 
 # Update Branch
 
 Update properties of an existing branch.
+
+## Scope
+
+**This skill ONLY handles:** Updating properties (name, parent, type, state, due date, assignee) of an existing branch.
+
+**For creating new branches** → use `create-branch`
 
 ## Tool
 
@@ -49,3 +56,14 @@ Only include the fields you want to change. Omitted fields remain unchanged.
 ## Response
 
 Returns the update result (updatedObjects count, transaction).
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- Only include fields being changed; omitted fields remain unchanged.
+
+### API Response (Update Branch)
+Returns the updated branch as a `CmsObject` with `meta` and `values`.

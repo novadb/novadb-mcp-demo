@@ -7,6 +7,14 @@ allowed-tools: novadb_index_search_objects, novadb_index_count_objects, novadb_i
 
 # NovaDB Search Reference
 
+## Scope
+
+**This skill is EXCLUSIVELY a reference for:** Searching, filtering, and counting NovaDB data objects via the Index API with CMS detail resolution.
+
+**For schema browsing** → see `nova-explore` skill
+**For form configuration** → see `nova-forms` skill
+**For branch listing** → see `nova-list-branches` skill
+
 Step-by-step search workflow and complete Index API reference.
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

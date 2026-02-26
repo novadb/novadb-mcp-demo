@@ -1,10 +1,18 @@
 ---
 name: link-form-to-type
-description: "Attach a form to an object type as either a create form or a detail tab."
+description: "Attach a form to an object type as create form or detail tab."
+user-invocable: false
 allowed-tools: novadb_cms_update_objects, novadb_cms_get_object
 ---
 
 # Link Form to Type
+
+## Scope
+
+**This skill ONLY handles:** Linking an existing form to an object type as either the create form (attribute 5001) or a detail tab (attribute 5002).
+
+**For creating new forms** → use `create-form`
+**For editing form fields** → use `set-form-fields` or `add-form-field`
 
 Attach a form to an object type as either a **create form** (shown when creating new objects) or a **detail tab** (shown in the edit view).
 
@@ -74,3 +82,20 @@ Call `novadb_cms_update_objects`:
 ## Response
 
 Returns `{ updatedObjects, createdValues, transaction }`.
+
+## Common Patterns
+
+### Multi-Value ObjRef (Detail Forms)
+Detail forms (attribute 5002) use multi-value ObjRef pattern with sortReverse:
+- ✓ `{ attr: 5002, value: formId1, sortReverse: 0 }, { attr: 5002, value: formId2, sortReverse: 1 }`
+- ✗ `{ attr: 5002, value: [formId1, formId2] }`
+
+Create form (attribute 5001) is single-value — no sortReverse needed.
+
+### Read-Modify-Write Pattern (Detail Forms)
+1. Read current type to get existing detail forms from attribute 5002
+2. Append new form with next sortReverse value
+3. Send complete form list back
+
+### API Response (PATCH/Update)
+Returns `{ transaction }`. Fetch the object type afterward to confirm changes.

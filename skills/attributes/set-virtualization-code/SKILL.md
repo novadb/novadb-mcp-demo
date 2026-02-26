@@ -1,10 +1,18 @@
 ---
 name: set-virtualization-code
-description: "Set JavaScript code that computes a virtual attribute's value server-side."
+description: "Set JavaScript virtualization code on a virtual attribute."
+user-invocable: false
 allowed-tools: novadb_cms_update_objects
 ---
 
 # Set Virtualization Code
+
+## Scope
+
+**This skill ONLY handles:** Setting JavaScript virtualization code (attribute 1009) on an existing virtual attribute definition.
+
+**For validation code** → use `set-validation-code`
+**For other attribute property changes** → use `update-attribute`
 
 Set JavaScript code that computes a virtual attribute's value server-side. The attribute must have `isVirtual=true` (attribute 1020) for this code to take effect.
 
@@ -45,3 +53,13 @@ The attribute must be marked as virtual (`isVirtual=true`, attribute 1020). If i
 ## Response
 
 Returns `{ updatedObjects, createdValues, transaction }`.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value }`
+- `language`: 0=language-independent (always 0 for code attributes)
+- `variant`: 0=default
+
+### API Response (PATCH/Update)
+Returns `{ transaction }`. Fetch the object afterward to confirm changes.

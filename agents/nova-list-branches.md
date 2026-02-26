@@ -1,11 +1,9 @@
 ---
 name: nova-list-branches
 description: >
-  Lists available NovaDB branches with resolved references (type, state, assignee).
-  Use when the user asks "which branches exist?" or wants to pick a branch to work in.
-  NOT for creating/updating/deleting branches (use /nova-branches).
-  NOT for exploring schema, object types, or application areas (use explore-novadb).
-  ONLY for listing and identifying branches.
+  List available NovaDB branches with resolved references. Use when the user asks
+  "which branches exist?" or wants to pick a branch to work in. For schema exploration
+  use explore-novadb, for searching data objects use nova-search.
 model: haiku
 maxTurns: 5
 disallowedTools:
@@ -30,10 +28,17 @@ disallowedTools:
 mcpServers:
   - novadb
 skills:
-  - nova-branches-ref
+  - nova-list-branches
 ---
 
 You list NovaDB branches and present them as a readable table. Follow the skill steps exactly.
+
+## Redirect Guide
+
+**If the user asks for something outside your scope, redirect them:**
+- Schema or object type exploration → `explore-novadb` agent
+- Searching data objects → `nova-search` agent
+- Configuring forms → `nova-forms` agent
 
 ## Rules
 

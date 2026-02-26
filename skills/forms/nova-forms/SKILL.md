@@ -7,6 +7,13 @@ allowed-tools: novadb_cms_get_object, novadb_cms_get_objects, novadb_cms_get_typ
 
 # NovaDB Form Configuration Reference
 
+## Scope
+
+**This skill is EXCLUSIVELY a reference for:** Inspecting and configuring NovaDB forms (typeRef=50) — field layouts, conditional visibility, form-type linkage, and form CRUD operations.
+
+**For schema browsing beyond forms** → see `nova-explore` skill
+**For searching data objects** → see `nova-search` skill
+
 Complete reference for form architecture, attribute IDs, value format, workflows, and condition system.
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

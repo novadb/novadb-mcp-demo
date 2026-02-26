@@ -1,10 +1,17 @@
 ---
 name: delete-attribute
-description: "Soft-delete an attribute definition."
+description: "Delete an attribute definition from NovaDB."
+user-invocable: false
 allowed-tools: novadb_cms_delete_objects
 ---
 
 # Delete Attribute
+
+## Scope
+
+**This skill ONLY handles:** Deleting an existing attribute definition.
+
+**For finding the attribute to delete** → use `get-attribute` or `search-attributes`
 
 Soft-delete an attribute definition.
 
@@ -36,3 +43,8 @@ Returns `{ deletedObjects, transaction }`.
 ## Warning
 
 Deleting an attribute does NOT automatically remove it from forms. After deletion, you may need to update affected forms using the set-form-fields skill to remove references to the deleted attribute.
+
+## Common Patterns
+
+### API Response (DELETE)
+Returns `{ transaction }` confirming the deletion.

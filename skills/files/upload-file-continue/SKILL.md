@@ -1,12 +1,20 @@
 ---
 name: upload-file-continue
-description: "Continue a chunked file upload that was started with novadb_cms_upload_file."
+description: "Continue a chunked file upload with additional chunks."
+user-invocable: false
 allowed-tools: novadb_cms_upload_file_continue
 ---
 
 # Upload File Continue
 
 Continue a chunked file upload that was started with `novadb_cms_upload_file`.
+
+## Scope
+
+**This skill ONLY handles:** Sending additional chunks for an in-progress file upload.
+
+**For starting a new upload** → use `upload-file`
+**For canceling an in-progress upload** → use `upload-file-cancel`
 
 ## Tools
 
@@ -40,3 +48,9 @@ Continue a chunked file upload that was started with `novadb_cms_upload_file`.
 
 - `commit: false` → acknowledgment, continue sending chunks
 - `commit: true` → `{ guid }` (file GUID for referencing)
+
+## Common Patterns
+
+### API Response (Continue Upload)
+- Intermediate chunk (commit=false): Returns acknowledgment.
+- Final chunk (commit=true): Returns `{ guid }` — the completed file identifier.

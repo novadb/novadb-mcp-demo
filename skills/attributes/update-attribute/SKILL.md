@@ -1,10 +1,21 @@
 ---
 name: update-attribute
-description: "Update properties of an existing attribute definition (typeRef=10). Only send changed fields."
+description: "Update properties of an existing attribute definition (typeRef=10)."
+user-invocable: false
 allowed-tools: novadb_cms_update_objects
 ---
 
 # Update Attribute
+
+## Scope
+
+**This skill ONLY handles:** Updating properties of an existing attribute definition (typeRef=10).
+
+**Do NOT use this skill for:**
+- Creating new attributes → use `create-attribute`
+- Fetching/reading attributes → use `get-attribute`
+- Deleting attributes → use `delete-attribute`
+- Searching for attributes → use `search-attributes`
 
 Update properties of an existing attribute definition (typeRef=10). Only send changed fields.
 
@@ -81,3 +92,19 @@ Returns `{ updatedObjects, createdValues, transaction }`.
 
 - `apiIdentifier` is immutable after creation — it cannot be changed via update.
 - Only provide fields that are changing. Omitted fields are untouched.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value, sortReverse? }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- `sortReverse`: for multi-value ordering (0, 1, 2, ...)
+
+### Multi-Value ObjRef
+Never arrays. Separate entries with sortReverse:
+- ✓ `{ attr: 1015, value: id1, sortReverse: 0 }, { attr: 1015, value: id2, sortReverse: 1 }`
+- ✗ `{ attr: 1015, value: [id1, id2] }`
+
+### API Response (PATCH/Update)
+Returns `{ transaction }`. Fetch the object afterward to confirm changes.

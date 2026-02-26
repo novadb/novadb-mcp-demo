@@ -1,12 +1,20 @@
 ---
 name: add-attribute-to-type
-description: "Create a new attribute definition and add it to all forms of an existing object type."
+description: "Create a new attribute and add it to all forms of an existing type."
+user-invocable: false
 allowed-tools: novadb_cms_get_object, novadb_cms_create_objects, novadb_cms_update_objects
 ---
 
 # Add Attribute to Type
 
-Create a new attribute definition and add it to all forms of an existing object type. The type must already have a create form.
+Create a new attribute and add it to all forms of an existing type. ONLY for adding attributes to existing types — NOT for creating types, updating type properties, or editing forms directly.
+
+## Scope
+
+**This skill ONLY handles:** Creating a new attribute definition and adding it to all forms of an existing object type.
+
+**For creating a standalone attribute** → use `create-attribute`
+**For reading a type's current attributes** → use `get-object-type`
 
 ## Tools Used
 
@@ -95,3 +103,24 @@ Then repeat for each **detail form** (from attribute 5002) that differs from the
 ## Result
 
 Fetch the newly created attribute definition with `novadb_cms_get_object` and return it to the user along with the form ID it was added to.
+
+## Common Patterns
+
+### CmsValue Format
+Every value entry follows: `{ attribute, language, variant, value, sortReverse? }`
+- `language`: 201=EN, 202=DE, 0=language-independent
+- `variant`: 0=default
+- `sortReverse`: for multi-value ordering (0, 1, 2, ...)
+
+### Multi-Value ObjRef (Form Fields)
+Form content (attribute 5053) uses individual value entries, NOT arrays:
+- `{ attr: 5053, value: fieldId1, sortReverse: 0 }, { attr: 5053, value: fieldId2, sortReverse: 1 }`
+- `{ attr: 5053, value: [fieldId1, fieldId2] }`
+
+### Read-Modify-Write Pattern
+1. Read current form to get existing fields from attribute 5053
+2. Append new attribute with next sortReverse value
+3. Send complete field list back
+
+### API Response (POST/Create)
+Returns `{ transaction, createdObjectIds: [id] }`. Use the ID to fetch the full attribute.

@@ -1,6 +1,6 @@
 ---
 name: nova-find-branches
-description: "Branch search and filter reference — search parameters, attribute filters, sorting, and statistics."
+description: "Search and filter branches via the Index API."
 user-invocable: false
 allowed-tools: novadb_index_search_objects, novadb_index_count_objects, novadb_index_object_occurrences
 ---
@@ -8,6 +8,13 @@ allowed-tools: novadb_index_search_objects, novadb_index_count_objects, novadb_i
 # Find Branches Reference
 
 Search for branches by name, assigned user, parent, or other criteria using the Index API.
+
+## Scope
+
+**This skill ONLY handles:** Searching and filtering branches by criteria (name, assignee, parent, state) via the Index API.
+
+**For a quick overview of all branches** → use `list-branches`
+**For fetching a single branch by ID** → use `get-branch`
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.
 >
@@ -188,3 +195,11 @@ Use `novadb_index_object_occurrences` to get faceted counts without fetching all
 ```
 
 Returns counts per user who last modified branches — useful for dashboards and summaries.
+
+## Common Patterns
+
+### Index API Branch Parameter
+The Index API requires a **numeric branch ID**. Use `"4"` (Default branch) to search all branches since branches are stored in the default branch.
+
+### API Response (Index Search)
+Returns `{ totalCount, items: [{ id, values: { name, ... } }] }`. Use `skip` and `take` for pagination.

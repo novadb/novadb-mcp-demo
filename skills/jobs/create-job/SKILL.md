@@ -1,12 +1,20 @@
 ---
 name: create-job
 description: "Create and start a new job on a branch."
+user-invocable: false
 allowed-tools: novadb_cms_create_job, novadb_cms_get_job
 ---
 
 # Create Job
 
 Create and start a new job on a branch. After creation, auto-fetch the full job object.
+
+## Scope
+
+**This skill ONLY handles:** Creating and starting a new job on a branch.
+
+**For uploading job input files first** → use `job-input-upload`
+**For monitoring after creation** → use `get-job-progress` or `get-job-logs`
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All IDs in examples below are samples — always use real IDs from your system.
 
@@ -49,3 +57,11 @@ Create and start a new job on a branch. After creation, auto-fetch the full job 
 ## Response
 
 The create call returns `{ id }`. After fetching, the full job includes id, state, definition, branch, progress, timestamps, etc.
+
+## Common Patterns
+
+### API Response (Create Job)
+Returns job creation result. Use `get-job` to fetch the full job object with state and progress.
+
+### Job States
+0=New, 1=Running, 2=Succeeded, 3=Error, 4=KillRequested, 5=RestartRequested.

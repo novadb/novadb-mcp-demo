@@ -1,10 +1,18 @@
 ---
 name: add-form-field
-description: "Append an attribute definition to the end of a form's field list without replacing existing fields."
+description: "Append a single attribute definition to a form's field list."
+user-invocable: false
 allowed-tools: novadb_cms_get_object, novadb_cms_update_objects
 ---
 
 # Add Form Field
+
+## Scope
+
+**This skill ONLY handles:** Appending a single attribute definition to an existing form's field list without replacing other fields.
+
+**For replacing all fields at once** → use `set-form-fields`
+**For reading a form's current fields** → use `get-form`
 
 Append an attribute definition to the end of a form's field list without replacing existing fields.
 
@@ -65,3 +73,19 @@ Call `novadb_cms_update_objects`:
 ## Response
 
 Returns `{ updatedObjects, createdValues, transaction }`.
+
+## Common Patterns
+
+### Multi-Value ObjRef (Form Fields)
+Form content (attribute 5053) uses individual value entries, NOT arrays. Each field is a separate entry with incrementing `sortReverse`:
+- ✓ `{ attr: 5053, value: fieldId1, sortReverse: 0 }, { attr: 5053, value: fieldId2, sortReverse: 1 }`
+- ✗ `{ attr: 5053, value: [fieldId1, fieldId2] }`
+
+### Read-Modify-Write Pattern
+1. Read current form to get existing fields from attribute 5053
+2. Extract existing field IDs and their sortReverse values
+3. Append new field with next sortReverse value
+4. Send complete field list (existing + new) back
+
+### API Response (PATCH/Update)
+Returns `{ transaction }`. Fetch the form afterward to confirm changes.

@@ -7,6 +7,14 @@ allowed-tools: novadb_cms_get_object, novadb_cms_get_objects, novadb_cms_get_typ
 
 # NovaDB Schema Exploration Reference
 
+## Scope
+
+**This skill is EXCLUSIVELY a reference for:** Read-only NovaDB schema browsing — object types, attribute definitions, forms, application areas, and configuration discovery.
+
+**For searching data objects** → see `nova-search` skill
+**For form configuration** → see `nova-forms` skill
+**For branch listing** → see `nova-list-branches` skill
+
 Full API reference for read-only schema browsing. All tools, parameters, attribute tables, and discovery strategies.
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All numeric IDs in examples are samples — always use real IDs from the target system.

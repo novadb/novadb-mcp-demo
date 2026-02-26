@@ -1,12 +1,19 @@
 ---
 name: get-jobs
 description: "List jobs for a branch with optional filters and pagination."
+user-invocable: false
 allowed-tools: novadb_cms_get_jobs
 ---
 
 # Get Jobs
 
 List jobs for a branch with optional filters and pagination.
+
+## Scope
+
+**This skill ONLY handles:** Listing and filtering jobs for a branch with pagination support.
+
+**For fetching a single job by ID** → use `get-job`
 
 > **Note:** NovaDB object IDs start at 2²¹ (2,097,152). All IDs in examples below are samples — always use real IDs from your system.
 
@@ -56,3 +63,11 @@ The response includes a `continue` token when more pages exist. Pass this token 
 ## Response
 
 Returns `{ jobs: [...], continue?: "token" }`.
+
+## Common Patterns
+
+### Pagination
+Uses opaque `continue` token for next page. Pass the token from the previous response to get the next page.
+
+### API Response (GET Jobs)
+Returns `{ jobs: [...], continue?: "token" }`. Check for `continue` token for more results.
