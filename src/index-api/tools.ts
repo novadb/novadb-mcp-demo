@@ -48,9 +48,9 @@ const commentFilterSchema = z.object({
 export function registerIndexTools(server: McpServer, client: IndexClient) {
   server.tool(
     "novadb_index_search_objects",
-    "Search objects via Index API with full-text search, attribute filters, sorting, and pagination (default: 5 results). Use filter.searchPhrase for quick text search or filter.filters[] for attribute-level conditions.",
+    "Search objects via Index API with full-text search, attribute filters, sorting, and pagination (default: 5 results). Use filter.searchPhrase for quick text search or filter.filters[] for attribute-level conditions. For large result sets, use novadb_index_count_objects first to check total count. Results are summaries only — use novadb_cms_get_object with inherited=true for full attribute values.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: objectFilterSchema,
       sortBy: z.array(objectSortBySchema).optional().describe("Sort criteria (multiple fields supported)"),
       skip: z.number().optional().describe("Number of results to skip"),
@@ -64,9 +64,9 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
 
   server.tool(
     "novadb_index_count_objects",
-    "Count objects matching a filter. Use before search to check result set size.",
+    "Count objects matching a filter. Use before novadb_index_search_objects to check result set size and decide on pagination strategy.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: objectFilterSchema,
     },
     async ({ branch, filter }) => {
@@ -77,9 +77,9 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
 
   server.tool(
     "novadb_index_object_occurrences",
-    "Get faceted counts (by type, modifiedBy, deleted) for objects matching a filter. Useful for analytics and dashboards.",
+    "Get faceted counts (by type, modifiedBy, deleted) for objects matching a filter. Useful for understanding data distribution before searching with novadb_index_search_objects.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: objectFilterSchema,
       getModifiedByOccurrences: z.boolean().optional().describe("Include modifiedBy facet counts"),
       getTypeOccurrences: z.boolean().optional().describe("Include object type facet counts"),
@@ -99,7 +99,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
     "novadb_index_suggestions",
     "Type-ahead autocomplete from the search index. Returns matching display names or attribute values.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       pattern: z.string().optional().describe("Search pattern for suggestions"),
       suggestDisplayName: z.boolean().optional().describe("Include display name suggestions (default: true)"),
       suggestAttributes: z.array(z.object({
@@ -126,7 +126,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
     "novadb_index_search_comments",
     "Search comments by text, author, or mentioned user. Returns comment objects with pagination.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: commentFilterSchema,
       sortField: z.number().optional().describe("Sort field: 0=Id, 1=User, 2=Created, 3=Modified, 4=ObjectId, 5=ObjectType"),
       sortReverse: z.boolean().optional().describe("Reverse sort order"),
@@ -144,7 +144,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
     "novadb_index_count_comments",
     "Count comments matching a filter via the Index API.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: commentFilterSchema,
     },
     async ({ branch, filter }) => {
@@ -170,7 +170,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
     "novadb_index_comment_occurrences",
     "Get facet counts for comments (by user, mentioned users, object types) matching a filter.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       filter: commentFilterSchema,
       getUserOccurrences: z.boolean().optional().describe("Include user facet counts"),
       getMentionedUsersOccurrences: z.boolean().optional().describe("Include mentioned users facet counts"),
@@ -190,7 +190,7 @@ export function registerIndexTools(server: McpServer, client: IndexClient) {
     "novadb_index_object_xml_link_count",
     "Count objects with XML attributes (SimpleHtml/VisualDocument) linking to given object IDs. Use to check reference usage before deletion.",
     {
-      branch: z.string().describe("Branch ID"),
+      branch: z.string().describe("Numeric branch ID as string (e.g. '2100347'). Never 'draft' or 'branchDefault' — Index API only accepts numeric IDs."),
       objectIds: z.array(z.number()).describe("Object IDs to search for in XML links"),
     },
     async ({ branch, objectIds }) => {

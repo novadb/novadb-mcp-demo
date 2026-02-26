@@ -34,7 +34,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       id: z.string().describe("Object ID, GUID, or ApiIdentifier"),
-      inherited: z.boolean().optional().describe("Include inherited values (default: false)"),
+      inherited: z.boolean().optional().describe("Include inherited values (default: false). Recommended: always set to true to avoid missing data."),
       attributes: z.string().optional().describe("Comma-separated attribute IDs/GUIDs/ApiIdentifiers to filter"),
       variants: z.string().optional().describe("Comma-separated variant IDs/GUIDs/ApiIdentifiers to filter"),
       languages: z.string().optional().describe("Comma-separated language IDs/GUIDs/ApiIdentifiers to filter"),
@@ -51,7 +51,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       ids: z.string().describe("Comma-separated object IDs, GUIDs, or ApiIdentifiers"),
-      inherited: z.boolean().optional().describe("Include inherited values (default: false)"),
+      inherited: z.boolean().optional().describe("Include inherited values (default: false). Recommended: always set to true to avoid missing data."),
       attributes: z.string().optional().describe("Comma-separated attribute IDs to filter"),
       variants: z.string().optional().describe("Comma-separated variant IDs to filter"),
       languages: z.string().optional().describe("Comma-separated language IDs to filter"),
@@ -64,12 +64,12 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_typed_objects",
-    "List objects of a specific type with pagination (default: 5 results). Use 'continue' token for next page. Limit meta-types (typeRef=0) with 'attributes' and small 'take'.",
+    "List objects of a specific type with pagination (default: 5 results). Best for schema browsing (types, attributes, forms) — for searching data objects, prefer novadb_index_search_objects instead. Use 'continue' token for next page. Limit meta-types (typeRef=0) with 'attributes' and small 'take'.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       type: z.string().describe("Object type ID, GUID, or ApiIdentifier"),
       deleted: z.boolean().optional().describe("Filter by deleted status"),
-      inherited: z.boolean().optional().describe("Include inherited values (default: false)"),
+      inherited: z.boolean().optional().describe("Include inherited values (default: false). Recommended: always set to true to avoid missing data."),
       continue: z.string().optional().describe("Opaque continuation token from previous response's 'continue' field. Omit for first page."),
       take: z.number().optional().describe("Page size (default: 5). Response includes 'continue' token when more pages exist."),
       attributes: z.string().optional().describe("Comma-separated attribute IDs to filter"),
@@ -86,7 +86,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_create_objects",
-    "Create one or more objects. Each needs meta.typeRef and values[]. For multi-value ObjRef attributes, send separate CmsValue entries with sortReverse 0, 1, 2... (not arrays). Returns { createdObjectIds: number[] } — use get_object to fetch full data after creation.",
+    "Create one or more objects. Each requires meta.typeRef (the object type ID) and values[]. For multi-value ObjRef attributes, send separate CmsValue entries with sortReverse 0, 1, 2... (not arrays). For language-dependent attributes (e.g. name attr 1000), send separate entries per language (201=EN, 202=DE). Returns { createdObjectIds: number[] } — use get_object to fetch full data after creation.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       objects: z.array(cmsObjectSchema).describe("Objects to create"),
@@ -101,7 +101,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_update_objects",
-    "Update one or more objects. Each needs meta.id (or meta.guid) and values[] to set. Returns { updatedObjects: number, createdValues: number }. Only provided values are changed, but for multi-value attributes send the COMPLETE set (omitted entries are deleted).",
+    "Update one or more objects. Each needs meta.id (or meta.guid), meta.typeRef, and values[] to set. IMPORTANT: For multi-value attributes, read the object first (get_object with inherited=true) then send the COMPLETE value set — omitted entries are deleted. Only single-value attributes can be sent in isolation. Returns { updatedObjects, createdValues }.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       objects: z.array(cmsObjectSchema).describe("Objects to update (must include meta.id or meta.guid)"),
@@ -116,7 +116,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_delete_objects",
-    "Soft-delete objects by IDs. Returns { deletedObjects: number }.",
+    "Soft-delete objects by IDs (can be restored). Consider using novadb_index_object_xml_link_count first to check for references. Returns { deletedObjects: number }.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       objectIds: z.array(z.string()).describe("Object IDs, GUIDs, or ApiIdentifiers to delete"),
@@ -133,7 +133,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_branch",
-    "Fetch a single branch by ID. Returns a raw CmsObject with meta and values. Use attribute IDs 1000 (name), 4000-4004 (branch properties) to interpret values.",
+    "Fetch a single branch by ID. Returns a CmsObject with meta and values. Key attributes: 1000 (name, language-dependent), 4000 (parent branch), 4001 (branch type), 4002 (workflow state), 4003 (due date), 4004 (assigned to).",
     {
       id: z.string().describe("Branch ID or 'draft'"),
       attributes: z.string().optional().describe("Comma-separated attribute IDs/GUIDs/ApiIdentifiers to filter"),
@@ -193,7 +193,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_comments",
-    "List comments with optional filters (branch, object, user, deleted status). Paginated via 'continue' token.",
+    "List comments with optional filters (branch, object, user, deleted status). Paginated via 'continue' token (default: 5 results). Returns comment body as XHTML, author, and timestamps.",
     {
       branchRef: z.number().optional().describe("Filter by branch ID"),
       objectRef: z.number().optional().describe("Filter by object ID"),
@@ -210,7 +210,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_comment",
-    "Fetch a single comment by ID.",
+    "Fetch a single comment by ID. Returns comment body as XHTML (with <div> root), author, timestamps, and object reference.",
     {
       commentId: z.string().describe("Comment ID"),
     },
@@ -251,7 +251,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_delete_comment",
-    "Delete a comment by ID. Returns 204 No Content.",
+    "Permanently delete a comment by ID. Returns 204 No Content.",
     {
       commentId: z.string().describe("Comment ID"),
       username: z.string().optional().describe("Acting username for audit"),
@@ -266,7 +266,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_code_generator_types",
-    "Generate C# code for types in a branch. Only 'csharp' is supported as language.",
+    "Generate C# typed model classes for object types in a branch. Returns source code with strongly-typed properties. Only 'csharp' is supported.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       language: z.string().describe("Programming language. Only 'csharp' is supported."),
@@ -280,7 +280,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_get_code_generator_type",
-    "Generate C# code for a single type. Only 'csharp' is supported as language.",
+    "Generate a C# typed model class for a single object type. Returns source code with strongly-typed properties. Only 'csharp' is supported.",
     {
       branch: z.string().describe("Branch ID or 'draft'"),
       language: z.string().describe("Programming language. Only 'csharp' is supported."),
@@ -404,7 +404,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
 
   server.tool(
     "novadb_cms_delete_job",
-    "Delete a job and its artifacts.",
+    "Permanently delete a job and its artifacts. Cannot be undone.",
     {
       jobId: z.string().describe("Job ID"),
       username: z.string().optional().describe("Acting username for audit"),
