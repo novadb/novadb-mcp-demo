@@ -42,7 +42,14 @@ async function streamToDisk(
 }
 
 function resolvePath(workspaceDir: string, path: string): string {
-  return isAbsolute(path) ? path : join(workspaceDir, path);
+  if (isAbsolute(path) || /^[a-zA-Z]:/.test(path)) {
+    throw new Error(`Absolute paths are not allowed. Use a relative path within the workspace directory.`);
+  }
+  const resolved = join(workspaceDir, path);
+  if (!resolved.startsWith(workspaceDir)) {
+    throw new Error(`Path must not escape the workspace directory.`);
+  }
+  return resolved;
 }
 
 export function registerCmsTools(server: McpServer, client: CmsClient, workspaceDir: string) {
@@ -291,7 +298,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
       branch: z.string().describe("Branch ID or 'draft'"),
       language: z.string().describe("Programming language. Only 'csharp' is supported."),
       ids: z.string().optional().describe("Comma-separated type IDs to filter"),
-      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to codegen-<branch>-<language>.cs."),
+      targetPath: z.string().optional().describe("Relative filename within the workspace directory. Absolute paths are not allowed. If omitted, saves to codegen-<branch>-<language>.cs."),
     },
     async ({ branch, language, ids, targetPath }) => {
       const result = await client.getCodeGeneratorTypes(branch, language, { ids });
@@ -358,7 +365,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "Fetch execution logs for a job and save to disk. Returns metadata (file path, size, content type) instead of log content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
-      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-logs.txt."),
+      targetPath: z.string().optional().describe("Relative filename within the workspace directory. Absolute paths are not allowed. If omitted, saves to job-<jobId>-logs.txt."),
     },
     async ({ jobId, targetPath }) => {
       const result = await client.getJobLogs(jobId);
@@ -483,7 +490,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     {
       jobId: z.string().describe("Job ID"),
       path: z.string().describe("Artifact path"),
-      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-artifacts/<path>."),
+      targetPath: z.string().optional().describe("Relative filename within the workspace directory. Absolute paths are not allowed. If omitted, saves to job-<jobId>-artifacts/<path>."),
     },
     async ({ jobId, path, targetPath }) => {
       const result = await client.getJobArtifact(jobId, path);
@@ -503,7 +510,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "Download all job artifacts as a ZIP and save to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
-      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-artifacts.zip."),
+      targetPath: z.string().optional().describe("Relative filename within the workspace directory. Absolute paths are not allowed. If omitted, saves to job-<jobId>-artifacts.zip."),
     },
     async ({ jobId, targetPath }) => {
       const result = await client.getJobArtifactsZip(jobId);
@@ -524,7 +531,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "novadb_cms_job_input_upload",
     "Upload a job input file from disk. Returns { token } for use in create_job's inputFile parameter.",
     {
-      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
+      sourcePath: z.string().describe("Relative filename within the workspace directory. Absolute paths are not allowed."),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
     async ({ sourcePath, filename }) => {
@@ -541,7 +548,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "Continue a chunked job input upload from disk. Use token from previous upload call.",
     {
       token: z.string().describe("Upload token from previous upload call"),
-      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
+      sourcePath: z.string().describe("Relative filename within the workspace directory. Absolute paths are not allowed."),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
     async ({ token, sourcePath, filename }) => {
@@ -572,7 +579,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "Download a file by name and save it to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location, otherwise saves to a temp directory.",
     {
       name: z.string().describe("File identifier returned by upload (fileIdentifier + extension, e.g. '5fe618811cca585a2826a2da06e3ce1b.png'). On existing binary objects, read attribute 11000 for the identifier and 11005 for the extension."),
-      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to <name> in workspace directory."),
+      targetPath: z.string().optional().describe("Relative filename within the workspace directory. Absolute paths are not allowed. If omitted, saves to <name> in workspace directory."),
     },
     async ({ name, targetPath }) => {
       const result = await client.getFile(name);
@@ -593,7 +600,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "novadb_cms_upload_file",
     "Start uploading a file from disk. Returns { token, fileIdentifier }. Set commit=true for single-chunk uploads.",
     {
-      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
+      sourcePath: z.string().describe("Relative filename within the workspace directory. Absolute paths are not allowed."),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension without dot, e.g. 'jpg', 'pdf'"),
       commit: z.boolean().describe("Whether to commit the upload immediately (true for single-chunk uploads)"),
@@ -613,7 +620,7 @@ export function registerCmsTools(server: McpServer, client: CmsClient, workspace
     "novadb_cms_upload_file_continue",
     "Continue a chunked file upload from disk. Set commit=true on the final chunk.",
     {
-      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
+      sourcePath: z.string().describe("Relative filename within the workspace directory. Absolute paths are not allowed."),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension (e.g. 'jpg', 'pdf')"),
       commit: z.boolean().describe("Whether to commit the upload (true for the final chunk)"),
