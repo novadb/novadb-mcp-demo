@@ -21,7 +21,8 @@
         "NOVA_CMS_USER": "${user_config.NOVA_CMS_USER}",
         "NOVA_CMS_PASSWORD": "${user_config.NOVA_CMS_PASSWORD}",
         "NOVA_INDEX_USER": "${user_config.NOVA_INDEX_USER}",
-        "NOVA_INDEX_PASSWORD": "${user_config.NOVA_INDEX_PASSWORD}"
+        "NOVA_INDEX_PASSWORD": "${user_config.NOVA_INDEX_PASSWORD}",
+        "WORKSPACE_DIR": "${user_config.WORKSPACE_DIR}"
       }
     }
   },
@@ -60,6 +61,13 @@
       "description": "Password for the Index connection",
       "required": true,
       "sensitive": true
+    },
+    "WORKSPACE_DIR": {
+      "type": "directory",
+      "title": "Workspace Directory",
+      "description": "Directory that you have also shared in Cowork",
+      "required": false,
+      "default": "${HOME}/Documents/NovaDB"
     }
   },
   "keywords": ["NovaDB", "Nova", "CMS", "PIM", "DAM"],

@@ -1,8 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createWriteStream, openAsBlob } from "node:fs";
 import { stat, mkdir } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join, basename, dirname } from "node:path";
+import { join, basename, dirname, isAbsolute } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { z } from "zod";
@@ -42,7 +41,11 @@ async function streamToDisk(
   return size;
 }
 
-export function registerCmsTools(server: McpServer, client: CmsClient) {
+function resolvePath(workspaceDir: string, path: string): string {
+  return isAbsolute(path) ? path : join(workspaceDir, path);
+}
+
+export function registerCmsTools(server: McpServer, client: CmsClient, workspaceDir: string) {
   // --- Read tools ---
 
   server.tool(
@@ -288,11 +291,11 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
       branch: z.string().describe("Branch ID or 'draft'"),
       language: z.string().describe("Programming language. Only 'csharp' is supported."),
       ids: z.string().optional().describe("Comma-separated type IDs to filter"),
-      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/codegen-<branch>-<language>.cs."),
+      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to codegen-<branch>-<language>.cs."),
     },
     async ({ branch, language, ids, targetPath }) => {
       const result = await client.getCodeGeneratorTypes(branch, language, { ids });
-      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `codegen-${branch}-${language}.cs`);
+      const filePath = resolvePath(workspaceDir, targetPath ?? `codegen-${branch}-${language}.cs`);
       const sizeBytes = await streamToDisk(result.body, filePath);
       const metadata = {
         filePath,
@@ -355,11 +358,11 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "Fetch execution logs for a job and save to disk. Returns metadata (file path, size, content type) instead of log content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
-      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-logs.txt."),
+      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-logs.txt."),
     },
     async ({ jobId, targetPath }) => {
       const result = await client.getJobLogs(jobId);
-      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-logs.txt`);
+      const filePath = resolvePath(workspaceDir, targetPath ?? `job-${jobId}-logs.txt`);
       const sizeBytes = await streamToDisk(result.body, filePath);
       const metadata = {
         filePath,
@@ -480,11 +483,11 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     {
       jobId: z.string().describe("Job ID"),
       path: z.string().describe("Artifact path"),
-      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-artifacts/<path>."),
+      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-artifacts/<path>."),
     },
     async ({ jobId, path, targetPath }) => {
       const result = await client.getJobArtifact(jobId, path);
-      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-artifacts`, path);
+      const filePath = resolvePath(workspaceDir, targetPath ?? join(`job-${jobId}-artifacts`, path));
       const sizeBytes = await streamToDisk(result.body, filePath);
       const metadata = {
         filePath,
@@ -500,11 +503,11 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "Download all job artifacts as a ZIP and save to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location.",
     {
       jobId: z.string().describe("Job ID"),
-      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/job-<jobId>-artifacts.zip."),
+      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to job-<jobId>-artifacts.zip."),
     },
     async ({ jobId, targetPath }) => {
       const result = await client.getJobArtifactsZip(jobId);
-      const filePath = targetPath ?? join(tmpdir(), "novadb-files", `job-${jobId}-artifacts.zip`);
+      const filePath = resolvePath(workspaceDir, targetPath ?? `job-${jobId}-artifacts.zip`);
       const sizeBytes = await streamToDisk(result.body, filePath);
       const metadata = {
         filePath,
@@ -521,12 +524,13 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "novadb_cms_job_input_upload",
     "Upload a job input file from disk. Returns { token } for use in create_job's inputFile parameter.",
     {
-      sourcePath: z.string().describe("Absolute path to the file on disk"),
+      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
     async ({ sourcePath, filename }) => {
-      const blob = await openAsBlob(sourcePath);
-      const name = filename ?? basename(sourcePath);
+      const resolved = resolvePath(workspaceDir, sourcePath);
+      const blob = await openAsBlob(resolved);
+      const name = filename ?? basename(resolved);
       const result = await client.jobInputUpload(blob, name);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
@@ -537,12 +541,13 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "Continue a chunked job input upload from disk. Use token from previous upload call.",
     {
       token: z.string().describe("Upload token from previous upload call"),
-      sourcePath: z.string().describe("Absolute path to the chunk file on disk"),
+      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
     },
     async ({ token, sourcePath, filename }) => {
-      const blob = await openAsBlob(sourcePath);
-      const name = filename ?? basename(sourcePath);
+      const resolved = resolvePath(workspaceDir, sourcePath);
+      const blob = await openAsBlob(resolved);
+      const name = filename ?? basename(resolved);
       const result = await client.jobInputContinue(token, blob, name);
       return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
     }
@@ -567,11 +572,11 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "Download a file by name and save it to disk. Returns metadata (file path, size, content type) instead of file content. Use targetPath to save to a meaningful location, otherwise saves to a temp directory.",
     {
       name: z.string().describe("File identifier returned by upload (fileIdentifier + extension, e.g. '5fe618811cca585a2826a2da06e3ce1b.png'). On existing binary objects, read attribute 11000 for the identifier and 11005 for the extension."),
-      targetPath: z.string().optional().describe("Absolute path where to save the file. If omitted, saves to <tmpdir>/novadb-files/<name>."),
+      targetPath: z.string().optional().describe("Relative filename (resolved within workspace directory) or absolute path. If omitted, saves to <name> in workspace directory."),
     },
     async ({ name, targetPath }) => {
       const result = await client.getFile(name);
-      const filePath = targetPath ?? join(tmpdir(), "novadb-files", name);
+      const filePath = resolvePath(workspaceDir, targetPath ?? name);
       const sizeBytes = await streamToDisk(result.body, filePath);
       const metadata = {
         filePath,
@@ -588,14 +593,15 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "novadb_cms_upload_file",
     "Start uploading a file from disk. Returns { token, fileIdentifier }. Set commit=true for single-chunk uploads.",
     {
-      sourcePath: z.string().describe("Absolute path to the file on disk"),
+      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension without dot, e.g. 'jpg', 'pdf'"),
       commit: z.boolean().describe("Whether to commit the upload immediately (true for single-chunk uploads)"),
     },
     async ({ sourcePath, filename, extension, commit }) => {
-      const blob = await openAsBlob(sourcePath);
-      const name = filename ?? basename(sourcePath);
+      const resolved = resolvePath(workspaceDir, sourcePath);
+      const blob = await openAsBlob(resolved);
+      const name = filename ?? basename(resolved);
       const result = await client.fileUploadStart(blob, name, extension, commit);
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
@@ -607,15 +613,16 @@ export function registerCmsTools(server: McpServer, client: CmsClient) {
     "novadb_cms_upload_file_continue",
     "Continue a chunked file upload from disk. Set commit=true on the final chunk.",
     {
-      sourcePath: z.string().describe("Absolute path to the chunk file on disk"),
+      sourcePath: z.string().describe("Filename relative to workspace directory, or absolute path"),
       filename: z.string().optional().describe("Override filename (defaults to basename of sourcePath)"),
       extension: z.string().describe("File extension (e.g. 'jpg', 'pdf')"),
       commit: z.boolean().describe("Whether to commit the upload (true for the final chunk)"),
       token: z.string().describe("Upload token from the start call"),
     },
     async ({ sourcePath, filename, extension, commit, token }) => {
-      const blob = await openAsBlob(sourcePath);
-      const name = filename ?? basename(sourcePath);
+      const resolved = resolvePath(workspaceDir, sourcePath);
+      const blob = await openAsBlob(resolved);
+      const name = filename ?? basename(resolved);
       const result = await client.fileUploadContinue(blob, name, extension, commit, token);
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
