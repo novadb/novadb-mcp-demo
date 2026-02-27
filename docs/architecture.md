@@ -24,8 +24,6 @@ src/
 │       ├── update-<entity>.ts
 │       ├── get-<entity>.ts
 │       └── delete-<entity>.ts
-skills/                         # SKILL.md prompt-instruction files (AI workflow guidance)
-agents/                         # Agent definitions for Haiku subagents
 tests/
 ├── setup.ts                    # Shared test setup (env validation, client factories)
 └── fixtures/

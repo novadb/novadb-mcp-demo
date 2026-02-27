@@ -10,8 +10,6 @@ This server provides a comprehensive interface to NovaDB's core features through
 
 - **CMS API Integration**: Direct access to NovaDB CMS operations (objects, branches, comments, files, jobs)
 - **Index API Integration**: Full-featured data indexing, search, and retrieval
-- **Skills**: Granular prompt-instruction files for AI-guided workflows (attributes, branches, forms, object types, comments, jobs, files, code generation)
-- **Agents**: Pre-built agent prompts for common exploration and management tasks
 
 ## Installation
 
@@ -71,8 +69,7 @@ Tests are integration tests that require the `NOVA_*` environment variables. The
 ### Build Packaging
 
 ```bash
-npm run build:ext      # Build Claude extension
-npm run build:plugin   # Build Claude plugin
+npm run build:ext      # Build Claude extension (.mcpb)
 ```
 
 ## Project Structure
@@ -94,18 +91,8 @@ novadb-mcp/
 │   ├── cms-api/client/       # CMS API integration tests
 │   ├── index-api/client/     # Index API integration tests
 │   └── fixtures/             # Shared test context, constants, helpers
-├── skills/                   # SKILL.md prompt-instruction files
-│   ├── attributes/           # Attribute CRUD, validation, virtualization
-│   ├── branches/             # Branch management
-│   ├── code-generator/       # C# code generation
-│   ├── comments/             # Comment CRUD
-│   ├── files/                # File upload/download
-│   ├── forms/                # Form creation and field management
-│   ├── jobs/                 # Server-side job management
-│   └── object-types/         # Object type CRUD
-├── agents/                   # Agent prompt files for exploration tasks
-├── scripts/                  # Build scripts for extension/plugin packaging
-│   └── template/             # Extension/plugin template assets
+├── scripts/                  # Build scripts for extension packaging
+│   └── template/             # Extension template assets (manifest, icon)
 ├── docs/
 │   ├── openapi-cms.json      # CMS API OpenAPI spec
 │   └── openapi-index.json    # Index API OpenAPI spec
