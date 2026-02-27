@@ -2,7 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { ApiClient } from "./http-client.js";
 import { createIndexClient } from "./index-api/client.js";
 import { registerIndexTools } from "./index-api/tools.js";
@@ -36,7 +36,7 @@ const cmsApi = new ApiClient({
   password: process.env.NOVA_CMS_PASSWORD ?? "",
 });
 
-const workspaceDir = process.env.WORKSPACE_DIR || join(homedir(), "Documents", "NovaDB");
+const workspaceDir = resolve(process.env.WORKSPACE_DIR || join(homedir(), "Documents"));
 
 const indexClient = createIndexClient(indexApi);
 const cmsClient = createCmsClient(cmsApi);

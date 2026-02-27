@@ -67,7 +67,7 @@
       "title": "Workspace Directory",
       "description": "Directory that you have also shared in Cowork",
       "required": false,
-      "default": "${HOME}/Documents/NovaDB"
+      "default": "${HOME}/Documents"
     }
   },
   "keywords": ["NovaDB", "Nova", "CMS", "PIM", "DAM"],

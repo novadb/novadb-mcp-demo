@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createWriteStream, openAsBlob } from "node:fs";
 import { stat, mkdir } from "node:fs/promises";
-import { join, basename, dirname, isAbsolute } from "node:path";
+import { join, resolve, sep, basename, dirname, isAbsolute } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { z } from "zod";
@@ -45,8 +45,8 @@ function resolvePath(workspaceDir: string, path: string): string {
   if (isAbsolute(path) || /^[a-zA-Z]:/.test(path)) {
     throw new Error(`Absolute paths are not allowed. Use a relative path within the workspace directory.`);
   }
-  const resolved = join(workspaceDir, path);
-  if (!resolved.startsWith(workspaceDir)) {
+  const resolved = resolve(workspaceDir, path);
+  if (!resolved.startsWith(workspaceDir + sep) && resolved !== workspaceDir) {
     throw new Error(`Path must not escape the workspace directory.`);
   }
   return resolved;
