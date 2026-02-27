@@ -24,12 +24,12 @@ Download a file from NovaDB by its file identifier and save it to disk. Returns 
 ```json
 {
   "name": "5fe618811cca585a2826a2da06e3ce1b.jpg",
-  "targetPath": "/home/user/downloads/report.jpg"
+  "targetPath": "report.jpg"
 }
 ```
 
 - `name` — File identifier (hash) with extension (e.g. `5fe618811cca585a2826a2da06e3ce1b.jpg`). For newly uploaded files this is the `fileIdentifier` returned by the upload API. For existing binary objects, read attribute **11000** for the identifier and **11005** for the extension, then concatenate them.
-- `targetPath` — (Optional) Absolute path where to save the file. If omitted, saves to `<tmpdir>/novadb-files/<name>`.
+- `targetPath` — (Optional) Filename, e.g. `"report.jpg"`. Subdirectories like `"exports/report.jpg"` are allowed and created automatically.
 
 ## Workflow
 
@@ -43,7 +43,7 @@ JSON metadata object:
 
 ```json
 {
-  "filePath": "/tmp/novadb-files/5fe618811cca585a2826a2da06e3ce1b.jpg",
+  "filePath": "report.jpg",
   "sizeBytes": 12345,
   "contentType": "image/jpeg"
 }
@@ -52,6 +52,6 @@ JSON metadata object:
 ## Common Patterns
 
 - Use `targetPath` to save files with meaningful names instead of hashes
-- Without `targetPath`, files are saved to `<os.tmpdir()>/novadb-files/`
+- Always provide a `targetPath` to control where the file is saved
 - Parent directories are created automatically if they don't exist
 - To find the file identifier on an existing binary object: read attributes 11000 (identifier hash) and 11005 (extension), then use `<attr11000><attr11005>` as the name (e.g. `5fe618811cca585a2826a2da06e3ce1b.jpg`)

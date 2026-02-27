@@ -28,14 +28,14 @@ Generate C# code for multiple or all object types in a branch and save to disk. 
   "branch": "2100347",
   "language": "csharp",
   "ids": "100,200",
-  "targetPath": "/home/user/codegen/types.cs"
+  "targetPath": "types.cs"
 }
 ```
 
 - `branch` — Branch ID or `"draft"` (string, required)
 - `language` — **Always use `"csharp"`**. This is the only supported language. (string, required)
 - `ids` — Comma-separated type IDs to filter (optional, omit for all types)
-- `targetPath` — (Optional) Absolute path where to save the file. If omitted, saves to `<tmpdir>/novadb-files/codegen-<branch>-<language>.cs`.
+- `targetPath` — (Optional) Filename, e.g. `"types.cs"`. Subdirectories like `"codegen/types.cs"` are allowed and created automatically.
 
 ## Important
 
@@ -49,7 +49,7 @@ JSON metadata object:
 
 ```json
 {
-  "filePath": "/tmp/novadb-files/codegen-2100347-csharp.cs",
+  "filePath": "types.cs",
   "sizeBytes": 98765,
   "contentType": "text/plain"
 }

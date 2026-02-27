@@ -25,12 +25,12 @@ Fetch logs produced by a job and save to disk.
 ```json
 {
   "jobId": "abc-123",
-  "targetPath": "/home/user/logs/job-abc-123.txt"
+  "targetPath": "job-abc-123.txt"
 }
 ```
 
 - `jobId` — Job ID (string, required)
-- `targetPath` — (Optional) Absolute path where to save the file. If omitted, saves to `<tmpdir>/novadb-files/job-<jobId>-logs.txt`.
+- `targetPath` — (Optional) Filename, e.g. `"job-abc-123.txt"`. Subdirectories like `"logs/job-abc-123.txt"` are allowed and created automatically.
 
 ## Response
 
@@ -38,7 +38,7 @@ JSON metadata object:
 
 ```json
 {
-  "filePath": "/tmp/novadb-files/job-abc-123-logs.txt",
+  "filePath": "job-abc-123.txt",
   "sizeBytes": 54321,
   "contentType": "application/octet-stream"
 }
@@ -47,6 +47,6 @@ JSON metadata object:
 ## Common Patterns
 
 - Use `targetPath` to save logs with meaningful names
-- Without `targetPath`, logs are saved to `<os.tmpdir()>/novadb-files/`
+- Always provide a `targetPath` to control where the log file is saved
 - Parent directories are created automatically if they don't exist
 - Read the saved file to inspect log contents

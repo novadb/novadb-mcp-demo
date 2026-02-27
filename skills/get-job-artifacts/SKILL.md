@@ -36,21 +36,21 @@ List, fetch, or download artifacts produced by a job.
 {
   "jobId": "abc-123",
   "path": "output/report.csv",
-  "targetPath": "/home/user/artifacts/report.csv"
+  "targetPath": "report.csv"
 }
 ```
 
-- `targetPath` — (Optional) Absolute path where to save. If omitted, saves to `<tmpdir>/novadb-files/job-<jobId>-artifacts/<path>`.
+- `targetPath` — (Optional) Filename, e.g. `"report.csv"`. Subdirectories like `"artifacts/report.csv"` are allowed and created automatically.
 
 ### Download all as ZIP
 ```json
 {
   "jobId": "abc-123",
-  "targetPath": "/home/user/artifacts/all.zip"
+  "targetPath": "all.zip"
 }
 ```
 
-- `targetPath` — (Optional) Absolute path where to save. If omitted, saves to `<tmpdir>/novadb-files/job-<jobId>-artifacts.zip`.
+- `targetPath` — (Optional) Filename, e.g. `"all.zip"`. Subdirectories like `"artifacts/all.zip"` are allowed and created automatically.
 
 ## Workflow
 
@@ -65,7 +65,7 @@ List, fetch, or download artifacts produced by a job.
 
 ```json
 {
-  "filePath": "/tmp/novadb-files/job-abc-123-artifacts/output/report.csv",
+  "filePath": "report.csv",
   "sizeBytes": 12345,
   "contentType": "application/octet-stream"
 }
@@ -74,6 +74,6 @@ List, fetch, or download artifacts produced by a job.
 ## Common Patterns
 
 - Use `targetPath` to save files with meaningful names
-- Without `targetPath`, files are saved to `<os.tmpdir()>/novadb-files/`
+- Always provide a `targetPath` to control where files are saved
 - Parent directories are created automatically if they don't exist
 - Read the saved file to inspect artifact contents

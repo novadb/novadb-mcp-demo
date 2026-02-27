@@ -24,13 +24,13 @@ Start uploading a file to NovaDB. For single-chunk uploads, set `commit=true` to
 
 ```json
 {
-  "sourcePath": "/absolute/path/to/photo.jpg",
+  "sourcePath": "photo.jpg",
   "extension": "jpg",
   "commit": true
 }
 ```
 
-- `sourcePath` — Absolute path to the file on disk (required)
+- `sourcePath` — Filename, e.g. `"photo.jpg"` (required)
 - `filename` — Override filename (optional, defaults to basename of sourcePath)
 - `extension` — File extension **without dot** (e.g. `jpg`, `pdf`, `png`) (required)
 - `commit` — `true` for single-chunk uploads (completes immediately), `false` for chunked uploads (required)

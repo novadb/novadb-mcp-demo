@@ -27,18 +27,18 @@ Upload input file for a job with chunked upload support.
 ### Start upload
 ```json
 {
-  "sourcePath": "/absolute/path/to/input.csv"
+  "sourcePath": "input.csv"
 }
 ```
 
-- `sourcePath` — Absolute path to the file on disk (required)
+- `sourcePath` — Filename, e.g. `"input.csv"` (required)
 - `filename` — Override filename (optional, defaults to basename of sourcePath)
 
 ### Continue upload
 ```json
 {
   "token": "upload-token-from-previous-call",
-  "sourcePath": "/absolute/path/to/next-chunk"
+  "sourcePath": "next-chunk"
 }
 ```
 
